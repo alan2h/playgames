@@ -35,8 +35,10 @@
             <form method="post"> {% csrf_token %}
               <h1>Ingresar al Sistema</h1>
                 {{ formulario.as_p }}
-              <div>
-                <input type="submit"  value="Ingresar" class="btn btn-success submit" >
+              <div >
+
+                <button type="submit" class="btn btn-success" ><i class="fa fa-sign-in" aria-hidden="true"></i>
+                 Ingresar</button>
               </div>
               <div class="clearfix"></div>
               <div class="separator">

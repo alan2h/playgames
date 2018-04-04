@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\alan\\envs\\sigdrugstore\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\alan\\envs\\sigdrugstore\\Scripts\\python.exe",
+    "git.ignoreLimitWarning": true
 }
