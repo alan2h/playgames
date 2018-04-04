@@ -1,0 +1,58 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<form method="post"> {% csrf_token %}
+    <div class="col-sm-6">
+        <h4 class="brief"><i>Anular compra {{ object.fecha }}</i></h4>
+        <div class="left col-xs-7">
+            <ul class="list-unstyled">
+                <li>Comprobante: {{ object.codigo_comprobante }}</li>
+                {% for articulo_compra in object.articulo_compra.all %}
+                    <li>Árticulo: {{ articulo_compra.cantidad }}</li>
+                    <li>Cantidad: {{ articulo_compra.articulo.descripcion }}</li>
+                    <li>$ {{ articulo_compra.precio_compra }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="right col-xs-5 text-center">
+            <img src="/media/logos_sistema/trash.png" width="104" height="104" alt="" class="img-circle img-responsive">
+        </div>
+    </div>
+    <!-- Input del formulario -->
+        <div class="form-group">
+          <div class="col-md-9 col-sm-9 col-xs-9">
+              {{ form.causa_baja }}
+              <!-- Mensaje de error del input -->
+              {% if form.causa_baja.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                   <span class="sr-only">Error:</span>
+                     {{ form.causa_baja.errors|striptags }}
+                  </div>
+              {% endif %}
+              <!-- Mensaje de error del input -->
+          </div>
+        </div>
+    <!-- Input del formulario -->
+    <div class="col-xs-12 bottom text-center">
+        <div class="col-xs-12 col-sm-6 emphasis">
+            <a  href="/compras/listado/" type="button" class="btn btn-info">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+        </div>
+    </div>
+
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+        <div class="well profile_view">
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Caja del día <small>{% now "d/m/Y" %}</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+
+        <table class="table" id="tbl">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Caja Inicial</th>
+              <th>Caja Actual</th>
+              <th>Compras</th>
+              <th>V. Efectivo</th>
+              <th>V. Débito</th>
+              <th>V. Crédito</th>
+              <th>Otros Ingresos</th>
+              <th>Otros Gastos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for articulo in object_list %}
+                <tr>
+                  <th scope="row">{{ articulo.id }}</th>
+                  <td>${{ articulo.caja_inicial|default_if_none:'-' }}</td>
+                  <td>${{ articulo.caja_actual|default_if_none:'-' }}</td>
+                  <td>${{ articulo.compras|default_if_none:'-' }}</td>
+                  <td>${{ articulo.ventas_efectivo|default_if_none:'-' }}</td>
+                  <td>${{ articulo.ventas_debito|default_if_none:'-' }}</td>
+                  <td>${{ articulo.ventas_credito|default_if_none:'-' }}</td>
+                  <td>${{ articulo.otros_ingresos|default_if_none:'-' }}</td>
+                  <td>${{ articulo.otros_gastos|default_if_none:'-' }}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="form-group">
+          <div class="col-md-9 col-md-offset-3">
+              <a href="/" type="button" class="btn btn-primary">Cancelar</a>
+              <button type="button" class="btn btn-success" onclick="generatefromtable()">Imprimir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'pdf-generate/jspdf.js' %}"></script>
+    <script src="{% static 'pdf-generate/FileSaver.js' %}"></script>
+    <script src="{% static 'pdf-generate/jspdf.plugin.table.js' %}"></script>
+    <script>
+        function generatefromtable() {
+            var data = [], fontSize = 12, height = 0, doc;
+            doc = new jsPDF('p', 'pt', 'a4', true);
+            doc.setFont("times", "normal");
+            doc.setFontSize(fontSize);
+            doc.text(20, 20, "Caja del día");
+            data = [];
+            data = doc.tableToJson('tbl');
+            height = doc.drawTable(data, {
+                xstart : 10,
+                ystart : 10,
+                tablestart : 40,
+                marginleft : 10,
+                xOffset : 10,
+                yOffset : 15
+            });
+            doc.save("caja_del_dia.pdf");
+        }
+    </script>
+{% endblock %}

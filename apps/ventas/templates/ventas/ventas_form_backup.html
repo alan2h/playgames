@@ -1,0 +1,263 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- select 2  -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- date range picker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- jasny bootstrap -->
+    <link href="{% static 'vendors/jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Para checkear las tarjetas de credito -->
+    <link href="{% static 'apps/ventas/payment.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+   <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+   {% csrf_token %}
+   <!-- Tipos de Pagos -->
+      <div class="col-md-12 col-sm-12 col-xs-12">
+           <div class="x_panel">
+                   <div class="col-md-12 col-sm-12">
+                      <div class="container">
+                          <div class="paymentWrap">
+                              <div title="Pagar con Crédito" class="btn-group paymentBtnGroup btn-group-justified" data-toggle="buttons">
+                                  <label class="btn paymentMethod" id="id_credito"  onclick="calcular_tipo_pago('credito')">
+                                      <div class="method visa"></div>
+                                      <input type="radio" name="options">
+                                  </label>
+                                  <label title="Pagar con Débito" class="btn paymentMethod" id="id_debito" onclick="calcular_tipo_pago('debito')">
+                                      <div class="method master-card"></div>
+                                      <input type="radio" name="options">
+                                  </label>
+                                  <label title="Pagar con Efectivo" class="btn paymentMethod " id="id_efectivo" onclick="calcular_tipo_pago('efectivo')">
+                                      <div class="method amex"></div>
+                                      <input type="radio" name="options">
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+               </div>
+           </div>
+       </div>
+   <!-- Tipos de Pagos -->
+   <!-- form input mask -->
+   <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <!--<div class="x_title">
+                <h2><i class="fa fa-bars"></i> Ventas <small>Realizar una Venta</small></h2>
+                <div class="clearfix"></div>
+            </div>-->
+            <div class="x_content">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <br />
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Fecha <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{ form.fecha }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Buscar árticulo por código
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-inline">
+                                    <input type="text" id="id_codigo_articulo_buscar" name="codigo_articulo_buscar"  class="form-control">
+                                    <button type="button" data-toggle="modal" data-target=".id_articulos_form" class="btn btn-default btn-sm"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="clearfix"></div>
+                        <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">
+                            <a class="btn btn-primary" href="/ventas/alta/" type="reset">Cancelar</a>
+                            <button type="button"  id="id_button_guardar_compra" onclick="guardar_compra()" class="btn btn-success">Guardar</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <!--<div class="x_title">
+                <h2>Árticulos <small>lista de árticulos a vender</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>-->
+              <div class="x_content">
+
+                <table class="table table-striped" id="id_tabla_articulos">
+                  <thead>
+                    <tr>
+                      <th>Cantidad</th>
+                      <th>Descripción</th>
+                      <th>Marca</th>
+                      <th>Rubro</th>
+                      <th>Precio Venta</th>
+                      <th>Stock</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    </tr>
+                  </tbody>
+                </table>
+                 <div class="">
+                      <h1 id="id_total">$ 0.00</h1>
+                      <br>
+                 </div>
+                 <div id="id_div_pago">
+                      <input type="number" id="id_pago" placeholder="Abonó con ?" class="price" value="0">
+                      <br>
+                 </div>
+                 <div id="id_div_vuelto">
+                      <h1 id="id_vuelto">$ 0.00</h1>
+                      <br>
+                 </div>
+                 <div id="id_div_porcentaje">
+                      <input type="number" id="id_porcentaje" placeholder="Porcentaje de aumento" class="price" value="0">
+                      <br>
+                 </div>
+                 <div id="id_div_credito_total">
+                      <h1 id="id_credito_total">$ 0.00</h1>
+                      <br>
+                 </div>
+              </div>
+            </div>
+          </div>
+       </form>
+
+        <!-- Small modal Articulos -->
+           <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-lg" id="app">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                           </button>
+                           <h4 class="modal-title" id="myModalLabel2">${ titulo }</h4>
+                           <label>Buscar</label>
+                           <div class="x_content">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <div class="card-box table-responsive">
+                                    <table id="datatable-keytable" class="table table-striped table-bordered">
+                                      <thead>
+                                        <tr>
+                                          <th>Código</th>
+                                          <th>Descripción</th>
+                                          <th>marca</th>
+                                          <th>Rubro</th>
+                                          <th>Venta</th>
+                                          <th>Stock</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                        {# for articulo in articulos #}
+                                            <tr>
+                                              <td onclick="seleccion_articulo('{#  #}', '{#  #}',
+                                                                              '{#  #}', '{#  #}',
+                                                                              '{#  #}', '{#  #}',
+                                                                              '{#  #}','{#  #}',
+                                                                              '{#  #}', '0')">{# articulo.codigo_barra #}
+                                              </td>
+
+                                              <td onclick="seleccion_articulo('{#  #}', '{#  #}', '{#  #}',
+                                                                              '{#  #}', '{#  #}',
+                                                                              '{#  #}', '{#  #}',
+                                                                              '{#  #}', '{#  #}', '')">{# articulo.descripcion #}
+                                              </td>
+
+                                              <td onclick="seleccion_articulo('{# articulo.pk #}', '{# articulo.descripcion #}', '{# articulo.marca.descripcion #}',
+                                                                              '{# articulo.rubro.descripcion #}', '{# articulo.precio_venta #}',
+                                                                              '{# articulo.precio_credito #}', '{# articulo.precio_debito #}',
+                                                                              '{# articulo.precio_compra #}', '{# articulo.stock #}', '0')">{# articulo.marca.descripcion #}
+                                              </td>
+
+                                              <td onclick="seleccion_articulo('{# articulo.pk #}', '{# articulo.descripcion #}', '{# articulo.marca.descripcion #}',
+                                                                              '{# articulo.rubro.descripcion #}', '{# articulo.precio_venta #}',
+                                                                              '{# articulo.precio_credito #}', '{# articulo.precio_debito #}',
+                                                                              '{# articulo.precio_compra #}', '{# articulo.stock #}', '0')">{# articulo.rubro.descripcion #}
+                                              </td>
+
+                                              <td onclick="seleccion_articulo('{# articulo.pk #}', '{# articulo.descripcion #}', '{# articulo.marca.descripcion #}',
+                                                                              '{# articulo.rubro.descripcion #}', '{# articulo.precio_venta #}',
+                                                                              '{# articulo.precio_credito #}', '{# articulo.precio_debito #}',
+                                                                              '{# articulo.precio_compra #}', '{# articulo.stock #}', '0')">$ {# articulo.precio_venta #}
+                                              </td>
+                                              <td onclick="seleccion_articulo('{# articulo.pk #}', '{# articulo.descripcion #}', '{# articulo.marca.descripcion #}',
+                                                                              '{# articulo.rubro.descripcion #}', '{# articulo.precio_venta #}',
+                                                                              '{# articulo.precio_credito #}', '{# articulo.precio_debito #}',
+                                                                              '{# articulo.precio_compra #}', '{# articulo.stock #}', '0')">{# articulo.stock #}
+                                              </td>
+                                            </tr>
+                                        {# endfor #}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                           </div>
+                   </div>
+               </div>
+           </div>
+       <!-- modals -->
+
+{% endblock %}
+
+{% block js %}
+    <script type="application/javascript" src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- Custom js para este archivo -->
+    <script type="application/javascript" src="{% static 'apps/ventas/js/inicio.js' %}"></script>
+    <script type="application/javascript" src="{% static 'apps/ventas/js/operaciones.js' %}"></script>
+
+    <!-- vuejs -->
+    <script src="{% static 'vuejs/vue.js' %}"></script>
+    <!-- axios -->
+    <script src="{% static 'axios/axios.js' %}"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters: ['${', '}'],
+            data: {
+                titulo: 'Buscar Árticulos',
+                articulos: []
+            },
+
+            methods: {
+                cargarDatos: function(){
+                    axios.get('/articulos/api/articulos/')
+                      .then(function (response) {
+                          this.articulos = response.results;
+                    })
+                      .catch(function (error) {
+                          console.log(error);
+                    });
+                }
+            },
+            mounted: function(){
+                this.cargarDatos();
+            }
+        });
+    </script>
+
+{% endblock %}

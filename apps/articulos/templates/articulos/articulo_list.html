@@ -1,0 +1,87 @@
+{% extends 'list_base.html' %}
+{% load staticfiles %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Lista de Árticulos <small>Lista de árticulos cargados en el sistema</small></h2>
+        <ul class="navbar-right">
+          <li><a href="/articulos/alta/" class="btn btn-primary"> Nuevo Árticulo </a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+          <table class="table table-striped projects">
+              <thead>
+                <tr>
+                  <th style="width: 8%">Código <i class="fa fa-fw fa-sort"></i></th>
+                  <th style="width: 25%">Descripción <i class="fa fa-fw fa-sort"></i></th>
+                  <th style="width: 8%">Precio <i class="fa fa-fw fa-sort"></i></th>
+                  <th style="width: 8%">Costo</th>
+                  <th style="width: 8%">Stock</th>
+                  <th style="width: 8%">Stock Mínimo</th>
+                  <th style="width: 10%">Fecha de Compra</th>
+                  <th style="width: 30%">Acciones </th>
+                </tr>
+              </thead>
+              <tbody>
+                 {% for articulo in object_list %}
+                    <tr>
+                        <td>
+                            {{ articulo.codigo_barra }}
+                        </td>
+                        <td>
+                            {{ articulo.descripcion }}
+                        </td>
+                        <td>
+                           $ {{ articulo.precio_venta }}
+                        </td>
+                        <td>
+                           $ {{ articulo.precio_compra }}
+                        </td>
+                        <td>
+                            {{ articulo.stock }}
+                        </td>
+                        <td>
+                            {{ articulo.stock_minimo }}
+                        </td>
+                        <td>
+                            {{ articulo.fecha_compra|date:"d/m/Y" }}
+                        </td>
+                        <td>
+                            <!--<a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>-->
+                            <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
+                            <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>
+                            <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Eliminar </a>
+                        </td>
+                    </tr>
+                 {% endfor %}
+              </tbody>
+           </table>
+           <!-- paginacion -->
+            {% if is_paginated %}
+                <nav>
+                  <ul class="pager">
+                    {% if page_obj.has_previous %}
+                        <li><a href="/articulos/listado?page={{ page_obj.previous_page_number }}">Atrás</a></li>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <li><a href="/articulos/listado?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                    {% endif %}
+                  </ul>
+                </nav>
+            {% endif %}
+            <!-- paginacion -->
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

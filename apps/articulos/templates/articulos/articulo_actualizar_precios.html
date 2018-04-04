@@ -1,0 +1,184 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- select 2  -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- date range picker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- jasny bootstrap -->
+    <link href="{% static 'vendors/jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- form input mask -->
+  <div class="col-md-6 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Actualización de Precios</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <br />
+        <form id="form" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+        <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Marca</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.marca }}
+                  <!-- Mensaje de error del input -->
+                  {% if form.marca.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.marca.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Rubro</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.rubro }}
+                  <!-- Mensaje de error del input -->
+                  {% if form.rubro.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.rubro.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Código desde</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.codigo_desde }}
+                  <!-- Mensaje de error del input -->
+                  {% if form.codigo_desde.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.codigo_desde.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Código hasta</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.codigo_hasta }}
+                  <!-- Mensaje de error del input -->
+                  {% if form.codigo_hasta.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.codigo_hasta.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Variación de </label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.variacion }}
+                  <!-- Mensaje de error del input -->
+                  {% if form.variacion.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.variacion.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+           <!-- Input del formulario -->
+               <div class="form-group">
+                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Moneda </label>
+                 <div class="col-md-9 col-sm-9 col-xs-9">
+                     {{ form.moneda }}
+                     <!-- Mensaje de error del input -->
+                     {% if form.moneda.errors %}
+                         <div class="alert alert-danger" role="alert">
+                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                          <span class="sr-only">Error:</span>
+                            {{ form.moneda.errors|striptags }}
+                         </div>
+                     {% endif %}
+                     <!-- Mensaje de error del input -->
+                 </div>
+               </div>
+             <!-- Input del formulario -->
+
+            <!-- Input del formulario -->
+                   <div class="form-group">
+                     <label class="control-label col-md-3 col-sm-3 col-xs-3">Variación </label>
+                     <div class="col-md-9 col-sm-9 col-xs-9">
+                         {{ form.numero }}
+                         <!-- Mensaje de error del input -->
+                         {% if form.numero.errors %}
+                             <div class="alert alert-danger" role="alert">
+                               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                              <span class="sr-only">Error:</span>
+                                {{ form.numero.errors|striptags }}
+                             </div>
+                         {% endif %}
+                         <!-- Mensaje de error del input -->
+                     </div>
+                   </div>
+            <!-- Input del formulario -->
+
+          <div class="ln_solid"></div>
+
+          <div class="form-group">
+            <div class="col-md-9 col-md-offset-3">
+              <a href="/articulos/listado/" type="button" class="btn btn-primary">Cancelar</a>
+              <button id="id_guardar" type="submit" class="btn btn-success">Guardar</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+    <!-- select 2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.min.js' %}"></script>
+    <!-- date range picker -->
+    <script src="{% static 'vendors/moment/moment.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- jquery.inputmask -->
+    <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script>
+    $('#id_marca').select2({});
+    $('#id_rubro').select2({});
+</script>
+{% endblock %}

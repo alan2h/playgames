@@ -1,0 +1,200 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- select 2  -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- date range picker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- jasny bootstrap -->
+    <link href="{% static 'vendors/jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<!-- form input mask -->
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Carga de Clientes</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <br />
+          <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                   <li role="presentation" class=""><a href="/clientes/editar/{{ pk }}" id="home-tab"  aria-expanded="true">Datos Personales</a>
+                   </li>
+               <li role="presentation" class="active"><a href="#" aria-expanded="true">Contacto</a>
+               </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+              <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="x_panel">
+                        <div class="x_title">
+                         <h2>Carga de contactos de {{ nombre }}</h2>
+                          <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                          </ul>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                          <br />
+                          <form id="form" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+                        <!-- Input del formulario -->
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-3">Tipo</label>
+                              <div class="col-md-9 col-sm-9 col-xs-9">
+                                  {{ form.tipo }}
+                                <span class="fa fa-book form-control-feedback right" aria-hidden="true"></span>
+                                  <!-- Mensaje de error del input -->
+                                  {% if form.tipo.errors %}
+                                      <div class="alert alert-danger" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <span class="sr-only">Error:</span>
+                                         {{ form.tipo.errors|striptags }}
+                                      </div>
+                                  {% endif %}
+                                  <!-- Mensaje de error del input -->
+                              </div>
+                            </div>
+                        <!-- Input del formulario -->
+
+                        <!-- Input del formulario -->
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-3">Descripción</label>
+                                <div class="col-md-9 col-sm-9 col-xs-9">
+                                    {{ form.descripcion }}
+                                  <span class="fa fa-book form-control-feedback right" aria-hidden="true"></span>
+                                    <!-- Mensaje de error del input -->
+                                    {% if form.descripcion.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                          <span class="sr-only">Error:</span>
+                                           {{ form.descripcion.errors|striptags }}
+                                        </div>
+                                    {% endif %}
+                                    <!-- Mensaje de error del input -->
+                                </div>
+                              </div>
+                        <!-- Input del formulario -->
+
+                            <div class="ln_solid"></div>
+
+                            <div class="form-group">
+                              <div class="col-md-9 col-md-offset-3">
+                                  <a href="/clientes/alta/" type="button" class="btn btn-primary">Cancelar</a>
+                                  <button id="id_guardar" type="submit" class="btn btn-success">Guardar</button>
+                              </div>
+                            </div>
+
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="x_panel">
+                        <div class="x_title">
+                          <h2>Lista de contactos de {{ nombre }} </h2>
+                          <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                          </ul>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="table table-striped projects">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 25%">Tipo <i class="fa fa-fw fa-sort"></i></th>
+                                    <th style="width: 25%">Descripción <i class="fa fa-fw fa-sort"></i></th>
+                                    <th style="width: 30%">Acciones </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                   {% for contacto in contactos %}
+                                      <tr>
+                                          <td>
+                                              {{ contacto.tipo }}
+                                          </td>
+                                          <td>
+                                              {{ contacto.descripcion }}
+                                          </td>
+                                          <td>
+                                              <a href="/clientes/contactos/editar/{{ contacto.pk }}/{{ pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>
+                                              <a href="/clientes/contactos/eliminar/{{ contacto.pk }}/{{ pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Eliminar </a>
+                                          </td>
+                                      </tr>
+                                   {% empty %}
+                                       <div class="alert alert-error" role="alert">
+                                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                           <span class="sr-only">Error:</span>
+                                             No se ha encontrado registros
+                                       </div>
+                                   {% endfor %}
+                                </tbody>
+                             </table>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+    <!-- select 2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.min.js' %}"></script>
+    <!-- date range picker -->
+    <script src="{% static 'vendors/moment/moment.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- jquery.inputmask -->
+    <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+    <!-- jquery.inputmask -->
+    <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script>
+    $('#id_tipo').change(function(){
+        if ($('#id_tipo').val() == ' '){
+                    $('#id_descripcion').inputmask('remove');
+        }
+        if ($('#id_tipo').val() == 'celular'){
+            $('#id_descripcion').inputmask('(9999)-999999');
+        }
+        if ($('#id_tipo').val() == 'email'){
+            $('#id_descripcion').inputmask('remove');
+        }
+        if ($('#id_tipo').val() == 'telefono_trabajo'){
+            $('#id_descripcion').inputmask('99-99999');
+        }
+        if ($('#id_tipo').val() == 'telefono_casa'){
+            $('#id_descripcion').inputmask('99-99999');
+        }
+        if ($('#id_tipo').val() == 'telefono1'){
+            $('#id_descripcion').inputmask('99-99999');
+        }
+        if ($('#id_tipo').val() == 'telefono_casa2'){
+            $('#id_descripcion').inputmask('99-99999');
+        }
+    });
+</script>
+{% endblock %}

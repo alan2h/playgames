@@ -1,0 +1,60 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<form method="post"> {% csrf_token %}
+    <div class="col-sm-6">
+        <h4 class="brief"><i>Eliminar {{ object.descripcion }}</i></h4>
+        <div class="left col-xs-7">
+            <ul class="list-unstyled">
+                <li>Código de barra: {{ articulo.codigo_barra }}</li>
+                <li>descripción: {{ articulo.descripcion }}</li>
+                <li>Marca: {{ articulo.marca.descripcion }}</li>
+                <li>Rubro: {{ articulo.rubro.descripcion }}</li>
+                <li>Precio Venta: {{ articulo.precio_venta }}</li>
+                <li>Precio Compra: {{ articulo.precio_compra }}</li>
+                <li>Stock: {{ articulo.stock }}</li>
+                <li>Fecha de compra: {{ articulo.fecha_compra|date:'d/m/Y' }}</li>
+            </ul>
+        </div>
+        <div class="right col-xs-5 text-center">
+            <img src="/media/logos_sistema/trash.png" width="104" height="104" alt="" class="img-circle img-responsive">
+        </div>
+    </div>
+    <!-- Input del formulario -->
+        <div class="form-group">
+          <div class="col-md-9 col-sm-9 col-xs-9">
+              {{ form.causa_baja }}
+              <!-- Mensaje de error del input -->
+              {% if form.causa_baja.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                   <span class="sr-only">Error:</span>
+                     {{ form.causa_baja.errors|striptags }}
+                  </div>
+              {% endif %}
+              <!-- Mensaje de error del input -->
+          </div>
+        </div>
+    <!-- Input del formulario -->
+    <div class="col-xs-12 bottom text-center">
+        <div class="col-xs-12 col-sm-6 emphasis">
+            <a  href="/articulos/listado/" type="button" class="btn btn-info">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+        </div>
+    </div>
+
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+        <div class="well profile_view">
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

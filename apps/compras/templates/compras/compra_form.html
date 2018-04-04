@@ -1,0 +1,367 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- select 2  -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- date range picker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- jasny bootstrap -->
+    <link href="{% static 'vendors/jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+   <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+    <!-- form input mask -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-bars"></i> Compras <small>Realizar una Compra</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <br />
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Fecha <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{ form.fecha }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Código de Comprobante <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{ form.codigo_comprobante }}
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Buscar árticulo por código
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" id="id_codigo_articulo_buscar" name="codigo_articulo_buscar"  class="form-control">
+                            </div>
+                            </div> -->
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                  <button class="btn btn-primary" data-toggle="modal" data-target=".id_articulos_form" type="reset"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Árticulos <small>lista de árticulos a comprar</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table table-striped" id="id_tabla_articulos">
+                      <thead>
+                        <tr>
+                          <th>Cantidad</th>
+                          <th>Descripción</th>
+                          <th>Marca</th>
+                          <th>Rubro</th>
+                          <th>Precio Venta</th>
+                          <th>Precio Compra</th>
+                          <th>Stock</th>
+                          <th>Proveedor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+        </form>
+       <div class="">
+            <div class="product_price">
+                <input type="number" id="id_total" value="0" class="price">
+                <span class="price-tax">Total</span>
+                <br>
+            </div>
+       </div>
+       <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">
+              <a class="btn btn-primary" href="/compras/alta/" type="reset">Cancelar</a>
+              <button type="button"  onclick="guardar_compra()" class="btn btn-success">Guardar</button>
+       </div>
+
+       <!-- Small modal Articulos -->
+               <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
+                   <div class="modal-dialog modal-lg" id="app">
+                       <div class="modal-content">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                               </button>
+                               <h4 class="modal-title" id="myModalLabel2">${ titulo }</h4>
+
+                               <form method="get">
+                               <div class="title_right">
+                                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                   <div class="input-group">
+                                     <input @keypress="buscar" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                                   </div>
+                                 </div>
+                               </div>
+                               </form>
+                               <div class="x_content">
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="card-box table-responsive">
+                                        <table id="datatable-keytable" class="table table-striped table-bordered">
+                                          <thead>
+                                            <tr>
+                                              <th>Código</th>
+                                              <th>Descripción</th>
+                                              <th>marca</th>
+                                              <th>Rubro</th>
+                                              <th>Venta</th>
+                                              <th>Compra</th>
+                                              <th>Stock</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                                <tr v-for="articulo in articulos">
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.codigo_barra }
+                                                  </td>
+
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.descripcion }
+                                                  </td>
+
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.marca.descripcion }
+                                                  </td>
+
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.rubro.descripcion }
+                                                  </td>
+
+                                                  <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_venta }
+                                                  </td>
+                                                  <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_compra }
+                                                  </td>
+
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.stock }
+                                                  </td>
+                                                </tr>
+
+                                          </tbody>
+                                        </table>
+                                            <ul class="pager">
+                                              <li v-if="pag_previo"><a v-on:click="previo">Previo</a></li>
+                                              <li v-if="pag_siguiente"><a v-on:click="siguiente">Siguiente</a></li>
+                                            </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                               </div>
+                       </div>
+                   </div>
+               </div>
+           <!-- modals -->
+
+{% endblock %}
+
+{% block js %}
+    <script type="application/javascript" src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- Datatables -->
+
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+    <!-- vuejs -->
+    <script src="{% static 'vuejs/vue.js' %}"></script>
+    <!-- axios -->
+    <script src="{% static 'axios/axios.js' %}"></script>
+
+    <script>
+        var total = 0.0;
+        var articulos_comprados = [];
+
+        var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_compra, stock, proveedor){
+            var cantidad = prompt("Ingrese la cantidad", "");
+            if (cantidad != null && cantidad != '') {
+                /* ---- Armar un array con los articulos comprados ----- */
+                var obj = {};
+                obj['id'] = id;
+                obj['cantidad'] = cantidad;
+                articulos_comprados.push(obj);
+                /* ---- Armar un array con los articulos comprados ----- */
+
+                total += (parseFloat(cantidad) * parseFloat(precio_compra.replace(",", ".")));
+                $('#id_total').val(total.toString());
+
+                $('#id_tabla_articulos tr:last').after('<tr><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td>'
+                        + marca + '</td>' + '<td>' + rubro + '</td>' + '<td> $' + precio_venta
+                        + '</td>' + '<td> $' + precio_compra + '</td>' + '<td>' + stock + '</td>' + '<td>' + proveedor + '</td></tr>');
+            }
+        };
+
+        $('#id_fecha').daterangepicker({
+               singleDatePicker: true,
+               locale: {
+                      "format": "DD/MM/YYYY",
+                      "separator": " - ",
+                      "applyLabel": "Aplicar",
+                      "cancelLabel": "Cancelar",
+                      "fromLabel": "From",
+                      "toLabel": "a",
+                      "customRangeLabel": "Custom",
+                      "daysOfWeek": [
+                          "Do",
+                          "Lu",
+                          "Ma",
+                          "Mi",
+                          "Ju",
+                          "Vi",
+                          "Sa"
+                      ],
+                      "monthNames": [
+                          "Enero",
+                          "Febrero",
+                          "Marzo",
+                          "Abril",
+                          "Mayo",
+                          "Junio",
+                          "Julio",
+                          "Agosto",
+                          "Septiembre",
+                          "Octubre",
+                          "Noviembre",
+                          "Diciembre"
+                      ]
+               }
+           });
+
+        var guardar_compra = function(){
+            $.ajax({
+                url: '/compras/ajax/compras/alta/',
+                type: 'post',
+                data: {
+                    compras: JSON.stringify(articulos_comprados),
+                    fecha: $('#id_fecha').val,
+                    codigo_comprobante: $('#id_codigo_comprobante').val,
+                    precio_compra_total: $('#id_total').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data){
+                    if (data.success){
+                        new PNotify({
+                            title: 'Sistema',
+                            text: data.success,
+                            type: 'success'
+                        });
+                        $('#id_total').val('0.0');
+                        $('#id_tabla_articulos').empty();
+                        $('#codigo_comprobante').val(' ');
+                        window.location.href = '/compras/alta/'
+                    }
+                }
+            });
+        }
+
+        var app = new Vue({
+                    el: '#app',
+                    delimiters: ['${', '}'],
+                    data: {
+                        titulo: 'Buscar Árticulos',
+                        articulos: [],
+                        pag_siguiente: '',
+                        pag_previo: '',
+                        descripcion: '',
+                    },
+
+                    methods: {
+                        cargarDatos: function(){
+                            var self = this;
+                            axios.get('/articulos/api/articulos/')
+                              .then(function (response) {
+                                  self.articulos = response.data.results;
+                                  self.pag_siguiente = response.data.next;
+                                  self.pag_previo = response.data.previous;
+                            })
+                              .catch(function (error) {
+                                  console.log(error);
+                            });
+                        },
+                        envioDatos: function(articulo){
+                            seleccion_articulo(
+                                    articulo.id, articulo.descripcion,
+                                    articulo.marca.descripcion,
+                                    articulo.rubro.descripcion,
+                                    articulo.precio_venta,
+                                    articulo.precio_compra,
+                                    articulo.stock,
+                                    '0'
+                            );
+                        },
+                        previo: function(){
+                            var self = this;
+                            axios.get(self.pag_previo)
+                             .then(function (response) {
+                                 self.articulos = response.data.results;
+                                 self.pag_siguiente = response.data.next;
+                                 self.pag_previo = response.data.previous;
+                            })
+                             .catch(function (error) {
+                                 console.log(error);
+                            });
+                        },
+                        siguiente: function(){
+                            var self = this;
+                            axios.get(self.pag_siguiente)
+                             .then(function (response) {
+                                 self.articulos = response.data.results;
+                                 self.pag_siguiente = response.data.next;
+                                 self.pag_previo = response.data.previous;
+                            })
+                             .catch(function (error) {
+                                 console.log(error);
+                            });
+                        },
+                        buscar: function(){
+                            var self = this;
+                            axios.get('/articulos/api/articulos/?descripcion=' + this.descripcion)
+                             .then(function (response) {
+                                 self.articulos = response.data.results;
+                                 self.pag_siguiente = response.data.next;
+                                 self.pag_previo = response.data.previous;
+                            })
+                             .catch(function (error) {
+                                 console.log(error);
+                            });
+                        }
+                    },
+                    mounted: function(){
+                        this.cargarDatos();
+                    }
+                });
+
+    </script>
+{% endblock %}

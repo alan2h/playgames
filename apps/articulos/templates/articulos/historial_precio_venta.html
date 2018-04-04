@@ -1,0 +1,67 @@
+{% extends 'list_base.html' %}
+{% load staticfiles %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Lista de Historial <small>Lista de historial de precios de ventas</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+          <table class="table table-striped projects">
+              <thead>
+                <tr>
+                  <th style="width: 8%">Árticulo <i class="fa fa-fw fa-sort"></i></th>
+                  <th style="width: 25%">Fecha de modificación <i class="fa fa-fw fa-sort"></i></th>
+                  <th style="width: 8%">Precio de Venta <i class="fa fa-fw fa-sort"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                 {% for historial in object_list %}
+                    <tr>
+                        <td>
+                            {{ historial.articulo }}
+                        </td>
+                        <td>
+                            {{ historial.fecha_modificacion }}
+                        </td>
+                        <td>
+                           $ {{ historial.precio }}
+                        </td>
+                    </tr>
+                 {% endfor %}
+              </tbody>
+           </table>
+           <!-- paginacion -->
+            {% if is_paginated %}
+                <nav>
+                  <ul class="pager">
+                    {% if page_obj.has_previous %}
+                        <li><a href="/articulos/historial/venta?page={{ page_obj.previous_page_number }}">Atrás</a></li>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <li><a href="/articulos/historial/venta?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                    {% endif %}
+                  </ul>
+                </nav>
+            {% endif %}
+            <!-- paginacion -->
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

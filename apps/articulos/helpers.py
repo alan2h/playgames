@@ -1,0 +1,170 @@
+from reportlab.lib.units import mm
+
+from django.http import JsonResponse
+
+# Código de Barras
+from reportlab.graphics.barcode import createBarcodeDrawing
+from reportlab.graphics.shapes import Drawing
+
+
+from .forms import MarcaForm, RubroForm
+from .models import Articulo
+
+
+def ajax_create_marca(request):
+
+    if request.is_ajax():
+        marca_form = MarcaForm(data=request.POST)
+        if marca_form.is_valid():
+            marca = marca_form.save()
+            data = {
+                'is_valid': 'true',
+                'id_marca': marca.pk,
+                'id_descripcion': marca.descripcion
+            }
+        else:
+            data = {
+                'message': marca_form.errors
+            }
+
+        return JsonResponse(data)
+
+
+def ajax_create_rubro(request):
+
+    if request.is_ajax():
+        rubro_form = RubroForm(data=request.POST)
+        if rubro_form.is_valid():
+            rubro = rubro_form.save()
+            data = {
+                'is_valid': 'true',
+                'id_rubro': rubro.pk,
+                'id_descripcion': rubro.descripcion
+            }
+        else:
+            data = {
+                'message': rubro_form.errors
+            }
+
+        return JsonResponse(data)
+
+
+class DibujarBarcode(Drawing):
+
+    def __init__(self, text_value, *args, **kw):
+
+        barcode = createBarcodeDrawing('Code128', value=text_value,
+                                       barHeight=10*mm, humanReadable=True)
+
+        Drawing.__init__(self, barcode.width, barcode.height, *args, **kw)
+        self.add(barcode, name='barcode')
+
+
+def buscar_codigo(codigo):
+    qs = Articulo.objects.filter(
+        baja=False,
+        codigo_barra=codigo
+    )
+    return qs
+
+
+def buscar_descripcion(qs, descripcion):
+    if qs.exists() is False:
+        qs = Articulo.objects.filter(
+            baja=False,
+            descripcion__icontains=
+            descripcion
+        )
+    return qs
+
+
+def buscar_precio_venta(qs, precio_venta):
+
+    if qs.exists() is False:
+        if '.' in precio_venta:
+            if precio_venta.split('.')[0].isnumeric() and \
+                    precio_venta.split('.')[1].isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_venta=precio_venta
+                )
+        elif ',' in precio_venta:
+            if precio_venta.split(',')[0].isnumeric() and \
+                    precio_venta.split(',')[1].isnumeric():
+                precio_formateado = precio_venta.replace(',', '.')
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_venta=precio_formateado
+                )
+        elif precio_venta.isnumeric():
+            qs = Articulo.objects.filter(
+                baja=False,
+                precio_venta=precio_venta
+            )
+    return qs
+
+
+def buscar_precio_compra(qs, precio_compra):
+
+    if qs.exists() is False:
+        if '.' in precio_compra:
+            if precio_compra.split('.')[0].isnumeric() and \
+                    precio_compra.split('.')[1].isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_compra=precio_compra
+                )
+        elif ',' in precio_compra:
+            if precio_compra.split(',')[0].isnumeric() and \
+                    precio_compra.split(',')[1].isnumeric():
+                precio_formateado = precio_compra.replace(',', '.')
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_compra=precio_formateado
+                )
+        elif precio_compra.isnumeric():
+            qs = Articulo.objects.filter(
+                baja=False,
+                precio_compra=precio_compra
+            )
+    return qs
+
+
+def buscar_stock(qs, stock):
+
+    if qs.exists() is False:
+        if stock.isnumeric():
+            qs = Articulo.objects.filter(
+                baja=False,
+                stock=stock
+            )
+    return qs
+
+
+def buscar_stock_minimo(qs, stock_minimo):
+
+    if qs.exists() is False:
+        if stock_minimo.isnumeric():
+            qs = Articulo.objects.filter(
+                baja=False,
+                stock_minimo=stock_minimo
+            )
+    return qs
+
+
+def buscar_fecha_compra(qs, fecha_compra):
+
+    if qs.exists() is False:
+        if len(fecha_compra.split('/')) is 3:
+            if '/' in fecha_compra:
+                if (fecha_compra.split('/')[0].isnumeric() and
+                    fecha_compra.split('/')[1].isnumeric() and
+                        fecha_compra.split('/')[2].isnumeric()):
+
+                    qs = Articulo.objects.filter(baja=False,
+                                                 fecha_compra=
+                                                 fecha_compra.split('/')[2] + "-" +
+                                                 fecha_compra.split('/')[1] + "-" +
+                                                 fecha_compra.split('/')[0])
+
+    return qs

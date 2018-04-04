@@ -1,0 +1,410 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- select 2  -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- date range picker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <!-- jasny bootstrap -->
+    <link href="{% static 'vendors/jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- form input mask -->
+  <div class="col-md-8 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Carga de Articulos</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <br />
+        <form id="form" class="form-horizontal form-label-left" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+        <!-- Input del formulario -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Codigo</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                {{ form.codigo_barra }}
+              <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
+                <!-- Mensaje de error del input -->
+                {% if form.codigo_barra.errors %}
+                    <div class="alert alert-danger" role="alert">
+                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                       {{ form.codigo_barra.errors|striptags }}
+                    </div>
+                {% endif %}
+                <!-- Mensaje de error del input -->
+            </div>
+          </div>
+        <!-- Input del formulario -->
+
+        <!-- Input del formulario -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Descripcion</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                {{ form.descripcion }}
+              <span class="fa fa-book form-control-feedback right" aria-hidden="true"></span>
+                <!-- Mensaje de error del input -->
+                {% if form.descripcion.errors %}
+                    <div class="alert alert-danger" role="alert">
+                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                       {{ form.descripcion.errors|striptags }}
+                    </div>
+                {% endif %}
+                <!-- Mensaje de error del input -->
+            </div>
+          </div>
+        <!-- Input del formulario -->
+
+         <!-- Input del formulario -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Marca</label>
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                    {{ form.marca }}
+                </div>
+                <!-- boton agregar una opción nueva -->
+                <div class="col-md-1 col-sm-1 col-xs-9">
+                    <button type="button" data-toggle="modal" data-target=".id_marca_form" class="btn btn-default btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+                <!-- boton agregar una opción nueva -->
+            </div>
+         <!-- Input del formulario -->
+
+         <!-- Input del formulario -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Rubro</label>
+                <div class="col-md-7 col-sm-7 col-xs-7">
+                    {{ form.rubro }}
+                </div>
+                <!-- boton agregar una opción nueva -->
+                <div class="col-md-1 col-sm-1 col-xs-9">
+                    <button type="button" data-toggle="modal" data-target=".id_rubro_form" class="btn btn-default btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </div>
+                <!-- boton agregar una opción nueva -->
+            </div>
+         <!-- Input del formulario -->
+
+         <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio de Venta</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.precio_venta }}
+                <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.precio_venta.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.precio_venta.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+         <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio de Compra</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.precio_compra }}
+                <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.precio_compra.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.precio_compra.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Stock</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.stock }}
+                <span class="fa fa-wrench form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.stock.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.stock.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Stock Mínimo</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.stock_minimo }}
+                <span class="fa fa-wrench form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.stock_minimo.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.stock_minimo.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Imp. Interno</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.impuesto_interno }}
+                <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.impuesto_interno.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.impuesto_interno.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Iva</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.alicuota_iva }}
+                <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.alicuota_iva.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                       <span class="sr-only">Error:</span>
+                         {{ form.alicuota_iva.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <!-- Input del formulario -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Compra</label>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    {{ form.fecha_compra }}
+                    <span class="fa fa-clock-o form-control-feedback right" aria-hidden="true"></span>
+                    <!-- Mensaje de error del input -->
+                    {% if form.fecha_compra.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            {{ form.fecha_compra.errors|striptags }}
+                        </div>
+                    {% endif %}
+                    <!-- Mensaje de error del input -->
+                </div>
+            </div>
+          <!-- Input del formulario -->
+
+          <div class="ln_solid"></div>
+
+          <div class="form-group">
+            <div class="col-md-9 col-md-offset-3">
+                <a href="/articulos/listado/" type="button" class="btn btn-primary">Cancelar</a>
+                <button id="id_guardar" type="submit" class="btn btn-success">Guardar</button>
+            </div>
+          </div>
+
+        </form>
+        <!-- Small modal Marca -->
+           <div class="modal fade id_marca_form" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-sm">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                           </button>
+                           <h4 class="modal-title" id="myModalLabel2">Marcas</h4>
+                           <div class="alert alert-danger" id="id_mensaje_marca" role="alert"></div>
+                           {{ marca_form.as_p }}
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                           <button type="button" class="btn btn-primary" onclick="guardar_marca()">Guardar</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        <!-- /modals -->
+        <!-- Small modal Rubro -->
+           <div class="modal fade id_rubro_form" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-sm">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                           </button>
+                           <h4 class="modal-title" id="myModalLabel2">Rubros</h4>
+                           <div class="alert alert-danger" id="id_mensaje_rubro" role="alert"></div>
+                           {{ rubro_form.as_p }}
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                           <button type="button" class="btn btn-primary" onclick="guardar_rubro()">Guardar</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        <!-- /modals -->
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+    <!-- select 2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.min.js' %}"></script>
+    <!-- date range picker -->
+    <script src="{% static 'vendors/moment/moment.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- jquery.inputmask -->
+    <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+    <!-- Custom js for this template -->
+    <script src="{% static 'apps/articulos/articulo_form.js' %}"></script>
+    <script>
+        // no submit con enter
+        $("form").bind("keypress", function (e) {
+            if (e.keyCode == 13) {
+                return false;
+            }
+        });
+        // Select 2
+        $('#id_marca').select2({});
+        $('#id_rubro').select2({});
+
+        // tabulador
+        $('#id_codigo_barra').keypress(function(event){
+            if (event.which == 13) {
+                $('#id_descripcion').focus();
+            }
+        });
+        $('#id_descripcion').keypress(function(event){
+            if (event.which == 13){
+                $('#id_precio_venta').focus();
+            }
+        });
+
+        $('#id_precio_venta').keypress(function(event){
+            if (event.which == 13){
+                $('#id_precio_compra').focus();
+            }
+        });
+
+        $('#id_precio_compra').keypress(function(event){
+            if (event.which == 13){
+                $('#id_stock').focus();
+            }
+        });
+        $('#id_stock').keypress(function(event){
+            if (event.which == 13){
+                $('#id_stock_minimo').focus();
+            }
+        });
+        $('#id_stock_minimo').keypress(function(event){
+            if (event.which == 13){
+                $('#id_impuesto_interno').focus();
+            }
+        });
+        $('#id_impuesto_interno').keypress(function(event){
+            if (event.which == 13){
+                $('#id_alicuota_iva').focus();
+            }
+        });
+        $('#id_alicuota_iva').keypress(function(event){
+            if (event.which == 13){
+                $('#id_fecha_compra').focus();
+            }
+        });
+        $('#id_fecha_compra').keypress(function(event){
+            if (event.which == 13){
+                $('#id_guardar').focus();
+            }
+        });
+        $('#id_guardar').keypress(function(event){
+            $('#form').submit();
+        });
+        // date range picker
+        $('#id_fecha_compra').daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                   "format": "DD/MM/YYYY",
+                   "separator": " - ",
+                   "applyLabel": "Aplicar",
+                   "cancelLabel": "Cancelar",
+                   "fromLabel": "From",
+                   "toLabel": "a",
+                   "customRangeLabel": "Custom",
+                   "daysOfWeek": [
+                       "Do",
+                       "Lu",
+                       "Ma",
+                       "Mi",
+                       "Ju",
+                       "Vi",
+                       "Sa"
+                   ],
+                   "monthNames": [
+                       "Enero",
+                       "Febrero",
+                       "Marzo",
+                       "Abril",
+                       "Mayo",
+                       "Junio",
+                       "Julio",
+                       "Agosto",
+                       "Septiembre",
+                       "Octubre",
+                       "Noviembre",
+                       "Diciembre"
+                   ]
+            }
+        });
+    // input mask
+    $('#id_fecha_compra').inputmask({"mask": "99/99/9999"});
+    // preview file upload
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        /*$("#id_imagen").change(function(){
+            readURL(this);
+        });*/
+    </script>
+{% endblock %}
