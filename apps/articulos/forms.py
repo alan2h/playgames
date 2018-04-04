@@ -74,7 +74,8 @@ class ArticuloForm(forms.ModelForm):
         fields = [
             'codigo_barra', 'descripcion', 'precio_compra', 'precio_venta',
             'precio_credito', 'precio_debito', 'stock', 'stock_minimo',
-            'rubro', 'marca', 'impuesto_interno', 'alicuota_iva', 'fecha_compra'
+            'rubro', 'marca', 'impuesto_interno', 'alicuota_iva', 'fecha_compra',
+            'imagen'
         ]
 
         model = Articulo

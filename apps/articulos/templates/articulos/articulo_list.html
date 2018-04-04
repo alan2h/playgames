@@ -1,7 +1,8 @@
 {% extends 'list_base.html' %}
 {% load staticfiles %}
 {% block css %}
-
+   <!-- zoom css -->
+   <link href="{% static 'zoom.js-master/css/zoom.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -16,53 +17,55 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-          <table class="table table-striped projects">
-              <thead>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                    <th >Imagen </th>  
+                    <th >Código </th>
+                    <th >Descripción</th>
+                    <th >Precio </th>
+                    <th >Costo</th>
+                    <th >Stock</th>
+                    <th >Acciones </th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for articulo in object_list %}
                 <tr>
-                  <th style="width: 8%">Código <i class="fa fa-fw fa-sort"></i></th>
-                  <th style="width: 25%">Descripción <i class="fa fa-fw fa-sort"></i></th>
-                  <th style="width: 8%">Precio <i class="fa fa-fw fa-sort"></i></th>
-                  <th style="width: 8%">Costo</th>
-                  <th style="width: 8%">Stock</th>
-                  <th style="width: 8%">Stock Mínimo</th>
-                  <th style="width: 10%">Fecha de Compra</th>
-                  <th style="width: 30%">Acciones </th>
+                    <td>
+                        {% if articulo.imagen %}
+                            <img src="/media/{{ articulo.imagen }}" data-action="zoom" width="52" height="52" />
+                        {% else %}
+                            <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
+                        {% endif %}    
+                    </td>
+                    <td>
+                        {{ articulo.codigo_barra }}
+                    </td>
+                    <td>
+                        {{ articulo.descripcion }}
+                    </td>
+                    <td>
+                        $ {{ articulo.precio_venta }}
+                    </td>
+                    <td>
+                        $ {{ articulo.precio_compra }}
+                    </td>
+                    <td>
+                        {{ articulo.stock }}
+                    </td>
+                    <td>
+                        <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>
+                        <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
+                        <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
+                        <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
+                    </td>
                 </tr>
-              </thead>
-              <tbody>
-                 {% for articulo in object_list %}
-                    <tr>
-                        <td>
-                            {{ articulo.codigo_barra }}
-                        </td>
-                        <td>
-                            {{ articulo.descripcion }}
-                        </td>
-                        <td>
-                           $ {{ articulo.precio_venta }}
-                        </td>
-                        <td>
-                           $ {{ articulo.precio_compra }}
-                        </td>
-                        <td>
-                            {{ articulo.stock }}
-                        </td>
-                        <td>
-                            {{ articulo.stock_minimo }}
-                        </td>
-                        <td>
-                            {{ articulo.fecha_compra|date:"d/m/Y" }}
-                        </td>
-                        <td>
-                            <!--<a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>-->
-                            <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
-                            <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>
-                            <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Eliminar </a>
-                        </td>
-                    </tr>
-                 {% endfor %}
-              </tbody>
-           </table>
+                {% endfor %}
+            
+            </tbody>
+        </table>
+
            <!-- paginacion -->
             {% if is_paginated %}
                 <nav>
@@ -83,5 +86,6 @@
 {% endblock %}
 
 {% block js %}
-
+ <!-- zoom js -->
+ <script src="{% static 'zoom.js-master/js/zoom.js' %}"></script>
 {% endblock %}

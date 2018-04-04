@@ -22,6 +22,11 @@
                     <div class="x_content">
 
                       <div class="col-md-7 col-sm-7 col-xs-12" style="border:0px solid #e5e5e5;">
+                        {% if object.imagen %}
+                            <img src="/media/{{ object.imagen }}"  width="322" height="322" />
+                        {% else %}
+                            <img src="/media/logos_sistema/no-imagen.jpg"  width="322" height="322" />
+                        {% endif %} 
                         <p>Stock: {{ object.stock }}</p>
                         <p>Stock Mínimo: {{ object.stock_minimo }}</p>
                         <p>Fecha de compra: {{ object.fecha_compra|date:'d/m/Y' }}</p>

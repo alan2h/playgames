@@ -7,6 +7,7 @@
     <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <!-- jasny bootstrap css -->
     <link href="{% static 'jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
+ 
 {% endblock %}
 
 {% block content %}
@@ -66,31 +67,23 @@
           </div>
         <!-- Input del formulario -->
 
-         <!-- Input del formulario -->
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3">Foto</label>
-                <div class="col-md-9 col-sm-9 col-xs-9">
-                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                            <img data-src="" alt="...">
-                        </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
-                        <div>
-                            <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccione una Imagen</span><span class="fileinput-exists">Cambiar</span>{{ form.imagen }}</span>
-                            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
-                        </div>
+        <!-- Input del formulario -->
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Foto</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                {{ form.imagen }}
+                <span class="fa fa-file-image-o form-control-feedback right" aria-hidden="true"></span>
+                <!-- Mensaje de error del input -->
+                {% if form.imagen.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        {{ form.imagen.errors|striptags }}
                     </div>
-                    <!-- Mensaje de error del input -->
-                    {% if form.imagen.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                            <span class="sr-only">Error:</span>
-                            {{ form.imagen.errors|striptags }}
-                        </div>
-                    {% endif %}
-                    <!-- Mensaje de error del input -->
-                </div>    
-            </div>                
+                {% endif %}
+                <!-- Mensaje de error del input -->
+            </div>
+        </div>
         <!-- Input del formulario -->
 
          <!-- Input del formulario -->
@@ -315,8 +308,7 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <!-- jquery.inputmask -->
     <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
-    <!-- jasny bootstrap js -->
-    <script src="{% static 'jasny-bootstrap/js/jasny-bootstrap.min.js' %}"></script>
+   
     <!-- Custom js for this template -->
     <script src="{% static 'apps/articulos/articulo_form.js' %}"></script>
     
