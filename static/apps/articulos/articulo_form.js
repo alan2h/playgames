@@ -46,6 +46,7 @@ document.getElementById('id_mensaje_rubro').style.display = 'none';
             type: 'post',
             data: {
                 descripcion: $('#id_descripcion_rubro').val(),
+                categoria: $('#id_categoria').val(),
                 csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
             },
             success: function(data){
@@ -61,7 +62,9 @@ document.getElementById('id_mensaje_rubro').style.display = 'none';
                     document.getElementById('id_mensaje_rubro').style.display = 'block';
                     var texto = '';
                     if (data.message['descripcion'] != undefined){
-                        texto = data.message['descripcion'];
+                        texto = 'Descripción : ' + data.message['descripcion'];
+                    }else {
+                        texto = 'Categoría : ' +  data.message['categoria'];
                     }
                     $('#id_mensaje_rubro').append('<p>' + texto +  '</p>')
                 }

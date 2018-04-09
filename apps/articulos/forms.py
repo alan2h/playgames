@@ -1,7 +1,7 @@
 
 from django import forms
 
-from .models import Articulo, Marca, Rubro
+from .models import Articulo, Marca, Rubro, Categoria
 
 
 class ArticuloForm(forms.ModelForm):
@@ -10,7 +10,10 @@ class ArticuloForm(forms.ModelForm):
                                    widget=forms.TextInput(attrs=(
                                        {'class': 'form-control'}
                                    )))
-    descripcion = forms.CharField(max_length=600, required=True,
+    nombre = forms.CharField(max_length=1000, required=True, widget=forms.TextInput(
+        attrs=({'class': 'form-control'}
+        )))
+    descripcion = forms.CharField(max_length=1000, required=True,
                                   widget=forms.TextInput(attrs=(
                                       {'class': 'form-control'}
                                   )))
@@ -98,6 +101,9 @@ class MarcaForm(forms.ModelForm):
 
 class RubroForm(forms.ModelForm):
 
+    categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(),
+     required=True, widget=forms.Select(attrs=({'class': 'form-control'})))
+
     descripcion = forms.CharField(required=True, max_length=600,
                                   widget=forms.TextInput(attrs=(
                                       {
@@ -107,7 +113,7 @@ class RubroForm(forms.ModelForm):
                                   )))
 
     class Meta:
-        fields = ['descripcion']
+        fields = ['categoria', 'descripcion']
         model = Rubro
 
 

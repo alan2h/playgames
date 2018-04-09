@@ -49,6 +49,25 @@
         <!-- Input del formulario -->
 
         <!-- Input del formulario -->
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Nombre</label>
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                {{ form.nombre }}
+              <span class="fa fa-book form-control-feedback right" aria-hidden="true"></span>
+                <!-- Mensaje de error del input -->
+                {% if form.nombre.errors %}
+                    <div class="alert alert-danger" role="alert">
+                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                       {{ form.nombre.errors|striptags }}
+                    </div>
+                {% endif %}
+                <!-- Mensaje de error del input -->
+            </div>
+          </div>
+        <!-- Input del formulario -->
+
+        <!-- Input del formulario -->
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-3">Descripcion</label>
             <div class="col-md-9 col-sm-9 col-xs-9">
@@ -102,7 +121,7 @@
 
          <!-- Input del formulario -->
             <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3">Rubro</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">SubCategoría</label>
                 <div class="col-md-7 col-sm-7 col-xs-7">
                     {{ form.rubro }}
                 </div>

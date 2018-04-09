@@ -13,8 +13,21 @@ class Marca(models.Model):
         verbose_name_plural = 'Marcas'
 
 
+class Categoria(models.Model):
+
+    descripcion = models.CharField(max_length=600, blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Categorías'
+
+
 class Rubro(models.Model):
 
+    categoria = models.ForeignKey(Categoria, blank=False, null=False)
     descripcion = models.CharField(max_length=600, null=False, blank=False)
 
     def __str__(self):
@@ -28,7 +41,8 @@ class Rubro(models.Model):
 class Articulo(models.Model):
 
     codigo_barra = models.CharField(max_length=3000, null=False, blank=False)
-    descripcion = models.CharField(max_length=600, null=False, blank=False)
+    nombre = models.CharField(max_length=1000, blank=False, null=False)
+    descripcion = models.CharField(max_length=1000, null=False, blank=False)
     marca = models.ForeignKey(Marca, null=True, blank=True)
     rubro = models.ForeignKey(Rubro, null=True, blank=True)
     # Tipos de Precios -- solo se tiene en cuenta de credito y debito

@@ -8,7 +8,7 @@ from reportlab.graphics.shapes import Drawing
 
 
 from .forms import MarcaForm, RubroForm
-from .models import Articulo
+from .models import Articulo, Categoria
 
 
 def ajax_create_marca(request):

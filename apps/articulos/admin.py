@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (Articulo, Marca, Rubro,
-    HistorialPreciosCompra, HistorialPreciosVenta)
+    HistorialPreciosCompra, HistorialPreciosVenta, Categoria)
 
 
 class MarcaAdmin(admin.ModelAdmin):
@@ -19,9 +19,24 @@ class MarcaAdmin(admin.ModelAdmin):
     ]
 
 
+class CategoriaAdmin(admin.ModelAdmin):
+
+    list_display = [
+        'descripcion'
+    ]
+
+    list_filter = [
+        'descripcion'
+    ]
+
+    search_fields = [
+        'descripcion'
+    ]
+
 class RubroAdmin(admin.ModelAdmin):
 
     list_display = [
+        'categoria',
         'descripcion'
     ]
 
@@ -116,6 +131,7 @@ class HistorialPreciosVentaAdmin(admin.ModelAdmin):
         'precio'
     ]
 
+admin.site.register(Categoria, CategoriaAdmin)
 admin.site.register(Rubro, RubroAdmin)
 admin.site.register(Marca, MarcaAdmin)
 admin.site.register(Articulo, ArticuloAdmin)
