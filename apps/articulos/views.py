@@ -8,9 +8,9 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 
-from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta
+from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria
 from .forms import ArticuloForm, ArticuloDeleteForm, MarcaForm, RubroForm, \
-    ActualizacionPrecioForm
+    ActualizacionPrecioForm, CategoriaForm
 
 from .helpers import DibujarBarcode
 from . import helpers
@@ -27,6 +27,8 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
         context = super(ArticuloCreateView, self).get_context_data(**kwargs)
         context['marca_form'] = MarcaForm
         context['rubro_form'] = RubroForm
+        context['categoria_form'] = CategoriaForm
+        context['categorias'] = Categoria.objects.all()
         return context
 
     def form_valid(self, form):

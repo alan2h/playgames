@@ -99,6 +99,17 @@ class MarcaForm(forms.ModelForm):
         model = Marca
 
 
+class CategoriaForm(forms.ModelForm):
+
+    descripcion = forms.CharField(max_length=600, required=True, widget=forms.TextInput(attrs=({
+        'class': 'form-control'
+    })))
+
+    class Meta: 
+        fields = ['descripcion']
+        model = Categoria
+
+
 class RubroForm(forms.ModelForm):
 
     categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(),

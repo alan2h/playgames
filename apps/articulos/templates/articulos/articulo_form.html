@@ -119,6 +119,25 @@
             </div>
          <!-- Input del formulario -->
 
+        <!-- Input del formulario -->
+         <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-3">Categoría</label>
+            <div class="col-md-7 col-sm-7 col-xs-7">
+                <select class="form-control" id="id_categoria_seleccion">
+                    <option value="">-------</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.descripcion }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- boton agregar una opción nueva -->
+            <div class="col-md-1 col-sm-1 col-xs-9">
+                <button type="button" data-toggle="modal" data-target=".id_categoria_form" class="btn btn-default btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </div>
+            <!-- boton agregar una opción nueva -->
+        </div>
+        <!-- Input del formulario -->
+
          <!-- Input del formulario -->
             <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">SubCategoría</label>
@@ -314,6 +333,26 @@
                </div>
            </div>
         <!-- /modals -->
+
+        <!-- Small modal Categoria -->
+        <div class="modal fade id_categoria_form" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Categoría</h4>
+                            <div class="alert alert-danger" id="id_mensaje_rubro" role="alert"></div>
+                            {{ categoria_form.as_p }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                            <button type="button" class="btn btn-primary" onclick="guardar_rubro()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         <!-- /modals -->
       </div>
     </div>
   </div>
@@ -341,6 +380,7 @@
         // Select 2
         $('#id_marca').select2({});
         $('#id_rubro').select2({});
+        $('#id_categoria_seleccion').select2({});
 
         // tabulador
         $('#id_codigo_barra').keypress(function(event){
