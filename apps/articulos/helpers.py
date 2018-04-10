@@ -8,7 +8,15 @@ from reportlab.graphics.shapes import Drawing
 
 
 from .forms import MarcaForm, RubroForm
-from .models import Articulo, Categoria
+from .models import Articulo, Categoria, Rubro
+
+
+def ajax_cargar_subcategorias(request):
+
+    if request.is_ajax():
+        rubros = Rubro.objects.filter(categoria__id=request.POST.get('id'))
+        if rubros.exists():
+            return JsonResponse(rubros)
 
 
 def ajax_create_marca(request):
@@ -168,3 +176,4 @@ def buscar_fecha_compra(qs, fecha_compra):
                                                  fecha_compra.split('/')[0])
 
     return qs
+
