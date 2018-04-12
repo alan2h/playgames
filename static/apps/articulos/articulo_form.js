@@ -6,6 +6,7 @@
 
 document.getElementById('id_mensaje_marca').style.display = 'none';
 document.getElementById('id_mensaje_rubro').style.display = 'none';
+document.getElementById('id_mensaje_categoria').style.display = 'none';
 
 // --> token name : csrfmiddlewaretoken
 
@@ -71,3 +72,35 @@ document.getElementById('id_mensaje_rubro').style.display = 'none';
             }
         });
     };
+
+
+/* Función ajax para guardar categorias */
+var guardar_categoria = function(){
+    $.ajax({
+        url: '/articulos/ajax/categoria/alta/',
+        type: 'post',
+        data: {
+            descripcion: $('#id_descripcion_categoria').val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: function(data){
+            if (data.is_valid) {
+                $('#id_mensaje_categoria').val(' ');
+                console.log(data);
+                $('#id_categoria_seleccion').append($('<option>', {
+                    value: data.id_categoria,
+                    text: data.id_descripcion
+                }));
+                $('#id_categoria_seleccion').val(data.id_categoria);
+                $('#id_descripcion_categoria').val(' ');
+            }else{
+                document.getElementById('id_mensaje_categoria').style.display = 'block';
+                var texto = '';
+                if (data.message['descripcion'] != undefined){
+                    texto = 'Descripción : ' + data.message['descripcion'];
+                }
+                $('#id_mensaje_categoria').append('<p>' + texto +  '</p>')
+            }
+        }
+    });
+};

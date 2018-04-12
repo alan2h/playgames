@@ -7,7 +7,7 @@ from reportlab.graphics.barcode import createBarcodeDrawing
 from reportlab.graphics.shapes import Drawing
 
 
-from .forms import MarcaForm, RubroForm
+from .forms import MarcaForm, RubroForm, CategoriaForm
 from .models import Articulo, Categoria
 
 
@@ -44,6 +44,25 @@ def ajax_create_rubro(request):
         else:
             data = {
                 'message': rubro_form.errors
+            }
+
+        return JsonResponse(data)
+
+
+def ajax_create_categoria(request):
+    
+    if request.is_ajax():
+        categoria_form = CategoriaForm(data=request.POST)
+        if categoria_form.is_valid():
+            categoria = categoria_form.save()
+            data = {
+                'is_valid': 'true',
+                'id_categoria': categoria.id,
+                'id_descripcion': categoria.descripcion
+            }
+        else:
+            data = {
+                'message': categoria_form.errors
             }
 
         return JsonResponse(data)

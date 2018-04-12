@@ -102,7 +102,8 @@ class MarcaForm(forms.ModelForm):
 class CategoriaForm(forms.ModelForm):
 
     descripcion = forms.CharField(max_length=600, required=True, widget=forms.TextInput(attrs=({
-        'class': 'form-control'
+        'class': 'form-control',
+        'id': 'id_descripcion_categoria'
     })))
 
     class Meta: 
