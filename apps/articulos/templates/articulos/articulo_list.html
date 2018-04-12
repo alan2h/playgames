@@ -1,5 +1,7 @@
 {% extends 'list_base.html' %}
 {% load staticfiles %}
+{% load calculos_tags %}
+
 {% block css %}
    <!-- zoom css -->
    <link href="{% static 'zoom.js-master/css/zoom.css' %}" rel="stylesheet">
@@ -21,14 +23,19 @@
                 <table class="table">
                     <thead>
                     <tr>
-                            <th >Imagen </th>  
-                            <th >Código </th>
-                            <th >Descripción</th>
-                            <th >SubCategoría </th>
-                            <th >Precio </th>
-                            <th >Costo</th>
-                            <th >Stock</th>
-                            <th >Acciones </th>
+                            <th>Imagen </th>  
+                            <th>Código </th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Marca</th>
+                            <th>Categoría</th>
+                            <th>SubCategoría </th>
+                            <th>Efectivo </th>
+                            <th>% Iva</th>
+                            <th>Crédito %Iva</th>
+                            <th>Costo</th>
+                            <th>Stock</th>
+                            <th>Acciones </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,13 +52,28 @@
                                 {{ articulo.codigo_barra }}
                             </td>
                             <td>
+                                {{ articulo.nombre }}
+                            </td>
+                            <td>
                                 {{ articulo.descripcion }}
+                            </td>
+                            <td>
+                                {{ articulo.marca }}
+                            </td>
+                            <td>
+                                {{ articulo.rubro.categoria }}
                             </td>
                             <td>
                                 {{ articulo.rubro.descripcion }}
                             </td>
                             <td>
                                 $ {{ articulo.precio_venta }}
+                            </td>
+                            <td>
+                                % {{ articulo.alicuota_iva }}
+                            </td>
+                            <td>
+                                $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
                             </td>
                             <td>
                                 $ {{ articulo.precio_compra }}

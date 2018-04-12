@@ -59,6 +59,7 @@ class ArticuloListView(ListView):
                 qs = helpers.buscar_stock(qs, texto_buscar)
                 qs = helpers.buscar_stock_minimo(qs, texto_buscar)
                 qs = helpers.buscar_fecha_compra(qs, texto_buscar)
+                qs = helpers.buscar_nombre(qs, texto_buscar)
         return qs
 
 

@@ -122,6 +122,15 @@ def buscar_descripcion(qs, descripcion):
         )
     return qs
 
+def buscar_nombre(qs, nombre):
+    if qs.exists() is False:
+        qs = Articulo.objects.filter(
+            baja=False,
+            nombre__icontains=
+            nombre
+        )
+    return qs
+
 
 def buscar_precio_venta(qs, precio_venta):
 
