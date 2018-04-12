@@ -1,6 +1,7 @@
 from reportlab.lib.units import mm
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
 
 # Código de Barras
 from reportlab.graphics.barcode import createBarcodeDrawing
@@ -8,8 +9,30 @@ from reportlab.graphics.shapes import Drawing
 
 
 from .forms import MarcaForm, RubroForm, CategoriaForm
-from .models import Articulo, Categoria
+from .models import Articulo, Categoria, Rubro
 
+
+''' --------------------------------- '''
+''' Ajax para consulta de subcategorias '''
+''' --------------------------------- '''
+def ajax_query_rubro(request):
+
+    if request.is_ajax():
+        if request.POST.get('categoria__id') != '':
+            rubro = Rubro.objects.filter(categoria__id=request.POST.get('categoria__id'))
+        else:
+            rubro = Rubro.objects.all()
+        if rubro.exists():
+            qs_json = serializers.serialize('json', rubro)
+            return HttpResponse(qs_json, content_type='application/json')
+        else:
+            rubro = Rubro.objects.all()
+            qs_json = serializers.serialize('json', rubro)
+            return HttpResponse(qs_json, content_type='application/json')
+
+''' ---------------------------------- '''
+''' Ajax para creacion de complementos '''
+''' ---------------------------------- '''
 
 def ajax_create_marca(request):
 
@@ -66,6 +89,9 @@ def ajax_create_categoria(request):
             }
 
         return JsonResponse(data)
+
+''' Ajax para creacion de complementos '''
+''' ---------------------------------- '''
 
 
 class DibujarBarcode(Drawing):

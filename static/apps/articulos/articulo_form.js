@@ -91,7 +91,12 @@ var guardar_categoria = function(){
                     value: data.id_categoria,
                     text: data.id_descripcion
                 }));
+                $('#id_categoria').append($('<option>', {
+                    value: data.id_categoria,
+                    text: data.id_descripcion
+                }));
                 $('#id_categoria_seleccion').val(data.id_categoria);
+                $('#id_categoria').val(data.id_categoria);
                 $('#id_descripcion_categoria').val(' ');
             }else{
                 document.getElementById('id_mensaje_categoria').style.display = 'block';
@@ -104,3 +109,36 @@ var guardar_categoria = function(){
         }
     });
 };
+
+
+/*------------------------------------------*/
+/*         ajax para consultar rubros       */
+/*------------------------------------------*/
+$('#id_categoria_seleccion').change(function() {
+    $.ajax({
+        url: '/articulos/ajax/categoria/subcategoria/',
+        type: 'post',
+        data: {
+            categoria__id: $('#id_categoria_seleccion').val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: function(data){
+            console.log(data);
+            $('#id_rubro').empty();
+            for (var x =0; x < data.length; x++){
+                console.log(data[x].fields.categoria);
+                $('#id_rubro').append($('<option>', {
+                    value: data[x].pk,
+                    text: data[x].fields.descripcion
+                }));
+            }
+        },
+        error: function(err){
+            console.log(err);
+            $('#id_rubro').empty();
+        }
+    });
+});
+/*------------------------------------------*/
+/*         ajax para consultar rubros       */
+/*------------------------------------------*/
