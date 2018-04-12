@@ -187,3 +187,4 @@ def buscar_fecha_compra(qs, fecha_compra):
                                                  fecha_compra.split('/')[0])
 
     return qs
+

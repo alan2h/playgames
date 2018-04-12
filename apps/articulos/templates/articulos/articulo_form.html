@@ -382,6 +382,26 @@
         $('#id_rubro').select2({});
         $('#id_categoria_seleccion').select2({});
 
+        //*----------------------------- *//
+        $('#id_categoria_seleccion').on('select2:select', function (e) {
+            var data = e.params.data;
+            console.log(data.id);
+            $.ajax({
+                url: '/articulos/ajax/categoria/subcategoria/',
+                type: 'post',
+                data: {
+                    id: data.id,
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                    
+                },
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        });
+        
+        //*------------------------------*//
+
         // tabulador
         $('#id_codigo_barra').keypress(function(event){
             if (event.which == 13) {

@@ -17,55 +17,60 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                    <th >Imagen </th>  
-                    <th >Código </th>
-                    <th >Descripción</th>
-                    <th >Precio </th>
-                    <th >Costo</th>
-                    <th >Stock</th>
-                    <th >Acciones </th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for articulo in object_list %}
-                <tr>
-                    <td>
-                        {% if articulo.imagen %}
-                            <img src="/media/{{ articulo.imagen }}" data-action="zoom" width="52" height="52" />
-                        {% else %}
-                            <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
-                        {% endif %}    
-                    </td>
-                    <td>
-                        {{ articulo.codigo_barra }}
-                    </td>
-                    <td>
-                        {{ articulo.descripcion }}
-                    </td>
-                    <td>
-                        $ {{ articulo.precio_venta }}
-                    </td>
-                    <td>
-                        $ {{ articulo.precio_compra }}
-                    </td>
-                    <td>
-                        {{ articulo.stock }}
-                    </td>
-                    <td>
-                        <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>
-                        <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
-                        <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
-                        <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            
-            </tbody>
-        </table>
-
+          <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                            <th >Imagen </th>  
+                            <th >Código </th>
+                            <th >Descripción</th>
+                            <th >SubCategoría </th>
+                            <th >Precio </th>
+                            <th >Costo</th>
+                            <th >Stock</th>
+                            <th >Acciones </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for articulo in object_list %}
+                        <tr>
+                            <td>
+                                {% if articulo.imagen %}
+                                    <img src="/media/{{ articulo.imagen }}" data-action="zoom" width="52" height="52" />
+                                {% else %}
+                                    <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
+                                {% endif %}    
+                            </td>
+                            <td>
+                                {{ articulo.codigo_barra }}
+                            </td>
+                            <td>
+                                {{ articulo.descripcion }}
+                            </td>
+                            <td>
+                                {{ articulo.rubro.descripcion }}
+                            </td>
+                            <td>
+                                $ {{ articulo.precio_venta }}
+                            </td>
+                            <td>
+                                $ {{ articulo.precio_compra }}
+                            </td>
+                            <td>
+                                {{ articulo.stock }}
+                            </td>
+                            <td>
+                                <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>
+                                <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
+                                <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
+                                <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    
+                    </tbody>
+                </table>
+          </div>
            <!-- paginacion -->
             {% if is_paginated %}
                 <nav>

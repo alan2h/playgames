@@ -35,8 +35,13 @@ urlpatterns = [
        name='marca-alta-ajax'),
    url(r'^ajax/rubro/alta/$', helpers.ajax_create_rubro,
        name='rubro-alta-ajax'),
+<<<<<<< HEAD
    url(r'^ajax/categoria/alta/$', helpers.ajax_create_categoria,
        name='categoria-alta-ajax'),    
+=======
+   url(r'^ajax/categoria/subcategoria/$', helpers.ajax_cargar_subcategorias,
+       name='rubro-cargar-ajax'), 
+>>>>>>> e4b1962c68f1ab903623c411f5e95f6d245a1a64
    url(r'^actualizar/precios/$',
        ActualizarPrecioTemplateView.as_view(), name='actualizar-precios')
 ]

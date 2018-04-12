@@ -1,5 +1,11 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\Users\\alan\\envs\\sigdrugstore\\Scripts\\python.exe",
     "git.ignoreLimitWarning": true,
     "python.linting.pylintEnabled": false
+=======
+    "python.pythonPath": "/usr/bin/python3",
+    "git.ignoreLimitWarning": true,
+    "python.linting.enabled": false
+>>>>>>> e4b1962c68f1ab903623c411f5e95f6d245a1a64
 }
