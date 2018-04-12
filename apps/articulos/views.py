@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 
-from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria
+from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro
 from .forms import ArticuloForm, ArticuloDeleteForm, MarcaForm, RubroForm, \
     ActualizacionPrecioForm, CategoriaForm
 
@@ -71,8 +71,16 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticuloUpdateView, self).get_context_data(**kwargs)
+        print(self.kwargs['pk'])
+        articulo = Articulo.objects.get(pk=self.kwargs['pk'])
+        print(articulo)
+        categoria_modificar = Categoria.objects.get(pk=articulo.rubro.categoria.id)
+        print(categoria_modificar)
         context['marca_form'] = MarcaForm
         context['rubro_form'] = RubroForm
+        context['categoria_form'] = CategoriaForm
+        context['categorias'] = Categoria.objects.all()
+        context['categoria_modificar'] = categoria_modificar.id
         return context
 
     def form_valid(self, form):

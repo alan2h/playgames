@@ -369,8 +369,17 @@
    
     <!-- Custom js for this template -->
     <script src="{% static 'apps/articulos/articulo_form.js' %}"></script>
+
+    {% if  categoria_modificar %}
+        <script>
+            $('#id_categoria_seleccion').val('{{ categoria_modificar }}')
+        </script>    
+    {% endif %}
     
     <script>
+
+        
+
         // no submit con enter
         $("form").bind("keypress", function (e) {
             if (e.keyCode == 13) {
