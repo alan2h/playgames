@@ -48,8 +48,18 @@ class TicketDetailView(DetailView):
 
 class VentaListView(ListView):
 
-    queryset = Venta.objects.filter(baja=False).order_by('-id')[:800]
+    queryset = Venta.objects.filter(baja=False, fecha_no_time=datetime.datetime.now()).order_by('-id')
     template_name = 'ventas/venta_report.html'
+
+    def get_queryset(self):
+        queryset = super(VentaListView, self).get_queryset()
+        print('**********************************************')
+        print(datetime.datetime.now())
+        queryset = Venta.objects.filter(baja=False, fecha_no_time=datetime.datetime.now()).order_by('-id')
+        print(queryset)
+        print('**********************************************')
+        return queryset
+
 
 
 class VentaDeleteView(DeleteView):

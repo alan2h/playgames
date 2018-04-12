@@ -26,7 +26,7 @@ class ArticuloVentaAdmin(admin.ModelAdmin):
 class VentaAdmin(admin.ModelAdmin):
 
     list_display = [
-        'fecha',
+        'fecha_no_time',
         'forma_pago',
         'porcentaje_aumento',
         'precio_venta_total',
