@@ -8,7 +8,7 @@ def incremento_porcentaje(value, arg):
 
     incremento = (float(value) * float(arg)) /100
     resultado = float(value) + incremento
-    return resultado
+    return round(resultado)
 
 @register.filter
 def quitar_none(value):

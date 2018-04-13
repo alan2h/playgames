@@ -25,11 +25,11 @@
                     <tr>
                             <th>Imagen </th>  
                             <th>Nombre</th>
+                            <th>Efectivo </th>
+                            <th>Crédito</th>
                             <th>Marca</th>
                             <th>Categoría</th>
                             <th>SubCategoría </th>
-                            <th>Efectivo </th>
-                            <th>Crédito</th>
                             <th>Stock</th>
                             <th>Acciones </th>
                     </tr>
@@ -49,6 +49,14 @@
                                 {{ articulo.nombre }}
                             </td>
                             <td>
+                                $ {{ articulo.precio_venta }}
+                            </td>
+                            
+                            <td>
+                                $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
+                            </td>
+                            
+                            <td>
                                 {{ articulo.marca|quitar_none }}
                             </td>
                             <td>
@@ -56,13 +64,6 @@
                             </td>
                             <td>
                                 {{ articulo.rubro.descripcion|quitar_none }}
-                            </td>
-                            <td>
-                                $ {{ articulo.precio_venta }}
-                            </td>
-                            
-                            <td>
-                                $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
                             </td>
                             
                             <td>
