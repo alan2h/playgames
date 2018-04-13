@@ -40,9 +40,9 @@ class Rubro(models.Model):
 
 class Articulo(models.Model):
 
-    codigo_barra = models.CharField(max_length=3000, null=False, blank=False)
+    codigo_barra = models.CharField(max_length=3000, null=True, blank=True)
     nombre = models.CharField(max_length=1000, blank=False, null=False)
-    descripcion = models.CharField(max_length=1000, null=False, blank=False)
+    descripcion = models.CharField(max_length=1000, null=True, blank=True)
     marca = models.ForeignKey(Marca, null=True, blank=True)
     rubro = models.ForeignKey(Rubro, null=True, blank=True)
     # Tipos de Precios -- solo se tiene en cuenta de credito y debito
