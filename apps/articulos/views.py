@@ -52,14 +52,25 @@ class ArticuloListView(ListView):
         if 'texto_buscar' in self.request.GET:
             if self.request.GET.get('texto_buscar') is not '':
                 texto_buscar = self.request.GET.get('texto_buscar')
-                qs = helpers.buscar_codigo(texto_buscar)
-                qs = helpers.buscar_descripcion(qs, texto_buscar)
-                qs = helpers.buscar_precio_venta(qs, texto_buscar)
-                qs = helpers.buscar_precio_compra(qs, texto_buscar)
-                qs = helpers.buscar_stock(qs, texto_buscar)
-                qs = helpers.buscar_stock_minimo(qs, texto_buscar)
-                qs = helpers.buscar_fecha_compra(qs, texto_buscar)
-                qs = helpers.buscar_nombre(qs, texto_buscar)
+                campo_buscar = self.request.GET.get('campo_buscar')
+                if campo_buscar == 'codigo_barra':
+                    qs = helpers.buscar_codigo(texto_buscar)
+                if campo_buscar == 'descripcion':
+                    qs = helpers.buscar_descripcion(qs, texto_buscar)
+                if campo_buscar == 'marca':
+                    qs = helpers.buscar_marca(qs, texto_buscar)
+                if campo_buscar == 'rubro':
+                    qs = helpers.buscar_rubro(qs, texto_buscar)
+                if campo_buscar == 'precio_venta':
+                    qs = helpers.buscar_precio_venta(qs, texto_buscar)
+                if campo_buscar == 'precio_compra':
+                    qs = helpers.buscar_precio_compra(qs, texto_buscar)
+                if campo_buscar == 'stock':
+                    qs = helpers.buscar_stock(qs, texto_buscar)
+                #qs = helpers.buscar_stock_minimo(qs, texto_buscar)
+                #qs = helpers.buscar_fecha_compra(qs, texto_buscar)
+                if campo_buscar == 'nombre':
+                    qs = helpers.buscar_nombre(qs, texto_buscar)
         return qs
 
 
