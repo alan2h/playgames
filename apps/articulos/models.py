@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.sucursales.models import Sucursal
+
 
 class Marca(models.Model):
 
@@ -62,6 +64,7 @@ class Articulo(models.Model):
     alicuota_iva = models.IntegerField(default=21, null=True, blank=True)
     fecha_compra = models.DateTimeField(auto_created=True)
     fecha_modificacion = models.DateTimeField(auto_now_add=True)
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
 
     # Baja
     baja = models.BooleanField(default=False)

@@ -2,6 +2,7 @@
 from django import forms
 
 from .models import Articulo, Marca, Rubro, Categoria
+from apps.sucursales.models import Sucursal
 
 
 class ArticuloForm(forms.ModelForm):
@@ -72,6 +73,10 @@ class ArticuloForm(forms.ModelForm):
                                    widget=forms.DateInput(attrs=(
                                        {'class': 'form-control'}
                                    )))
+
+    sucursal = forms.ModelChoiceField(queryset=Sucursal.objects.all(), required=True, 
+    widget=forms.Select(
+        {'class': 'form-control'}))
 
     class Meta:
         fields = [

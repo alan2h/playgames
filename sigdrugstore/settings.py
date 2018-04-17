@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'apps.retiros',
     'apps.gastos',
     'apps.otros_ingresos',
+    'apps.sucursales',
+    'apps.perfiles',
 ]
 
 MIDDLEWARE_CLASSES = [
