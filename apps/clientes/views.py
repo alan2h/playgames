@@ -115,7 +115,7 @@ class ClienteUpdateView(SuccessMessageMixin, UpdateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'clientes/cliente_form.html'
-    success_url = '/clientes/alta/'
+    success_url = '/clientes/listado/'
     success_message = 'EL cliente se modifico con éxito'
 
     def get_context_data(self, **kwargs):
@@ -125,5 +125,6 @@ class ClienteUpdateView(SuccessMessageMixin, UpdateView):
     def form_valid(self, form):
         return super(ClienteUpdateView, self).form_valid(form)
 
-    def get_success_url(self):
-        return '/clientes/modi/%s' % str(self.form_class.pk)
+    '''def get_success_url(self):
+        return '/clientes/modi/%s' % str(self.form_class.id)'''
+

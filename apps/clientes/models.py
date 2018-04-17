@@ -1,14 +1,15 @@
 from django.db import models
-
-
-from django.db import models
-
+import datetime
+import django
 
 class Cliente(models.Model):
 
     nombre = models.CharField(max_length=600, null=False, blank=False)
     apellido = models.TextField(max_length=800, null=True, blank=True)
+    numero_documento = models.IntegerField(blank=True, null=True)
     direccion = models.TextField(max_length=800, null=True, blank=True)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    fecha_alta = models.DateField(default=django.utils.timezone.now, blank=True, null=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)

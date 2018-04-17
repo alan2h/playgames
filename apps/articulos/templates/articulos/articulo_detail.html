@@ -35,6 +35,8 @@
                         <p><strong>Categoría: {{ object.rubro.categoria|quitar_none }}</strong></p>
                         <p><strong>Subcategoría: {{ object.rubro|quitar_none }}</strong></p>
                         <hr>
+                        <p><strong>Sucursal: {{ object.sucursal }}</strong></p>
+                        <hr>
                         <p>Stock: {{ object.stock }}</p>
                         <p>Stock Mínimo: {{ object.stock_minimo }}</p>
                         <p>Fecha de compra: {{ object.fecha_compra|date:'d/m/Y' }}</p>

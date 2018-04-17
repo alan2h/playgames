@@ -103,6 +103,25 @@
 
                             <!-- Input del formulario -->
                               <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-3">Documento</label>
+                                <div class="col-md-9 col-sm-9 col-xs-9">
+                                    {{ form.numero_documento }}
+                                    <span class="fa fa-clock-o form-control-feedback right" aria-hidden="true"></span>
+                                    <!-- Mensaje de error del input -->
+                                    {% if form.numero_documento.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span class="sr-only">Error:</span>
+                                            {{ form.numero_documento.errors|striptags }}
+                                        </div>
+                                    {% endif %}
+                                    <!-- Mensaje de error del input -->
+                                </div>
+                            </div>
+                          <!-- Input del formulario -->
+
+                            <!-- Input del formulario -->
+                              <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Dirección</label>
                                 <div class="col-md-9 col-sm-9 col-xs-9">
                                     {{ form.direccion }}
@@ -118,6 +137,25 @@
                                 </div>
                               </div>
                             <!-- Input del formulario -->
+
+                            <!-- Input del formulario -->
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Nacimiento</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-9">
+                                        {{ form.fecha_nacimiento }}
+                                        <span class="fa fa-clock-o form-control-feedback right" aria-hidden="true"></span>
+                                        <!-- Mensaje de error del input -->
+                                        {% if form.fecha_nacimiento.errors %}
+                                            <div class="alert alert-danger" role="alert">
+                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                <span class="sr-only">Error:</span>
+                                                {{ form.fecha_nacimiento.errors|striptags }}
+                                            </div>
+                                        {% endif %}
+                                        <!-- Mensaje de error del input -->
+                                    </div>
+                                </div>
+                              <!-- Input del formulario -->
 
                               <div class="ln_solid"></div>
 
@@ -150,4 +188,44 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <!-- jquery.inputmask -->
     <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+
+    <script>
+        $('#id_fecha_nacimiento').daterangepicker({
+          singleDatePicker: true,
+          locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "From",
+                "toLabel": "a",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ]
+          }
+      });
+  // input mask
+  $('#id_fecha_nacimiento').inputmask({"mask": "99/99/9999"});
+    </script>
 {% endblock %}
