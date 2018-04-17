@@ -1,5 +1,6 @@
 {% extends 'form_base.html' %}
 {% load staticfiles %}
+{% load calculos_tags %}
 {% block css %}
 
 {% endblock %}
@@ -27,18 +28,28 @@
                         {% else %}
                             <img src="/media/logos_sistema/no-imagen.jpg"  width="322" height="322" />
                         {% endif %} 
+                        <hr>
+                        <p><strong>Nombre: {{ object.nombre }}</strong></p>
+                        <p><strong>Precio de venta: $ {{ object.precio_venta }}</strong></p>
+                        <p><strong>Marca: {{ object.marca|quitar_none }}</strong></p>
+                        <p><strong>Categoría: {{ object.rubro.categoria|quitar_none }}</strong></p>
+                        <p><strong>Subcategoría: {{ object.rubro|quitar_none }}</strong></p>
+                        <hr>
+                        <p><strong>Sucursal: {{ object.sucursal }}</strong></p>
+                        <hr>
                         <p>Stock: {{ object.stock }}</p>
                         <p>Stock Mínimo: {{ object.stock_minimo }}</p>
                         <p>Fecha de compra: {{ object.fecha_compra|date:'d/m/Y' }}</p>
-                        <p>Precio de compra: $ {{ object.precio_compra }}</p>
-                        <p>Precio de venta: $ {{ object.precio_venta }}</p>
+                        
+                        <hr>
                         <div class="">
                           <div class="product_price">
                             <h1 class="price"><img src="/articulos/barcode/{{ object.pk }}" alt="Smiley face" height="42" width="102"></h1>
                             <br>
+                            
                           </div>
                         </div>
-
+                        <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary">Imprimir código de barras</a>
                       </div>
 
                     </div>

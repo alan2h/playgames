@@ -285,6 +285,25 @@
             </div>
           <!-- Input del formulario -->
 
+          <!-- Input del formulario -->
+          <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Sucursal</label>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    {{ form.sucursal }}
+                    <span class="fa fa-clock-o form-control-feedback right" aria-hidden="true"></span>
+                    <!-- Mensaje de error del input -->
+                    {% if form.sucursal.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            {{ form.sucursal.errors|striptags }}
+                        </div>
+                    {% endif %}
+                    <!-- Mensaje de error del input -->
+                </div>
+            </div>
+          <!-- Input del formulario -->
+
           <div class="ln_solid"></div>
 
           <div class="form-group">

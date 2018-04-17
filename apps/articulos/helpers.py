@@ -114,112 +114,127 @@ def buscar_codigo(codigo):
 
 
 def buscar_descripcion(qs, descripcion):
-    if qs.exists() is False:
-        qs = Articulo.objects.filter(
-            baja=False,
-            descripcion__icontains=
-            descripcion
-        )
+    #if qs.exists() is False:
+    qs = Articulo.objects.filter(
+        baja=False,
+        descripcion__icontains=
+        descripcion
+    )
     return qs
 
 def buscar_nombre(qs, nombre):
-    if qs.exists() is False:
-        qs = Articulo.objects.filter(
-            baja=False,
-            nombre__icontains=
-            nombre
-        )
+    #if qs.exists() is False:
+    qs = Articulo.objects.filter(
+        baja=False,
+        nombre__icontains=
+        nombre
+    )
     return qs
 
 
 def buscar_precio_venta(qs, precio_venta):
 
-    if qs.exists() is False:
-        if '.' in precio_venta:
-            if precio_venta.split('.')[0].isnumeric() and \
-                    precio_venta.split('.')[1].isnumeric():
-                qs = Articulo.objects.filter(
-                    baja=False,
-                    precio_venta=precio_venta
-                )
-        elif ',' in precio_venta:
-            if precio_venta.split(',')[0].isnumeric() and \
-                    precio_venta.split(',')[1].isnumeric():
-                precio_formateado = precio_venta.replace(',', '.')
-                qs = Articulo.objects.filter(
-                    baja=False,
-                    precio_venta=precio_formateado
-                )
-        elif precio_venta.isnumeric():
+    #if qs.exists() is False:
+    if '.' in precio_venta:
+        if precio_venta.split('.')[0].isnumeric() and \
+                precio_venta.split('.')[1].isnumeric():
             qs = Articulo.objects.filter(
                 baja=False,
                 precio_venta=precio_venta
             )
+    elif ',' in precio_venta:
+        if precio_venta.split(',')[0].isnumeric() and \
+                precio_venta.split(',')[1].isnumeric():
+            precio_formateado = precio_venta.replace(',', '.')
+            qs = Articulo.objects.filter(
+                baja=False,
+                precio_venta=precio_formateado
+            )
+    elif precio_venta.isnumeric():
+        qs = Articulo.objects.filter(
+            baja=False,
+            precio_venta=precio_venta
+        )
     return qs
 
 
 def buscar_precio_compra(qs, precio_compra):
 
-    if qs.exists() is False:
-        if '.' in precio_compra:
-            if precio_compra.split('.')[0].isnumeric() and \
-                    precio_compra.split('.')[1].isnumeric():
-                qs = Articulo.objects.filter(
-                    baja=False,
-                    precio_compra=precio_compra
-                )
-        elif ',' in precio_compra:
-            if precio_compra.split(',')[0].isnumeric() and \
-                    precio_compra.split(',')[1].isnumeric():
-                precio_formateado = precio_compra.replace(',', '.')
-                qs = Articulo.objects.filter(
-                    baja=False,
-                    precio_compra=precio_formateado
-                )
-        elif precio_compra.isnumeric():
+    #if qs.exists() is False:
+    if '.' in precio_compra:
+        if precio_compra.split('.')[0].isnumeric() and \
+                precio_compra.split('.')[1].isnumeric():
             qs = Articulo.objects.filter(
                 baja=False,
                 precio_compra=precio_compra
             )
+    elif ',' in precio_compra:
+        if precio_compra.split(',')[0].isnumeric() and \
+                precio_compra.split(',')[1].isnumeric():
+            precio_formateado = precio_compra.replace(',', '.')
+            qs = Articulo.objects.filter(
+                baja=False,
+                precio_compra=precio_formateado
+            )
+    elif precio_compra.isnumeric():
+        qs = Articulo.objects.filter(
+            baja=False,
+            precio_compra=precio_compra
+        )
     return qs
 
 
 def buscar_stock(qs, stock):
 
-    if qs.exists() is False:
-        if stock.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                stock=stock
-            )
+    #if qs.exists() is False:
+    if stock.isnumeric():
+        qs = Articulo.objects.filter(
+            baja=False,
+            stock=stock
+        )
     return qs
 
 
 def buscar_stock_minimo(qs, stock_minimo):
 
-    if qs.exists() is False:
-        if stock_minimo.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                stock_minimo=stock_minimo
-            )
+    #if qs.exists() is False:
+    if stock_minimo.isnumeric():
+        qs = Articulo.objects.filter(
+            baja=False,
+            stock_minimo=stock_minimo
+        )
     return qs
 
 
 def buscar_fecha_compra(qs, fecha_compra):
 
-    if qs.exists() is False:
-        if len(fecha_compra.split('/')) is 3:
-            if '/' in fecha_compra:
-                if (fecha_compra.split('/')[0].isnumeric() and
-                    fecha_compra.split('/')[1].isnumeric() and
-                        fecha_compra.split('/')[2].isnumeric()):
+    #if qs.exists() is False:
+    if len(fecha_compra.split('/')) is 3:
+        if '/' in fecha_compra:
+            if (fecha_compra.split('/')[0].isnumeric() and
+                fecha_compra.split('/')[1].isnumeric() and
+                    fecha_compra.split('/')[2].isnumeric()):
 
-                    qs = Articulo.objects.filter(baja=False,
-                                                 fecha_compra=
-                                                 fecha_compra.split('/')[2] + "-" +
-                                                 fecha_compra.split('/')[1] + "-" +
-                                                 fecha_compra.split('/')[0])
+                qs = Articulo.objects.filter(baja=False,
+                                                fecha_compra=
+                                                fecha_compra.split('/')[2] + "-" +
+                                                fecha_compra.split('/')[1] + "-" +
+                                                fecha_compra.split('/')[0])
 
     return qs
 
+
+def buscar_marca(qs, marca):
+    
+    qs = Articulo.objects.filter(
+        marca__descripcion__icontains=marca
+        )
+    return qs
+
+
+def buscar_rubro(qs, rubro):
+
+    qs = Articulo.objects.filter(
+        rubro__descripcion__icontains=rubro
+    )
+    return qs

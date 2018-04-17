@@ -2,6 +2,7 @@
 from django import forms
 
 from .models import Articulo, Marca, Rubro, Categoria
+from apps.sucursales.models import Sucursal
 
 
 class ArticuloForm(forms.ModelForm):
@@ -73,12 +74,16 @@ class ArticuloForm(forms.ModelForm):
                                        {'class': 'form-control'}
                                    )))
 
+    sucursal = forms.ModelChoiceField(queryset=Sucursal.objects.all(), required=True, 
+    widget=forms.Select(
+        {'class': 'form-control'}))
+
     class Meta:
         fields = [
             'codigo_barra', 'descripcion', 'precio_compra', 'precio_venta',
             'precio_credito', 'precio_debito', 'stock', 'stock_minimo',
             'rubro', 'marca', 'impuesto_interno', 'alicuota_iva', 'fecha_compra',
-            'imagen', 'nombre'
+            'imagen', 'nombre', 'sucursal'
         ]
 
         model = Articulo

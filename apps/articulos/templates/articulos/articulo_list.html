@@ -6,15 +6,46 @@
    <!-- zoom css -->
    <link href="{% static 'zoom.js-master/css/zoom.css' %}" rel="stylesheet">
 {% endblock %}
-
+{% block form_search %}
+<div class="x_content">
+                
+    <div class="x_panel">
+            <h2>Buscar árticulos</h2>
+        <form method="get">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        <div class="input-group">
+                         <select class="form-control" name="campo_buscar">
+                             <option value="codigo_barra">Código de barra</option>
+                             <option value="nombre">Nombre</option>
+                             <option value="descripcion">Descripción</option>
+                             <option value="marca">Marca</option>
+                             <option value="rubro">Rubro</option>
+                             <option value="precio_venta">Precio de Venta</option>
+                             <option value="precio_compra">Precio de Compra</option>
+                             <option value="stock">Stock</option>
+                         </select>
+                        </div>
+                    </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                    <div class="input-group">
+                    <input type="text" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                    <span class="input-group-btn">
+                        <input class="btn btn-default" value="Aceptar" type="submit">
+                    </span>
+                    </div>
+                </div>
+        </form>
+    </div>
+  </div>
+{% endblock %}
 {% block content %}
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
         <h2>Lista de Árticulos <small>Lista de árticulos cargados en el sistema</small></h2>
         <ul class="navbar-right">
-          <li><a href="/articulos/alta/" class="btn btn-primary"> Nuevo Árticulo </a>
-          </li>
+          <a href="/articulos/alta/" class="btn btn-primary"> Nuevo Árticulo </a>
+          
         </ul>
         <div class="clearfix"></div>
       </div>
@@ -24,15 +55,13 @@
                     <thead>
                     <tr>
                             <th>Imagen </th>  
-                            
+
                             <th>Nombre</th>
-			    <th>Efectivo </th>
-                            <th>% Iva</th>
-                            <th>Crédito %Iva</th>
-                            
+                            <th>Efectivo </th>
+                            <th>Crédito</th>
+                            <th>Marca</th>
                             <th>Categoría</th>
                             <th>SubCategoría </th>
-                            
                             <th>Stock</th>
                             <th>Acciones </th>
                     </tr>
@@ -47,35 +76,38 @@
                                     <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
                                 {% endif %}    
                             </td>
-                            
+
+                           
                             <td>
                                 {{ articulo.nombre }}
                             </td>
-
- 			    <td>
+                            <td>
                                 $ {{ articulo.precio_venta }}
                             </td>
-                            <td>
-                                % {{ articulo.alicuota_iva }}
-                            </td>
+                            
                             <td>
                                 $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
+
+                            </td>
+                            
+                            <td>
+                                {{ articulo.marca|quitar_none }}
+                            </td>
+                            <td>
+                                {{ articulo.rubro.categoria|quitar_none }}
                             </td>
                                                        
                             <td>
-                                {{ articulo.rubro.categoria }}
+
+                                {{ articulo.rubro.descripcion|quitar_none }}
                             </td>
-                            <td>
-                                {{ articulo.rubro.descripcion }}
-                            </td>
-                           
                             
                             <td>
                                 {{ articulo.stock }}
                             </td>
                             <td>
-                                <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>
-                               
+
+                                <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
                                 <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
                                 <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
                             </td>

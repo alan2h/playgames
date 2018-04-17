@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.sucursales.models import Sucursal
+
 
 class Marca(models.Model):
 
@@ -40,9 +42,9 @@ class Rubro(models.Model):
 
 class Articulo(models.Model):
 
-    codigo_barra = models.CharField(max_length=3000, null=False, blank=False)
+    codigo_barra = models.CharField(max_length=3000, null=True, blank=True)
     nombre = models.CharField(max_length=1000, blank=False, null=False)
-    descripcion = models.CharField(max_length=1000, null=False, blank=False)
+    descripcion = models.CharField(max_length=1000, null=True, blank=True)
     marca = models.ForeignKey(Marca, null=True, blank=True)
     rubro = models.ForeignKey(Rubro, null=True, blank=True)
     # Tipos de Precios -- solo se tiene en cuenta de credito y debito
@@ -62,6 +64,7 @@ class Articulo(models.Model):
     alicuota_iva = models.IntegerField(default=21, null=True, blank=True)
     fecha_compra = models.DateTimeField(auto_created=True)
     fecha_modificacion = models.DateTimeField(auto_now_add=True)
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
 
     # Baja
     baja = models.BooleanField(default=False)

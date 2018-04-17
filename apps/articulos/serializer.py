@@ -33,6 +33,7 @@ class ArticuloSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'codigo_barra',
+            'nombre',
             'descripcion',
             'marca',
             'rubro',
