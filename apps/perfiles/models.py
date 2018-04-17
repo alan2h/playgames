@@ -16,15 +16,15 @@ class Permiso(models.Model):
         return str(self.nombre)
 
 
-class Sucursal(models.Model):
+class Perfil(models.Model):
 
     permiso = models.ManyToManyField(Permiso, blank=True)
     usuario = models.ForeignKey(User, related_name='usuarios', on_delete=models.CASCADE)
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Sucursal'
-        verbose_name_plural = 'Sucursales'
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfiles'
 
     def __str__(self):
 
