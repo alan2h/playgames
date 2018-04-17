@@ -2686,7 +2686,7 @@ if (typeof NProgress != 'undefined') {
 		init_SmartWizard();
 		init_EasyPieChart();
 		init_charts();
-		init_echarts();
+		//init_echarts();
 		init_morris_charts();
 		init_skycons();
 		init_select2();
@@ -2694,11 +2694,11 @@ if (typeof NProgress != 'undefined') {
 		init_DataTables();
 		init_chart_doughnut();
 		init_gauge();
-		init_PNotify();
+		//init_PNotify();
 		init_starrr();
 		init_calendar();
 		init_compose();
-		init_CustomNotification();
+		//init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
 				

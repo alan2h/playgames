@@ -1,3 +1,36 @@
+.header-fixed {
+    width: 100% 
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 100px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    width: 14%;
+    float: left;
+}
+
+
 .paymentWrap {
 	padding: 30px;
 }
@@ -46,6 +79,10 @@
 
 .paymentWrap .paymentBtnGroup .paymentMethod .method.amex {
 	background-image: url("/media/logos_sistema/logos_tipos_pagos/pago_efectivo.png");
+}
+
+.paymentWrap .paymentBtnGroup .paymentMethod .method.desc {
+	background-image: url("/media/logos_sistema/logos_tipos_pagos/pago_descuento.png");
 }
 
 .paymentWrap .paymentBtnGroup .paymentMethod .method:hover {

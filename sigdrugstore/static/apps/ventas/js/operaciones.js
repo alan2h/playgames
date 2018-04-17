@@ -1,5 +1,7 @@
 /* ---- variables globales ---- */
             var total = 0.0;
+            var total_con_descuento = 0.0;
+            var resultado = 0.0;
             var contador_tabla = 0;
             var credito_porcentaje = 0;
             var articulos_vendidos = [];
@@ -10,6 +12,8 @@
      /* --- hacer invisible los campos que solo son para crédito ---- */
             document.getElementById('id_div_porcentaje').style.display = 'none';
             document.getElementById('id_div_credito_total').style.display = 'none';
+     /* --- hacer invisible los campos que solo son para descuento ---- */
+            document.getElementById('id_div_descuento').style.display = 'none';  
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
@@ -19,6 +23,9 @@
                         case 'efectivo':
                             precio_enviar = precio_venta;
                             break;
+                        case 'descuento':
+                            precio_enviar = precio_venta;
+                            break;    
                         case 'credito':
                             precio_enviar = precio_venta;
                             break;
@@ -36,12 +43,15 @@
             };
 
             var guardar_compra = function(){
+                total_con_descuento = resultado;
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
                     type: 'post',
                     data: {
                         ventas: JSON.stringify(articulos_vendidos),
                         fecha: $('#id_fecha').val,
+                        porcentaje_descuento: $('#id_monto_descuento').val(),
+                        total_con_descuento: total_con_descuento,
                         precio_venta_total: total.toString(),
                         forma_pago: forma_pago,
                         credito_porcentaje: credito_porcentaje,
@@ -78,6 +88,9 @@
                                 case 'efectivo':
                                     precio_enviar = data.precio_venta;
                                     break;
+                                case 'descuento':
+                                    precio_enviar = data.precio_venta;
+                                    break;    
                                 case 'credito':
                                     precio_enviar = data.precio_venta;
                                     break;
@@ -129,6 +142,12 @@
                     document.getElementById('id_div_pago').style.display = 'block';
                     document.getElementById('id_div_vuelto').style.display = 'block';
                 };
+                if (forma_pago == 'descuento'){
+                    // si es descuento habilito sus respectivos pagos y descuento
+                    document.getElementById('id_div_pago').style.display = 'block';
+                    document.getElementById('id_div_vuelto').style.display = 'block';
+                    document.getElementById('id_div_descuento').style.display = 'block';
+                };
                 if (forma_pago == 'credito'){
                     // si es credito habilito sus respectivos aumentos
                     document.getElementById('id_div_porcentaje').style.display = 'block';
@@ -142,6 +161,9 @@
                 };
                 if (forma_pago != 'debito'){
                     $('#id_debito').hide();
+                };
+                if (forma_pago != 'descuento'){
+                    $('#id_descuento').hide();
                 };
             };
     /* ---- detectar que tipo de pago es ---- */
@@ -175,9 +197,22 @@
                     $('#id_pago').val(' ');
                 }
             });
+            $('#id_monto_descuento').click( function(){
+                if ($('#id_monto_descuento').val() == '0'){
+                    $('#id_monto_descuento').val(' ');
+                }
+            });
     /* --- por cada evento calcular el vuelto --- */
             $('#id_pago').focusout(function() {
+                if ($('#id_pago').val() == ''){
+                    $('#id_pago').val('0');
+                }
                 calcular_vuelto();
+            });
+             $('#id_monto_descuento').focusout(function() {
+                if ($('#id_monto_descuento').val() == ''){
+                    $('#id_monto_descuento').val('0');
+                }
             });
             $('#id_pago').keypress(function(e) {
                 if (e.keyCode == 13) {
@@ -186,22 +221,41 @@
             });
             var calcular_vuelto = function(){
                 /* ----- calcula si es efectivo el vuelto ----- */
+
                 var pago = $('#id_pago').val();
-                var vuelto = parseFloat(pago) - parseFloat(total);
-                var representar = vuelto.toFixed(2);
-                $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
+                var descuento = $('#id_monto_descuento').val();
+                if (descuento != '0') {
+                    descuento_total = (parseFloat(total) * parseFloat(descuento)) / 100;
+                    resultado = 0.0;
+                    resultado = parseFloat(total) - parseFloat(descuento_total);
+                    var vuelto =  parseFloat(pago) - parseFloat(resultado);
+                    var representar2 = resultado.toFixed(2);
+                    $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
+                }else{
+                    var vuelto = parseFloat(pago) - parseFloat(total);
+                }
+                    var representar = vuelto.toFixed(2);
+                    $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
             };
     /* ---- Evento y metodos para vueltos si es efectivo ---- */
-
+   
     /* ---- Evento y metodos para aumento si es credito ---- */
             $('#id_porcentaje').click( function(){
                 if ($('#id_porcentaje').val() == '0'){
                     $('#id_porcentaje').val(' ');
                 }
             });
-            /* --- por cada evento calcular el vuelto --- */
+    /* --- por cada evento calcular el vuelto --- */
             $('#id_porcentaje').focusout(function() {
                 calcular_aumento();
+            });
+            $('#id_monto_descuento').focusout(function() {
+                calcular_vuelto();
+            });
+            $('#id_monto_descuento').keypress(function() {
+                if (e.keyCode == 13) {
+                    calcular_vuelto();
+                }
             });
             $('#id_porcentaje').keypress(function(e) {
                 if (e.keyCode == 13) {

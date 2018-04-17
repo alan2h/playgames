@@ -6,14 +6,14 @@ from .models import Articulo, Marca, Rubro, Categoria
 
 class ArticuloForm(forms.ModelForm):
 
-    codigo_barra = forms.CharField(max_length=600, required=True,
+    codigo_barra = forms.CharField(max_length=600, required=False,
                                    widget=forms.TextInput(attrs=(
                                        {'class': 'form-control'}
                                    )))
     nombre = forms.CharField(max_length=1000, required=True, widget=forms.TextInput(
         attrs=({'class': 'form-control'}
         )))
-    descripcion = forms.CharField(max_length=1000, required=True,
+    descripcion = forms.CharField(max_length=1000, required=False,
                                   widget=forms.TextInput(attrs=(
                                       {'class': 'form-control'}
                                   )))

@@ -24,16 +24,15 @@
                     <thead>
                     <tr>
                             <th>Imagen </th>  
-                            <th>Código </th>
+                            
                             <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Marca</th>
-                            <th>Categoría</th>
-                            <th>SubCategoría </th>
-                            <th>Efectivo </th>
+			    <th>Efectivo </th>
                             <th>% Iva</th>
                             <th>Crédito %Iva</th>
-                            <th>Costo</th>
+                            
+                            <th>Categoría</th>
+                            <th>SubCategoría </th>
+                            
                             <th>Stock</th>
                             <th>Acciones </th>
                     </tr>
@@ -48,25 +47,12 @@
                                     <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
                                 {% endif %}    
                             </td>
-                            <td>
-                                {{ articulo.codigo_barra }}
-                            </td>
+                            
                             <td>
                                 {{ articulo.nombre }}
                             </td>
-                            <td>
-                                {{ articulo.descripcion }}
-                            </td>
-                            <td>
-                                {{ articulo.marca }}
-                            </td>
-                            <td>
-                                {{ articulo.rubro.categoria }}
-                            </td>
-                            <td>
-                                {{ articulo.rubro.descripcion }}
-                            </td>
-                            <td>
+
+ 			    <td>
                                 $ {{ articulo.precio_venta }}
                             </td>
                             <td>
@@ -75,15 +61,21 @@
                             <td>
                                 $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
                             </td>
+                                                       
                             <td>
-                                $ {{ articulo.precio_compra }}
+                                {{ articulo.rubro.categoria }}
                             </td>
+                            <td>
+                                {{ articulo.rubro.descripcion }}
+                            </td>
+                           
+                            
                             <td>
                                 {{ articulo.stock }}
                             </td>
                             <td>
                                 <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> </a>
-                                <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-barcode"></i> </a>
+                               
                                 <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
                                 <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
                             </td>
