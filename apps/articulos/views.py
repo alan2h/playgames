@@ -37,7 +37,9 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
             iva = float(form.data['alicuota_iva'])
             incremento = (float(form.data['precio_venta']) * float(iva)) / 100
             precio_credito = float(form.data['precio_venta']) + float(incremento)
+            precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
+            form.instance.precio_debito = precio_debito
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo fue creado con éxito')
         return HttpResponseRedirect('/articulos/listado/')
@@ -120,7 +122,9 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             iva = float(form.data['alicuota_iva'])
             incremento = (float(form.data['precio_venta']) * float(iva)) / 100
             precio_credito = float(form.data['precio_venta']) + float(incremento)
+            precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
+            form.instance.precio_debito = precio_debito
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo se modifico con éxito')
         return HttpResponseRedirect('/articulos/listado/')

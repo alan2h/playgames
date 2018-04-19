@@ -29,9 +29,9 @@ def ajax_guardar_venta(request):
                 if forma_pago == 'efectivo':
                     precio_guardar = articulo_vendidos.precio_venta
                 if forma_pago == 'debito':
-                    precio_guardar = articulo_vendidos.precio_venta
+                    precio_guardar = articulo_vendidos.precio_debito
                 if forma_pago == 'credito':
-                    precio_guardar = articulo_vendidos.precio_venta
+                    precio_guardar = articulo_vendidos.precio_credito
                 if forma_pago == 'descuento':
                     precio_guardar = articulo_vendidos.precio_venta    
 

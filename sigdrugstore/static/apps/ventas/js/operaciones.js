@@ -15,7 +15,7 @@
      /* --- hacer invisible los campos que solo son para descuento ---- */
             document.getElementById('id_div_descuento').style.display = 'none';  
 
-            var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_compra, stock, proveedor){
+            var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
                 var precio_enviar = '';
                 if (cantidad != null && cantidad != '') {
@@ -30,7 +30,7 @@
                             precio_enviar = precio_credito;
                             break;
                         case 'debito':
-                            precio_enviar = precio_venta;
+                            precio_enviar = precio_debito;
                             break;
                     };
                     calcular_total(cantidad, id, precio_enviar);
@@ -95,7 +95,7 @@
                                     precio_enviar = data.precio_credito;
                                     break;
                                 case 'debito':
-                                    precio_enviar = data.precio_venta;
+                                    precio_enviar = data.precio_debito;
                                     break;
                             };
                             contador_tabla +=1;

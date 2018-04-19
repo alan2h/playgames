@@ -59,6 +59,7 @@
                             <th>Nombre</th>
                             <th>Efectivo </th>
                             <th>Crédito</th>
+                            <th>Débito</th>
                             <th>Marca</th>
                             <th>Categoría</th>
                             <th>SubCategoría </th>
@@ -86,8 +87,11 @@
                             </td>
                             
                             <td>
-                                $ {{ articulo.precio_venta|incremento_porcentaje:articulo.alicuota_iva }}
+                                $ {{ articulo.precio_credito }}
+                            </td>
 
+                            <td>
+                                $ {{ articulo.precio_debito }}
                             </td>
                             
                             <td>
