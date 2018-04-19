@@ -6,6 +6,7 @@ from django.views.generic import (CreateView, ListView, UpdateView, View,
                                   DetailView, TemplateView)
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.shortcuts import render
 
 from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro
@@ -32,7 +33,14 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        return super(ArticuloCreateView, self).form_valid(form)
+        if 'alicuota_iva' in form.data:
+            iva = float(form.data['alicuota_iva'])
+            incremento = (float(form.data['precio_venta']) * float(iva)) / 100
+            precio_credito = float(form.data['precio_venta']) + float(incremento)
+            form.instance.precio_credito = precio_credito
+        form.save(commit=True)
+        messages.success(self.request, 'El Árticulo fue creado con éxito')
+        return HttpResponseRedirect('/articulos/listado/')
 
     def form_invalid(self, form):
         messages.error(self.request, 'El formulario contiene errores')
@@ -107,8 +115,15 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                                                            'precio_compra'])
 
         historial_precio_compra.save()
-        return super(ArticuloUpdateView, self).form_valid(form)
-
+        form.save(commit=False)
+        if 'alicuota_iva' in form.data:
+            iva = float(form.data['alicuota_iva'])
+            incremento = (float(form.data['precio_venta']) * float(iva)) / 100
+            precio_credito = float(form.data['precio_venta']) + float(incremento)
+            form.instance.precio_credito = precio_credito
+        form.save(commit=True)
+        messages.success(self.request, 'El Árticulo se modifico con éxito')
+        return HttpResponseRedirect('/articulos/listado/')
 
 class ArticuloDeleteView(View):
 

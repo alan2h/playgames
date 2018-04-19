@@ -38,11 +38,13 @@ class ArticuloForm(forms.ModelForm):
     #                                     widget=forms.NumberInput(attrs=(
     #                                        {'class': 'form-control'}
     #                                     )))
-    # precio_credito = forms.DecimalField(required=True, decimal_places=2,
-    #                                    max_digits=12,
-    #                                    widget=forms.NumberInput(attrs=(
-    #                                        {'class': 'form-control'}
-    #                                    )))
+    precio_credito = forms.DecimalField(required=False, decimal_places=2,
+                                        max_digits=12,
+                                        widget=forms.NumberInput(attrs=(
+                                            {
+                                                'class': 'form-control'
+                                            }
+                                        )))
     precio_compra = forms.DecimalField(required=True, decimal_places=2,
                                        max_digits=12,
                                        widget=forms.NumberInput(attrs=(
