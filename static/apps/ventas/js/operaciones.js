@@ -35,9 +35,8 @@
                     };
                     calcular_total(cantidad, id, precio_enviar);
                     contador_tabla +=1;
-                    $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td>'
-                            + marca + '</td>' + '<td>' + rubro + '</td>' + '<td> $' + precio_enviar
-                            + '</td>' + '<td>' + stock + '</td>' + '<td><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + cantidad + ',' + precio_enviar +')" ' +
+                    $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td> $' + precio_enviar
+                            + '</td>' +  '<td><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + cantidad + ',' + precio_enviar +')" ' +
                             'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
                 }
             };
@@ -101,9 +100,8 @@
                             contador_tabla +=1;
                             calcular_total('1', data.id, precio_enviar);
                             $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' +
-                                    data.cantidad + '</td>' + '<td>' + data.descripcion + '</td>' + '<td>'
-                            + data.marca + '</td>' + '<td>' + data.rubro + '</td>' + '<td> $' + precio_enviar
-                            + '</td>' + '<td>' + data.stock + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
+                                    data.cantidad + '</td>' + '<td>' + data.nombre + '</td>' + '<td> $' + precio_enviar
+                            + '</td>' + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
                                                                     'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
                         }
                     });

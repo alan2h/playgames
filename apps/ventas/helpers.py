@@ -122,6 +122,7 @@ def ajax_get_articulo_unico(request):
                     'id': articulo[0].id,
                     'codigo_barra': articulo[0].codigo_barra,
                     'descripcion': articulo[0].descripcion,
+                    'nombre': articulo[0].nombre,
                     'marca': marca,
                     'rubro': rubro,
                     'precio_venta': articulo[0].precio_venta,
