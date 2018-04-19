@@ -33,7 +33,7 @@ class ArticuloForm(forms.ModelForm):
                                       widget=forms.NumberInput(attrs=(
                                            {'class': 'form-control'}
                                       )))
-    precio_debito = forms.DecimalField(required=True, decimal_places=2,
+    precio_debito = forms.DecimalField(required=False, decimal_places=2,
                                          max_digits=12,
                                          widget=forms.NumberInput(attrs=(
                                             {'class': 'form-control'}
