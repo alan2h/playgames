@@ -27,7 +27,7 @@
                             precio_enviar = precio_venta;
                             break;    
                         case 'credito':
-                            precio_enviar = precio_venta;
+                            precio_enviar = precio_credito;
                             break;
                         case 'debito':
                             precio_enviar = precio_venta;
@@ -92,7 +92,7 @@
                                     precio_enviar = data.precio_venta;
                                     break;    
                                 case 'credito':
-                                    precio_enviar = data.precio_venta;
+                                    precio_enviar = data.precio_credito;
                                     break;
                                 case 'debito':
                                     precio_enviar = data.precio_venta;
