@@ -22,7 +22,7 @@ class ArticuloViewSet(ModelViewSet):
         queryset = Articulo.objects.filter(baja=False)
         descripcion = self.request.query_params.get('descripcion', None)
         if descripcion is not None:
-            queryset = Articulo.objects.filter(descripcion__icontains=
+            queryset = Articulo.objects.filter(nombre__icontains=
                                                descripcion, baja=False)
             if queryset.exists() is False:
                 queryset = Articulo.objects.filter(codigo_barra__icontains=
@@ -35,6 +35,11 @@ class ArticuloViewSet(ModelViewSet):
                     if queryset.exists() is False:
                         queryset = Articulo.objects.filter(
                             marca__descripcion__icontains=descripcion,
+                            baja=False
+                        )
+                        if queryset.exists() is False:
+                            queryset = Articulo.objects.filter(
+                            descripcion__icontains=descripcion,
                             baja=False
                         )
         return queryset
