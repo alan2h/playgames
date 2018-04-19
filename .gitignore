@@ -8,3 +8,4 @@ node_modules/
 .pyc
 node_modules
 *hot-update*
+media/articulos/*
