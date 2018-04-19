@@ -8,6 +8,8 @@ from apps.ventas.models import ArticuloVenta, Venta
 from apps.lib.cajas.gestion import CajaFunctions
 from apps.lib.articulos.gestion_stock import ArticuloStock
 
+from apps.socios_puntos.models import PuntoConfiguracion
+from apps.clientes.models import Cliente
 
 def ajax_guardar_venta(request):
     articulo_venta_array = []
@@ -21,6 +23,7 @@ def ajax_guardar_venta(request):
         if 'ventas' in request.POST:
             ventas = request.POST.get('ventas')
             the_dict = json.loads(ventas)
+
             for element in the_dict:
                 articulo_vendidos = Articulo.objects.get(
                     pk=element['id'])
@@ -33,7 +36,21 @@ def ajax_guardar_venta(request):
                 if forma_pago == 'credito':
                     precio_guardar = articulo_vendidos.precio_credito
                 if forma_pago == 'descuento':
-                    precio_guardar = articulo_vendidos.precio_venta    
+                    precio_guardar = articulo_vendidos.precio_venta  
+
+                # calculos de puntos si hay socio
+                if request.POST.get('id_socio') != '':
+                    pesos_puntos = PuntoConfiguracion.objects.all()[0]
+                    cliente = Cliente.objects.get(pk=request.POST.get('id_socio'))
+                    print(int(precio_guardar) / int(pesos_puntos.precio))
+                    print(int(pesos_puntos.punto))
+                    cantidad_puntos = (int(precio_guardar) / int(pesos_puntos.precio)) * int(pesos_puntos.punto)
+                    if (cliente.puntos): 
+                        cliente.puntos = int(cliente.puntos) + int(cantidad_puntos)
+                    else:
+                        cliente.puntos = int(cantidad_puntos)
+                    cliente.save()
+                # calculos de puntos si hay socio  
 
                 articulo_venta = ArticuloVenta(
                     articulo=articulo_vendidos,

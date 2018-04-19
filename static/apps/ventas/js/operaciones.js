@@ -49,6 +49,7 @@
                     data: {
                         ventas: JSON.stringify(articulos_vendidos),
                         fecha: $('#id_fecha').val,
+                        id_socio: $('#id_socio').val(),
                         porcentaje_descuento: $('#id_monto_descuento').val(),
                         total_con_descuento: total_con_descuento,
                         precio_venta_total: total.toString(),
@@ -119,7 +120,7 @@
                     obj['cantidad'] = cantidad;
                     articulos_vendidos.push(obj);
     /* ---- Armar un array con los articulos vendidos ----- */
-
+                    console.log(precio_venta)
                     total += (parseFloat(cantidad) * parseFloat(precio_venta.toString().replace(',', '.')));
                     var representar = total.toFixed(2);
                     $('#id_total').html('$ ' + representar.toString().replace('.', ','));

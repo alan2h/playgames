@@ -12,12 +12,163 @@
 {% endblock %}
 
 {% block content %}
-
+    <!-- vue js libreria externa -->
+    <div id="app">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                <h1 id="datos_socio">${ datos_socio }</h1>
+                <input id="id_socio" hidden="hidden">
+                </div>
+            </div>
+    
+           <!-- Small modal Socios -->
+           <div class="modal fade id_socios_form" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Buscar Socios</h4>
+    
+                            <form method="get">
+                            <div class="title_right">
+                              <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                  <input @keypress="buscar_socio" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                                </div>
+                              </div>
+                            </div>
+                            </form>
+                            <div class="x_content">
+                               <div class="row">
+                                 <div class="col-sm-12">
+                                   <div class="card-box table-responsive">
+                                     <table id="datatable-keytable" class="table table-striped table-bordered">
+                                       <thead>
+                                         <tr>
+                                           <th>Código</th>
+                                           <th>Nombre</th>
+                                           <th>Apellido</th>
+                                           <th>Documento</th>
+                                           <th>Puntos</th>
+                                         </tr>
+                                       </thead>
+                                       <tbody>
+                                            <tr v-for="socio in socios">
+                                                    <td @click="envioSocio(socio)">${ socio.id }
+                                                    </td>
+                                                    
+                                                    <td @click="envioSocio(socio)">${ socio.nombre }
+                                                    </td>
+                                                   
+                                                    <td @click="envioSocio(socio)">${ socio.apellido }</td>
+                                                    <td @click="envioSocio(socio)">${ socio.numero_documento }
+                                                    </td>
+    
+                                                    <td @click="envioSocio(socio)">${ socio.puntos }
+                                                        </td>
+                                                    
+                                                  </tr>
+    
+                                       </tbody>
+                                     </table>
+                                     <ul class="pager">
+                                            <li v-if="pag_previo_socio"><a v-on:click="previo_socio">Previo</a></li>
+                                            <li v-if="pag_siguiente_socio"><a v-on:click="siguiente_socio">Siguiente</a></li>
+                                          </ul>
+                                   </div>
+                                 </div>
+                               </div>
+                             </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        <!-- modals -->
+    
+            <!-- Small modal Articulos -->
+               <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
+                   <div class="modal-dialog modal-lg" id="app">
+                       <div class="modal-content">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                               </button>
+                               <h4 class="modal-title" id="myModalLabel2">${ titulo }</h4>
+    
+                               <form method="get">
+                               <div class="title_right">
+                                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                   <div class="input-group">
+                                     <input @keypress="buscar" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                                   </div>
+                                 </div>
+                               </div>
+                               </form>
+                               <div class="x_content">
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="card-box table-responsive">
+                                        <table id="datatable-keytable" class="table table-striped table-bordered">
+                                          <thead>
+                                            <tr>
+                                              <th>Código</th>
+                                              <th>Nombre</th>
+                                              <th>marca</th>
+                                              <th>Rubro</th>
+                                              <th>Venta</th>
+                                              <th>Stock</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                                <tr v-for="articulo in articulos">
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.codigo_barra }
+                                                  </td>
+                                                  
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.nombre }
+                                                  </td>
+                                                  <template v-if="articulo.marca">
+                                                    <td v-on:click="envioDatos(articulo)">${ articulo.marca.descripcion }
+                                                    </td>
+                                                  </template>
+                                                  <template v-else>
+                                                        <td>--</td>
+                                                  </template>
+                                                  <template v-if="articulo.rubro">
+                                                    <td v-on:click="envioDatos(articulo)">${ articulo.rubro.descripcion }
+                                                    </td>
+                                                  </template>
+                                                  <template v-else>
+                                                        <td>--</td>
+                                                  </template>
+                                                  <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_venta }
+                                                  </td>
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.stock }
+                                                  </td>
+                                                </tr>
+    
+                                          </tbody>
+                                        </table>
+                                            <ul class="pager">
+                                              <li v-if="pag_previo"><a v-on:click="previo">Previo</a></li>
+                                              <li v-if="pag_siguiente"><a v-on:click="siguiente">Siguiente</a></li>
+                                            </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                               </div>
+                       </div>
+                   </div>
+               </div>
+           <!-- modals -->
+            </div>
+         <!-- libreria externa vue js -->
    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
    {% csrf_token %}
    <!-- Tipos de Pagos -->
       <div class="col-md-12 col-sm-12 col-xs-12">
            <div class="x_panel">
+              
                    <div class="col-md-12 col-sm-12">
                       <div class="container">
                           <div class="paymentWrap">
@@ -181,154 +332,7 @@
           </div>
        </form>
 
-<div id="app">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-            <h1 id="datos_socio">${ datos_socio }</h1>
-            </div>
-        </div>
 
-       <!-- Small modal Socios -->
-       <div class="modal fade id_socios_form" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel2">Buscar Socios</h4>
-
-                        <form method="get">
-                        <div class="title_right">
-                          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                            <div class="input-group">
-                              <input @keypress="buscar_socio" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
-                            </div>
-                          </div>
-                        </div>
-                        </form>
-                        <div class="x_content">
-                           <div class="row">
-                             <div class="col-sm-12">
-                               <div class="card-box table-responsive">
-                                 <table id="datatable-keytable" class="table table-striped table-bordered">
-                                   <thead>
-                                     <tr>
-                                       <th>Código</th>
-                                       <th>Nombre</th>
-                                       <th>Apellido</th>
-                                       <th>Documento</th>
-                                       <th>Puntos</th>
-                                     </tr>
-                                   </thead>
-                                   <tbody>
-                                        <tr v-for="socio in socios">
-                                                <td @click="envioSocio(socio)">${ socio.id }
-                                                </td>
-                                                
-                                                <td @click="envioSocio(socio)">${ socio.nombre }
-                                                </td>
-                                               
-                                                <td @click="envioSocio(socio)">${ socio.apellido }</td>
-                                                <td @click="envioSocio(socio)">${ socio.numero_documento }
-                                                </td>
-
-                                                <td @click="envioSocio(socio)">${ socio.puntos }
-                                                    </td>
-                                                
-                                              </tr>
-
-                                   </tbody>
-                                 </table>
-                                 <ul class="pager">
-                                        <li v-if="pag_previo_socio"><a v-on:click="previo_socio">Previo</a></li>
-                                        <li v-if="pag_siguiente_socio"><a v-on:click="siguiente_socio">Siguiente</a></li>
-                                      </ul>
-                               </div>
-                             </div>
-                           </div>
-                         </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    <!-- modals -->
-
-        <!-- Small modal Articulos -->
-           <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
-               <div class="modal-dialog modal-lg" id="app">
-                   <div class="modal-content">
-                       <div class="modal-header">
-                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                           </button>
-                           <h4 class="modal-title" id="myModalLabel2">${ titulo }</h4>
-
-                           <form method="get">
-                           <div class="title_right">
-                             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                               <div class="input-group">
-                                 <input @keypress="buscar" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
-                               </div>
-                             </div>
-                           </div>
-                           </form>
-                           <div class="x_content">
-                              <div class="row">
-                                <div class="col-sm-12">
-                                  <div class="card-box table-responsive">
-                                    <table id="datatable-keytable" class="table table-striped table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th>Código</th>
-                                          <th>Nombre</th>
-                                          <th>marca</th>
-                                          <th>Rubro</th>
-                                          <th>Venta</th>
-                                          <th>Stock</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                            <tr v-for="articulo in articulos">
-                                              <td v-on:click="envioDatos(articulo)">${ articulo.codigo_barra }
-                                              </td>
-                                              
-                                              <td v-on:click="envioDatos(articulo)">${ articulo.nombre }
-                                              </td>
-                                              <template v-if="articulo.marca">
-                                                <td v-on:click="envioDatos(articulo)">${ articulo.marca.descripcion }
-                                                </td>
-                                              </template>
-                                              <template v-else>
-                                                    <td>--</td>
-                                              </template>
-                                              <template v-if="articulo.rubro">
-                                                <td v-on:click="envioDatos(articulo)">${ articulo.rubro.descripcion }
-                                                </td>
-                                              </template>
-                                              <template v-else>
-                                                    <td>--</td>
-                                              </template>
-                                              <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_venta }
-                                              </td>
-                                              <td v-on:click="envioDatos(articulo)">${ articulo.stock }
-                                              </td>
-                                            </tr>
-
-                                      </tbody>
-                                    </table>
-                                        <ul class="pager">
-                                          <li v-if="pag_previo"><a v-on:click="previo">Previo</a></li>
-                                          <li v-if="pag_siguiente"><a v-on:click="siguiente">Siguiente</a></li>
-                                        </ul>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                           </div>
-                   </div>
-               </div>
-           </div>
-       <!-- modals -->
-        </div>
 {% endblock %}
 
 {% block js %}
@@ -384,12 +388,13 @@
                     });
                 },
                 envioSocio: function(socio){
+                    $('#id_socio').val(socio.id)
                     var self = this;
                     self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento 
                     self.id_socio = socio.id
+                    alert(self.datos_socio + ' ' + 'seleccionado')
                 },
                 envioDatos: function(articulo){
-                    
                     seleccion_articulo(
                             articulo.id, articulo.nombre,
                             articulo.marca.descripcion,
@@ -477,6 +482,7 @@
             },
             mounted: function(){
                 this.cargarDatos();
+                console.log(this.articulos)
                 this.cargarSocios();    
             }
         });
