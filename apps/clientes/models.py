@@ -10,6 +10,7 @@ class Cliente(models.Model):
     direccion = models.TextField(max_length=800, null=True, blank=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
     fecha_alta = models.DateField(default=django.utils.timezone.now, blank=True, null=True)
+    puntos = models.IntegerField(blank=True, null=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)

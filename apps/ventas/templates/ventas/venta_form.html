@@ -63,16 +63,31 @@
                                 {{ form.fecha }}
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Buscar árticulo por código
-                            </label>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-inline">
-                                    <input type="text" id="id_codigo_articulo_buscar" name="codigo_articulo_buscar"  class="form-control">
-                                    <button type="button" id="id_button_buscar" data-toggle="modal" data-target=".id_articulos_form" class="btn btn-default btn-sm"><i class="fa fa-search" aria-hidden="true"></i></button>
-                               </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Buscar árticulo por código
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-inline">
+                                        <input type="text" id="id_codigo_articulo_buscar" name="codigo_articulo_buscar"  class="form-control">
+                                        <button type="button" id="id_button_buscar" data-toggle="modal" data-target=".id_articulos_form" class="btn btn-default btn-sm"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
                                 </div>
                             </div>
+                            
+                            <!-- carga de socio -->
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Buscar Socio por código
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-inline">
+                                        
+                                        <button type="button" id="buscar_socio" data-toggle="modal" data-target=".id_socios_form" class="btn btn-default btn-sm"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- carga de socio -->
+
                         </div>
                         <!-- campo de descuento -->
                           <div class="form-group">
@@ -166,6 +181,78 @@
           </div>
        </form>
 
+<div id="app">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+            <h1 id="datos_socio">${ datos_socio }</h1>
+            </div>
+        </div>
+
+       <!-- Small modal Socios -->
+       <div class="modal fade id_socios_form" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Buscar Socios</h4>
+
+                        <form method="get">
+                        <div class="title_right">
+                          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                              <input @keypress="buscar_socio" type="text" v-model="descripcion" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                            </div>
+                          </div>
+                        </div>
+                        </form>
+                        <div class="x_content">
+                           <div class="row">
+                             <div class="col-sm-12">
+                               <div class="card-box table-responsive">
+                                 <table id="datatable-keytable" class="table table-striped table-bordered">
+                                   <thead>
+                                     <tr>
+                                       <th>Código</th>
+                                       <th>Nombre</th>
+                                       <th>Apellido</th>
+                                       <th>Documento</th>
+                                       <th>Puntos</th>
+                                     </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr v-for="socio in socios">
+                                                <td @click="envioSocio(socio)">${ socio.id }
+                                                </td>
+                                                
+                                                <td @click="envioSocio(socio)">${ socio.nombre }
+                                                </td>
+                                               
+                                                <td @click="envioSocio(socio)">${ socio.apellido }</td>
+                                                <td @click="envioSocio(socio)">${ socio.numero_documento }
+                                                </td>
+
+                                                <td @click="envioSocio(socio)">${ socio.puntos }
+                                                    </td>
+                                                
+                                              </tr>
+
+                                   </tbody>
+                                 </table>
+                                 <ul class="pager">
+                                        <li v-if="pag_previo_socio"><a v-on:click="previo_socio">Previo</a></li>
+                                        <li v-if="pag_siguiente_socio"><a v-on:click="siguiente_socio">Siguiente</a></li>
+                                      </ul>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    <!-- modals -->
+
         <!-- Small modal Articulos -->
            <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
                <div class="modal-dialog modal-lg" id="app">
@@ -241,7 +328,7 @@
                </div>
            </div>
        <!-- modals -->
-
+        </div>
 {% endblock %}
 
 {% block js %}
@@ -261,9 +348,14 @@
             data: {
                 titulo: 'Buscar Árticulos',
                 articulos: [],
+                socios: [],
                 pag_siguiente: '',
                 pag_previo: '',
+                pag_siguiente_socio: '',
+                pag_previo_socio: '',
                 descripcion: '',
+                datos_socio: '',
+                id_socio: ''
             },
 
             methods: {
@@ -278,6 +370,23 @@
                       .catch(function (error) {
                           console.log(error);
                     });
+                },
+                cargarSocios: function(){
+                    var self = this;
+                    axios.get('/clientes/api/paginado/')
+                      .then(function (response) {
+                        self.socios = response.data.results;
+                        self.pag_siguiente_socio = response.data.next;
+                        self.pag_previo_socio = response.data.previous;
+                    })
+                      .catch(function (error) {
+                          console.log(error);
+                    });
+                },
+                envioSocio: function(socio){
+                    var self = this;
+                    self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento 
+                    self.id_socio = socio.id
                 },
                 envioDatos: function(articulo){
                     seleccion_articulo(
@@ -316,6 +425,30 @@
                          console.log(error);
                     });
                 },
+                previo_socio: function(){
+                    var self = this;
+                    axios.get(self.pag_previo_socio)
+                     .then(function (response) {
+                         self.socios = response.data.results;
+                         self.pag_siguiente_socio = response.data.next;
+                         self.pag_previo_socio = response.data.previous;
+                    })
+                     .catch(function (error) {
+                         console.log(error);
+                    });
+                },
+                siguiente_socio: function(){
+                    var self = this;
+                    axios.get(self.pag_siguiente_socio)
+                     .then(function (response) {
+                         self.socios = response.data.results;
+                         self.pag_siguiente_socio = response.data.next;
+                         self.pag_previo_socio = response.data.previous;
+                    })
+                     .catch(function (error) {
+                         console.log(error);
+                    });
+                },
                 buscar: function(){
                     var self = this;
                     axios.get('/articulos/api/articulos/?descripcion=' + this.descripcion)
@@ -327,10 +460,23 @@
                      .catch(function (error) {
                          console.log(error);
                     });
+                },
+                buscar_socio: function(){
+                    var self = this;
+                    axios.get('/clientes/api/paginado/?descripcion=' + this.descripcion)
+                     .then(function (response) {
+                        self.socios = response.data.results;
+                        self.pag_siguiente_socio = response.data.next;
+                        self.pag_previo_socio = response.data.previous;
+                    })
+                     .catch(function (error) {
+                         console.log(error);
+                    });
                 }
             },
             mounted: function(){
                 this.cargarDatos();
+                this.cargarSocios();    
             }
         });
     </script>

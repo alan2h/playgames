@@ -28,6 +28,7 @@
                   <th>Nombre</th>
                   <th>Apellido</th>
                   <th>Dirección</th>
+                  <th>Puntos</th>
                   <th>Datos</th>
                   <th>Acciones</th>
                 </tr>
@@ -39,6 +40,11 @@
                   <td>{{ cliente.nombre }}</td>
                   <td>{{ cliente.apellido }}</td>
                   <td>{{ cliente.direccion }}</td>
+                  {% if cliente.puntos %}
+                    <td>{{ cliente.puntos }}</td>
+                  {% else %}
+                    <td>--</td>
+                  {% endif %}
                   <td>
                       {% for contacto in cliente.contacto_set.all %}
                          {{ contacto.tipo }}: {{ contacto.descripcion }}

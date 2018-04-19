@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'apps.otros_ingresos',
     'apps.sucursales',
     'apps.perfiles',
+    'apps.socios_puntos',
 ]
 
 MIDDLEWARE_CLASSES = [

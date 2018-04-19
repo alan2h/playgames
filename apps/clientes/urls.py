@@ -3,12 +3,13 @@ from django.conf.urls import url, include
 
 from rest_framework import routers
 
-from .viewset import ClienteViewSet
+from .viewset import ClienteViewSet, ClienteListViewSet
 from .views import (ClienteTemplateView, ClienteCreateView, ContactoCreateView,
                     ContactoUpdateView, ClienteUpdateView)
 
 router = routers.DefaultRouter()
 router.register(r'clientes', ClienteViewSet)
+router.register(r'paginado', ClienteListViewSet)
 
 
 urlpatterns = [

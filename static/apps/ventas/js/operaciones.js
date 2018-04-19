@@ -132,6 +132,7 @@
                 $('#id_fecha').prop( "disabled", false );
                 $('#id_codigo_articulo_buscar').prop( "disabled", false );
                 $('#id_button_buscar').prop( "disabled", false );
+                $('#buscar_socio').prop( "disabled", false );
                 $('#id_button_guardar_compra').prop( "disabled", false );
                 // Pongo disabled la seleccion de la forma de pago
                 forma_pago = forma_pago_parametro;
