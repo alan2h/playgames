@@ -10,6 +10,9 @@ from django.views.generic import TemplateView
 from apps.cajas.models import Caja
 
 from apps.lib.cajas.gestion import CajaCreateIfNoExist
+from apps.articulos.models import Articulo
+
+import time 
 
 
 def ingresar(request):
@@ -44,6 +47,27 @@ def ingresar(request):
 class DashBoardTemplateView(CajaCreateIfNoExist, TemplateView):
 
     template_name = 'dashboard.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        articulos = Articulo.objects.filter(precio_credito=None)
+        print('*********')
+        print(articulos)
+        if articulos.exists():
+            for articulo in articulos:
+                iva = float(articulo.alicuota_iva)
+                print('????????????????????------------> procesando precios de credito')
+                time.sleep(5)
+                print(iva)
+                print('????????????????????------------> procesando precios de credito')
+                incremento = (float(articulo.precio_venta) * float(iva)) / 100
+                precio_credito = float(articulo.precio_venta) + float(incremento)
+                precio_debito = float(articulo.precio_venta) + float(incremento)
+                articulo_create = Articulo.objects.get(pk=articulo.id)
+                articulo_create.precio_credito = precio_credito
+                articulo_create.precio_debito = precio_debito
+                articulo_create.save()
+        return super(DashBoardTemplateView, self).dispatch(request, *args, **kwargs)
+
 
 
 def salir(request):
