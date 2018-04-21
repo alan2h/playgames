@@ -19,6 +19,7 @@ class ArticuloVenta(models.Model):
 class Venta(models.Model):
 
     fecha = models.DateTimeField(auto_now_add=True)
+    fecha_no_time = models.DateField(auto_now_add=True)
     forma_pago = models.CharField(max_length=400, null=True, blank=True)
     porcentaje_aumento = models.IntegerField(null=True, blank=True)
     porcentaje_descuento = models.IntegerField(null=True, blank=True)

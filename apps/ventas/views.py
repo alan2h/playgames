@@ -48,8 +48,7 @@ class TicketDetailView(DetailView):
 
 class VentaListView(ListView):
 
-    queryset = Venta.objects.filter(fecha__date=datetime.datetime.now(),
-                                    baja=False)
+    queryset = Venta.objects.filter(baja=False)[:800]
     template_name = 'ventas/venta_report.html'
 
 
@@ -76,7 +75,7 @@ class VentaDeleteView(DeleteView):
         if venta.forma_pago == 'debito':
             caja_funciones.restar_venta_debito(venta.precio_venta_total)
         for articulo_venta in venta.articulo_venta.all():
-            articulos_stock.restar_stock(articulo_venta.articulo.id,
+            articulos_stock.sumar_stock(articulo_venta.articulo.id,
                                          articulo_venta.cantidad)
         venta.fecha_baja = datetime.datetime.now().date()
         venta.causa_baja = 'Sin especificar'
