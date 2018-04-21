@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'sigdrugstore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sigdrugstore',
+        'NAME': 'playgames',
         'USER': 'postgres',
         'PASSWORD': '242403germanbp',
         'HOST': 'localhost',

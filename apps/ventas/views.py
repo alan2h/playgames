@@ -89,7 +89,7 @@ class VentaDeleteView(DeleteView):
 
 class VentaReportListView(ListView):
 
-    queryset = Venta.objects.all()[:10]
+    queryset = Venta.objects.all()
     template_name = 'ventas/venta_report_list.html'
 
     def get_queryset(self):
@@ -106,6 +106,7 @@ class VentaReportListView(ListView):
             ).order_by('fecha')
         else:
             queryset = super(VentaReportListView, self).get_queryset()
+            print(queryset)
         return queryset
 
 
