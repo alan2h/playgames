@@ -48,7 +48,7 @@ class TicketDetailView(DetailView):
 
 class VentaListView(ListView):
 
-    queryset = Venta.objects.filter(baja=False)[:800]
+    queryset = Venta.objects.filter(baja=False).order_by('-id')[:800]
     template_name = 'ventas/venta_report.html'
 
 
