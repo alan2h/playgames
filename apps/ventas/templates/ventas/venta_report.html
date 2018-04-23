@@ -46,7 +46,7 @@
                 <td>% {{ venta.porcentaje_descuento|default_if_none:'--' }}</td>
                 <td>
                     {% for articulo_venta in venta.articulo_venta.all %}
-                        {{ articulo_venta.articulo.descripcion }} --> {{ articulo_venta.cantidad }} <br>
+                    {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.descripcion }} --> {{ articulo_venta.cantidad }} <br>
                     {% endfor %}
                 </td>
                 <td>$ {{ venta.precio_venta_total }}</td>
