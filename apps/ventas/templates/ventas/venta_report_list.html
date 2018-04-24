@@ -21,10 +21,10 @@
           <tr>
             <th>Fecha</th>
             <th>Forma de Pago</th>
-            <th>Porcentaje de Aumento</th>
+            <!--<th>Porcentaje de Aumento</th>-->
             <th>Árticulos vendidos</th>
             <th>Precio Venta </th>
-            <th>Acciones </th>
+            <!--<th>Acciones </th>-->
           </tr>
         </thead>
 
@@ -33,14 +33,14 @@
               <tr>
                 <td>{{ venta.fecha_no_time }}</td>
                 <td>{{ venta.forma_pago|default_if_none:'--' }}</td>
-                <td>% {{ venta.porcentaje_aumento|default_if_none:'--' }}</td>
+                <!--<td>% {{ venta.porcentaje_aumento|default_if_none:'--' }}</td>-->
                 <td>
                     {% for articulo_venta in venta.articulo_venta.all %}
                         {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.descripcion }} --> {{ articulo_venta.cantidad }} --> ${{ articulo_venta.precio_venta }} <br>
                     {% endfor %}
                 </td>
                 <td>$ {{ venta.precio_venta_total }}</td>
-                <td><a href="/ventas/eliminar/{{ venta.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Anular Venta </a></td>
+                <!--<td><a href="/ventas/eliminar/{{ venta.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Anular Venta </a></td>-->
               </tr>
             {% endfor %}
         </tbody>

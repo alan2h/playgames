@@ -35,9 +35,8 @@
                     };
                     calcular_total(cantidad, id, precio_enviar);
                     contador_tabla +=1;
-                    $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td>'
-                            + marca + '</td>' + '<td>' + rubro + '</td>' + '<td> $' + precio_enviar
-                            + '</td>' + '<td>' + stock + '</td>' + '<td><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + cantidad + ',' + precio_enviar +')" ' +
+                    $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td> $' + precio_enviar
+                            + '</td>' +  '<td><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + cantidad + ',' + precio_enviar +')" ' +
                             'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
                 }
             };
@@ -50,6 +49,7 @@
                     data: {
                         ventas: JSON.stringify(articulos_vendidos),
                         fecha: $('#id_fecha').val,
+                        id_socio: $('#id_socio').val(),
                         porcentaje_descuento: $('#id_monto_descuento').val(),
                         total_con_descuento: total_con_descuento,
                         precio_venta_total: total.toString(),
@@ -101,9 +101,8 @@
                             contador_tabla +=1;
                             calcular_total('1', data.id, precio_enviar);
                             $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' +
-                                    data.cantidad + '</td>' + '<td>' + data.descripcion + '</td>' + '<td>'
-                            + data.marca + '</td>' + '<td>' + data.rubro + '</td>' + '<td> $' + precio_enviar
-                            + '</td>' + '<td>' + data.stock + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
+                                    data.cantidad + '</td>' + '<td>' + data.nombre + '</td>' + '<td> $' + precio_enviar
+                            + '</td>' + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
                                                                     'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
                         }
                     });
@@ -121,7 +120,7 @@
                     obj['cantidad'] = cantidad;
                     articulos_vendidos.push(obj);
     /* ---- Armar un array con los articulos vendidos ----- */
-
+                    console.log(precio_venta)
                     total += (parseFloat(cantidad) * parseFloat(precio_venta.toString().replace(',', '.')));
                     var representar = total.toFixed(2);
                     $('#id_total').html('$ ' + representar.toString().replace('.', ','));
@@ -134,6 +133,7 @@
                 $('#id_fecha').prop( "disabled", false );
                 $('#id_codigo_articulo_buscar').prop( "disabled", false );
                 $('#id_button_buscar').prop( "disabled", false );
+                $('#buscar_socio').prop( "disabled", false );
                 $('#id_button_guardar_compra').prop( "disabled", false );
                 // Pongo disabled la seleccion de la forma de pago
                 forma_pago = forma_pago_parametro;

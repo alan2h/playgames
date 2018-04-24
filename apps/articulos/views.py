@@ -165,7 +165,7 @@ class ArticuloDetailView(DetailView):
 def barcode(request, pk):
 
     articulo = Articulo.objects.get(pk=pk)
-    d = DibujarBarcode(articulo.codigo_barra)
+    d = DibujarBarcode(articulo.id)
     binaryStuff = d.asString('gif')
     return HttpResponse(binaryStuff, 'image/gif')
 

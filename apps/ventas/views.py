@@ -113,6 +113,14 @@ class VentaReportListView(ListView):
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
                 '-' + fecha_hasta.split('/')[0]
             ).order_by('fecha')
+            print('****************************')
+            print(fecha_desde)
+            print(fecha_hasta)
+            print(fecha_desde == fecha_hasta)
+            print('****************************')
+            if fecha_desde == fecha_hasta:
+                print('///////////')
+                queryset = Venta.objects.filter(fecha_no_time=fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0]).order_by('fecha')
         else:
             queryset = super(VentaReportListView, self).get_queryset()
             print(queryset)
