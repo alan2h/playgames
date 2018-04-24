@@ -27,6 +27,7 @@ class VentaAdmin(admin.ModelAdmin):
 
     list_display = [
         'fecha_no_time',
+        'get_parents',
         'forma_pago',
         'porcentaje_aumento',
         'precio_venta_total',
@@ -42,6 +43,8 @@ class VentaAdmin(admin.ModelAdmin):
         'fecha',
         'precio_venta_total'
     ]
+    
+    
 
 admin.site.register(ArticuloVenta, ArticuloVentaAdmin)
 admin.site.register(Venta, VentaAdmin)
