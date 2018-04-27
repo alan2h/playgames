@@ -385,7 +385,8 @@
     <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
     <!-- jquery.inputmask -->
     <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
-   
+    <!-- validate js -->
+    <script src="{% static 'validate/jquery.validate.min.js' %}"></script>
     <!-- Custom js for this template -->
     <script src="{% static 'apps/articulos/articulo_form.js' %}"></script>
 
@@ -397,7 +398,13 @@
     
     <script>
 
-        
+        $.validator.messages.required = 'Este campo es requerido';
+            $("#form").validate({
+                rules: {
+                    
+                }
+            });
+
 
         // no submit con enter
         $("form").bind("keypress", function (e) {
