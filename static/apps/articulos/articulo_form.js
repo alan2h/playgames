@@ -123,10 +123,8 @@ $('#id_categoria_seleccion').change(function() {
             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
         },
         success: function(data){
-            console.log(data);
             $('#id_rubro').empty();
             for (var x =0; x < data.length; x++){
-                console.log(data[x].fields.categoria);
                 $('#id_rubro').append($('<option>', {
                     value: data[x].pk,
                     text: data[x].fields.descripcion
@@ -134,7 +132,7 @@ $('#id_categoria_seleccion').change(function() {
             }
         },
         error: function(err){
-            console.log(err);
+            console.log(err)
             $('#id_rubro').empty();
         }
     });

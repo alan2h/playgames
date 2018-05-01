@@ -413,9 +413,36 @@
             }
         });
         // Select 2
-        $('#id_marca').select2({});
-        $('#id_rubro').select2({});
-        $('#id_categoria_seleccion').select2({});
+        $('#id_marca').select2({
+                "language": {
+                    "noResults": function(){
+                        return "No existen resultados con esa busqueda";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+        });
+        $('#id_rubro').select2({
+             "language": {
+                    "noResults": function(){
+                        return "No existen resultados con esa busqueda";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+        });
+        $('#id_categoria_seleccion').select2({
+                "language": {
+                    "noResults": function(){
+                        return "No existen resultados con esa busqueda";
+                    }
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+        });
 
         //*----------------------------- *//
         $('#id_categoria_seleccion').on('select2:select', function (e) {

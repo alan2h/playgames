@@ -20,15 +20,17 @@ def ajax_query_rubro(request):
     if request.is_ajax():
         if request.POST.get('categoria__id') != '':
             rubro = Rubro.objects.filter(categoria__id=request.POST.get('categoria__id'))
-        else:
-            rubro = Rubro.objects.all()
-        if rubro.exists():
+            if rubro.exists():
+                qs_json = serializers.serialize('json', rubro)
+                return HttpResponse(qs_json, content_type='application/json')
+            rubro = []
             qs_json = serializers.serialize('json', rubro)
             return HttpResponse(qs_json, content_type='application/json')
         else:
-            rubro = Rubro.objects.all()
+            rubro = []
             qs_json = serializers.serialize('json', rubro)
             return HttpResponse(qs_json, content_type='application/json')
+        
 
 ''' ---------------------------------- '''
 ''' Ajax para creacion de complementos '''
