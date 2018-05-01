@@ -53,11 +53,8 @@ class VentaListView(ListView):
 
     def get_queryset(self):
         queryset = super(VentaListView, self).get_queryset()
-        print('**********************************************')
-        print(datetime.datetime.now())
         queryset = Venta.objects.filter(baja=False, fecha_no_time=datetime.datetime.now()).order_by('-id')
-        print(queryset)
-        print('**********************************************')
+        
         return queryset
 
 
@@ -87,6 +84,8 @@ class VentaDeleteView(DeleteView):
         for articulo_venta in venta.articulo_venta.all():
             articulos_stock.sumar_stock(articulo_venta.articulo.id,
                                          articulo_venta.cantidad)
+            articulos_stock.restar_vendida(articulo_venta.articulo.id,
+                                           articulo_venta.cantidad)
         venta.fecha_baja = datetime.datetime.now().date()
         venta.causa_baja = 'Sin especificar'
         venta.baja = True
@@ -117,7 +116,6 @@ class VentaReportListView(ListView):
                 queryset = Venta.objects.filter(fecha_no_time=fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0], baja=False).order_by('fecha')
         else:
             queryset = super(VentaReportListView, self).get_queryset()
-            print(queryset)
         return queryset
 
 
