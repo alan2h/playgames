@@ -57,14 +57,35 @@ class ArticuloListView(ListView):
     queryset = Articulo.objects.filter(baja=False)
     paginate_by = 6
 
+    def get_context_data(self, **kwargs):
+        context = super(ArticuloListView, self).get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        return context
+
     def get_queryset(self):
-        qs = Articulo.objects.filter(baja=False)
+        if self.request.GET.get('campo_categoria') == '' or self.request.GET.get('campo_categoria') == None:
+            qs = Articulo.objects.filter(baja=False)
+        else:
+            qs = Articulo.objects.filter(baja=False, rubro__categoria__id=self.request.GET.get('campo_categoria'))
+
         if 'texto_buscar' in self.request.GET:
             if self.request.GET.get('texto_buscar') is not '':
                 texto_buscar = self.request.GET.get('texto_buscar')
                 campo_buscar = self.request.GET.get('campo_buscar')
                 qs = helpers.buscar_codigo(qs, texto_buscar)
-                print(qs)
+
+                if 'campo_categoria' in self.request.GET:
+                    if self.request.GET.get('campo_categoria') is not '':
+                        
+                        if qs.exists() == False:
+                            qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                        if qs.exists() == False:
+                            qs = helpers.buscar_rubro_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                        if qs.exists() == False:
+                            qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                        if qs.exists() == False:
+                            qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                        
                 if qs.exists() == False:
                     qs = helpers.buscar_descripcion(qs, texto_buscar)
                 if qs.exists() == False:
@@ -83,6 +104,8 @@ class ArticuloListView(ListView):
                     qs = helpers.buscar_fecha_compra(qs, texto_buscar)
                 if qs.exists() == False:
                     qs = helpers.buscar_nombre(qs, texto_buscar)
+                if qs.exists() == False:
+                    qs = helpers.buscar_categoria(qs, texto_buscar)
         return qs
 
 

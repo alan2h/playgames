@@ -242,3 +242,48 @@ def buscar_rubro(qs, rubro):
         rubro__descripcion__icontains=rubro
     )
     return qs
+
+
+def buscar_categoria(qs, categoria):
+
+    qs = Articulo.objects.filter(
+        rubro__categoria__descripcion__icontains=categoria
+    )
+    return qs
+
+
+# en caso de tener categoria como busqueda
+
+def buscar_marca_categoria(qs, marca, categoria):
+    
+    qs = Articulo.objects.filter(
+        marca__descripcion__icontains=marca,
+        rubro__categoria__id=int(categoria)
+        )
+    return qs
+
+
+def buscar_rubro_categoria(qs, rubro, categoria):
+
+    qs = Articulo.objects.filter(
+        rubro__descripcion__icontains=rubro,
+        rubro__categoria__id=int(categoria)
+    )
+    return qs
+
+
+def buscar_nombre_categoria(qs, nombre, categoria):
+    qs = Articulo.objects.filter(
+        nombre__icontains=nombre,
+        rubro__categoria__id=int(categoria)
+        )
+    return qs
+
+
+def buscar_descripcion_categoria(qs, descripcion, categoria):
+
+    qs = Articulo.objects.filter(
+        descripcion__icontains=descripcion,
+        rubro__categoria__id=int(categoria)
+    )
+    return qs

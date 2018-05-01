@@ -10,22 +10,18 @@
 <div class="x_content">
                 
     <div class="x_panel">
-            <h2>Buscar árticulos</h2>
-        <form method="get">
-                    <!--<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+        <h2>Buscar árticulos</h2>
+        <form id="form-buscar" method="get">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                         <div class="input-group">
-                         <select class="form-control" name="campo_buscar">
-                             <option value="codigo_barra">Código de barra</option>
-                             <option value="nombre">Nombre</option>
-                             <option value="descripcion">Descripción</option>
-                             <option value="marca">Marca</option>
-                             <option value="rubro">Rubro</option>
-                             <option value="precio_venta">Precio de Venta</option>
-                             <option value="precio_compra">Precio de Compra</option>
-                             <option value="stock">Stock</option>
+                         <select class="form-control" id="id_campo_categoria" name="campo_categoria">
+                             <option value="">-------</option>
+                             {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.descripcion }}</option>
+                             {% endfor %}
                          </select>
                         </div>
-                    </div>-->
+                    </div>
                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                     <div class="input-group">
                     <input type="text" name="texto_buscar" class="form-control" placeholder="Buscar por...">
@@ -125,12 +121,21 @@
             {% if is_paginated %}
                 <nav>
                   <ul class="pager">
+                  {% if 'campo_categoria' in request.get_full_path or 'texto_buscar' in request.get_full_path %}
+                        {% if page_obj.has_previous %}
+                            <li><a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">Atrás</a></li>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <li><a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                        {% endif %}
+                  {% else %}
                     {% if page_obj.has_previous %}
                         <li><a href="/articulos/listado?page={{ page_obj.previous_page_number }}">Atrás</a></li>
                     {% endif %}
                     {% if page_obj.has_next %}
                         <li><a href="/articulos/listado?page={{ page_obj.next_page_number }}">Siguiente</a></li>
                     {% endif %}
+                  {% endif %}  
                   </ul>
                 </nav>
             {% endif %}
@@ -143,4 +148,17 @@
 {% block js %}
  <!-- zoom js -->
  <script src="{% static 'zoom.js-master/js/zoom.js' %}"></script>
+
+ <!-- funciones especiales -->
+ <script>
+    // --------- para filtrar las categorias --------------
+    // ----------------------------------------------------
+    $('#id_campo_categoria').change(function(){
+        $('#form-buscar').submit();
+    });
+    // --------- Mantiene el filtro en caso de que exista --------------
+    {% if  request.GET.campo_categoria %}
+        $('#id_campo_categoria').val('{{request.GET.campo_categoria}}')
+    {% endif %}
+ </script>
 {% endblock %}
