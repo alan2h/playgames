@@ -65,6 +65,8 @@ class Articulo(models.Model):
     fecha_compra = models.DateTimeField(auto_created=True)
     fecha_modificacion = models.DateTimeField(auto_now_add=True)
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
+    # cantidad vendida, esto marca un historial de la cantidad vendidad de un articulo
+    cantidad_vendida = models.IntegerField(default='0', null=True, blank=True)
 
     # Baja
     baja = models.BooleanField(default=False)

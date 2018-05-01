@@ -32,7 +32,6 @@
                         <p><strong>Nombre: {{ object.nombre }}</strong></p>
                         <p><strong>Precio de venta: $ {{ object.precio_venta }}</strong></p>
                         <p><strong>Precio de Crédito: $ {{ object.precio_credito }}</strong></p>
-                        <p><strong>Precio de Débito: $ {{ object.precio_debito }}</strong></p>
                         <p><strong>Marca: {{ object.marca|quitar_none }}</strong></p>
                         <p><strong>Categoría: {{ object.rubro.categoria|quitar_none }}</strong></p>
                         <p><strong>Subcategoría: {{ object.rubro|quitar_none }}</strong></p>
@@ -40,6 +39,7 @@
                         <p><strong>Sucursal: {{ object.sucursal }}</strong></p>
                         <hr>
                         <p>Stock: {{ object.stock }}</p>
+                        <p>Cantidad Vendida: {{ object.cantidad_vendida }}</p>
                         <p>Stock Mínimo: {{ object.stock_minimo }}</p>
                         <p>Fecha de compra: {{ object.fecha_compra|date:'d/m/Y' }}</p>
                         
