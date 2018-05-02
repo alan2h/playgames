@@ -129,22 +129,22 @@
 
          {% for caja in object_list %}
             {% if caja.ventas_efectivo %}
-              venta_acumulada += parseFloat('{{ caja.ventas_efectivo }}')
+              venta_acumulada += parseFloat(('{{ caja.ventas_efectivo }}').replace(',','.'))
             {% endif %}
             {% if caja.ventas_debito %}
-              debito_acumulada += parseFloat('{{ caja.ventas_debito }}')
+              debito_acumulada += parseFloat(('{{ caja.ventas_debito }}').replace(',','.'))
             {% endif %}
             {% if caja.ventas_credito %}
-              credito_acumulado += parseFloat('{{ caja.ventas_credito }}')
+              credito_acumulado += parseFloat(('{{ caja.ventas_credito }}').replace(',','.'))
             {% endif %}
             {% if caja.otros_gastos %}
-              otros_gastos_acumulados += parseFloat('{{ caja.otros_gastos }}')
+              otros_gastos_acumulados += parseFloat(('{{ caja.otros_gastos }}').replace(',','.'))
             {% endif %}
             {% if caja.compras %}
-              compras_acumulados += parseFloat('{{ caja.compras }}')
+              compras_acumulados += parseFloat(('{{ caja.compras }}').replace(',','.'))
             {% endif %}
          {% endfor %}
-         haber = venta_acumulada + debito_acumulada + credito_acumulado
+         haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
          debe = otros_gastos_acumulados + compras_acumulados
          $('#id_total_haber').val('$ ' + haber)
          $('#id_total_debe').val('$ ' + debe)
