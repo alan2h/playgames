@@ -151,15 +151,24 @@
                                                   <td v-on:click="envioDatos(articulo)">${ articulo.codigo_barra }
                                                   </td>
 
-                                                  <td v-on:click="envioDatos(articulo)">${ articulo.descripcion }
+                                                  <td v-on:click="envioDatos(articulo)">${ articulo.nombre }
                                                   </td>
-
-                                                  <td v-on:click="envioDatos(articulo)">${ articulo.marca.descripcion }
-                                                  </td>
-
-                                                  <td v-on:click="envioDatos(articulo)">${ articulo.rubro.descripcion }
-                                                  </td>
-
+                                                  <template v-if="articulo.marca">
+                                                    <td v-on:click="envioDatos(articulo)">${ articulo.marca.descripcion }
+                                                    </td>
+                                                  </template>
+                                                  <template v-else>
+                                                    <td v-on:click="envioDatos(articulo)">--
+                                                    </td>
+                                                  </template>
+                                                  <template v-if="articulo.rubro">  
+                                                    <td v-on:click="envioDatos(articulo)">${ articulo.rubro.descripcion }
+                                                    </td>
+                                                  </template>
+                                                  <template v-else>
+                                                    <td v-on:click="envioDatos(articulo)">--
+                                                    </td>
+                                                  </template>  
                                                   <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_venta }
                                                   </td>
                                                   <td v-on:click="envioDatos(articulo)">${ '$ ' + articulo.precio_compra }
