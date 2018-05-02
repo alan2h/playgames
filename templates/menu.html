@@ -18,10 +18,8 @@
                 </li>
                 <li><a><i class="fa fa-shopping-basket"></i> Salida de Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li><a href="/ventas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Ventas</a></li>
-                        {% if request.user.is_staff %}    
-                            <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
-                        {% endif %}
+                        <li><a href="/ventas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Ventas</a></li>    
+                        <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
                     </ul>
                 </li>
                 {% if request.user.is_staff %}
