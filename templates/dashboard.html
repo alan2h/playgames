@@ -11,23 +11,23 @@
           <h3>Carga y listar árticulos</h3></a>
         </div>
       </div>
+      {% if request.user.is_staff %}
+          <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="tile-stats">
+                <a href="/proveedores/alta/"><div class="icon"><i class="fa fa-male"></i></div>
+                <div class="count">Proveedores</div>
+                <h3>Carga y listar proveedores</h3></a>
+              </div>
+          </div>
 
-     <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="tile-stats">
-          <a href="/proveedores/alta/"><div class="icon"><i class="fa fa-male"></i></div>
-          <div class="count">Proveedores</div>
-          <h3>Carga y listar proveedores</h3></a>
-        </div>
-     </div>
-
-    <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="tile-stats">
-          <a href="/compras/alta/"><div class="icon"><i class="fa fa-money"></i></div>
-          <div class="count">Compras</div>
-          <h3>Cargar y listar compras</h3></a>
-        </div>
-    </div>
-
+          <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="tile-stats">
+                <a href="/compras/alta/"><div class="icon"><i class="fa fa-money"></i></div>
+                <div class="count">Compras</div>
+                <h3>Cargar y listar compras</h3></a>
+              </div>
+          </div>
+      {% endif %}    
     <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="tile-stats">
           <a href="/ventas/alta/"><div class="icon"><i class="fa fa-money"></i></div>
@@ -35,7 +35,7 @@
           <h3>Cargar Ventas</h3></a>
         </div>
     </div>
-
+    
     <div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="tile-stats">
           <a href="/cajas/alta/"><div class="icon"><i class="fa fa-money"></i></div>

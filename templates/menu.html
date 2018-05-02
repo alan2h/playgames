@@ -10,49 +10,61 @@
                         <!--<li><a href="/articulos/actualizar/precios/">Actualizar Precios</a></li>-->
                         <!--<li><a href="/articulos/historial/venta/">Historial Precios de venta</a></li>-->
                         <!--<li><a href="/articulos/historial/compra/">Historial Precios de compra</a></li>-->
-                        <li><a href="/proveedores/alta/"><i class="fa fa-male" aria-hidden="true"></i>Proveedores</a></li>
-                        <li><a href="/compras/listado/"><i class="fa fa-money" aria-hidden="true"></i>Compra</a></li>
+                        {% if request.user.is_staff %}
+                            <li><a href="/proveedores/alta/"><i class="fa fa-male" aria-hidden="true"></i>Proveedores</a></li>    
+                            <li><a href="/compras/listado/"><i class="fa fa-money" aria-hidden="true"></i>Compra</a></li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li><a><i class="fa fa-shopping-basket"></i> Salida de Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="/ventas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Ventas</a></li>
-                        <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
+                        {% if request.user.is_staff %}    
+                            <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
+                        {% endif %}
                     </ul>
                 </li>
-                <li><a><i class="fa fa-key" aria-hidden="true"></i> Gastos e Ingresos <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li><a href="/gastos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Gastos</a></li>
-                        <li><a href="/ingresos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Otros Ingresos</a></li>
-                    </ul>
-                </li>
+                {% if request.user.is_staff %}
+                    <li><a><i class="fa fa-key" aria-hidden="true"></i> Gastos e Ingresos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            
+                                <li><a href="/gastos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Gastos</a></li>
+                                <li><a href="/ingresos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Otros Ingresos</a></li>
+                            
+                        </ul>
+                    </li>
+                {% endif %}    
                 <li><a><i class="fa fa-paperclip" aria-hidden="true"></i> Informes por día <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="/cajas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Caja del día</a></li>
-                        <li><a href="/cajas/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Caja del día Imprimir</a></li>
-                        <li><a href="/ventas/informe/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Ventas del día</a></li>
-                        <li><a href="/gastos/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Gastos por día</a></li>
-                        <li><a href="/ingresos/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Otros Ingresos por día</a></li>
+                        {% if request.user.is_staff %}
+                            <li><a href="/cajas/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Caja del día Imprimir</a></li>
+                            <li><a href="/ventas/informe/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Ventas del día</a></li>
+                            <li><a href="/gastos/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Gastos por día</a></li>
+                            <li><a href="/ingresos/listado/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Otros Ingresos por día</a></li>
+                        {% endif %}
                     </ul>
                 </li>
-                <li><a><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Informes por Fechas <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li><a href="/cajas/informe/texto/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Informe de Cajas por fechas</a></li>
-                        <li><a href="/ventas/informe/texto/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Ventas por fechas</a></li>
-                    </ul>
-                </li>
-                <li><a><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Estadísticas <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li><a href="/ventas/informe/pie/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Informe de Ventas por fechas</a></li>
-                    </ul>
-                </li>
-                <li><a><i class="fa fa-users"></i> Administración <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li><a href="/admin/"><i class="fa fa-user" aria-hidden="true"></i>Administración General</a></li>
-                        <li><a href="/perfiles/alta"><i class="fa fa-user" aria-hidden="true"></i>Crear Usuario</a></li>
-                        <li><a href="/perfiles/alta/sucursal"><i class="fa fa-user" aria-hidden="true"></i>Crear Perfil</a></li>
-                    </ul>
-                </li>
+                {% if request.user.is_staff %}
+                    <li><a><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Informes por Fechas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/cajas/informe/texto/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Informe de Cajas por fechas</a></li>
+                            <li><a href="/ventas/informe/texto/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Ventas por fechas</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Estadísticas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/ventas/informe/pie/"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Informe de Ventas por fechas</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-users"></i> Administración <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/admin/"><i class="fa fa-user" aria-hidden="true"></i>Administración General</a></li>
+                            <li><a href="/perfiles/alta"><i class="fa fa-user" aria-hidden="true"></i>Crear Usuario</a></li>
+                            <li><a href="/perfiles/alta/sucursal"><i class="fa fa-user" aria-hidden="true"></i>Crear Perfil</a></li>
+                        </ul>
+                    </li>
+                {% endif %}    
             </ul>
         </div>
     </div>

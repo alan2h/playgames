@@ -50,15 +50,10 @@ class DashBoardTemplateView(CajaCreateIfNoExist, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         articulos = Articulo.objects.filter(precio_credito=None)
-        print('*********')
-        print(articulos)
         if articulos.exists():
             for articulo in articulos:
                 iva = float(articulo.alicuota_iva)
-                print('????????????????????------------> procesando precios de credito')
                 time.sleep(5)
-                print(iva)
-                print('????????????????????------------> procesando precios de credito')
                 incremento = (float(articulo.precio_venta) * float(iva)) / 100
                 precio_credito = float(articulo.precio_venta) + float(incremento)
                 precio_debito = float(articulo.precio_venta) + float(incremento)
