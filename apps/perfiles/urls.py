@@ -6,7 +6,6 @@ from .views import UserCreateView
 
 
 urlpatterns = [
-   
    # Urls comunes
-   url(r'^alta/$', UserCreateView.as_view(), name='perfiles-alta'),
+   url(r'^alta/$', UserCreateView.as_view(), name='perfiles-alta')
 ]

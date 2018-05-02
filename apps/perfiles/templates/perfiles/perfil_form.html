@@ -34,6 +34,28 @@
               </div>
 
             </form>
+             <table class="table" id="tbl">
+          <thead>
+            <tr>
+              <th>Idenfiticador</th>
+              <th>Username</th>
+              <th>Super Usuario</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                  <th scope="row">{{ usuario.id }}</th>
+                  <th>{{ usuario.username }}</th>
+                  {% if usuario.is_staff %}
+                    <th><i class="fa fa-check"></i></th>
+                  {% else %}  
+                    <th>--</th>
+                  {% endif %}
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
           </div>
         </div>
       </div>
