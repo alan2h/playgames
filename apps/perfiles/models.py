@@ -18,6 +18,8 @@ class Permiso(models.Model):
 
 class Perfil(models.Model):
 
+    ''' el campo permiso hasta ahora no se usa, la idea es que en un 
+    futuro el admin pueda darle determinados permisos a sus empleados '''
     permiso = models.ManyToManyField(Permiso, blank=True)
     usuario = models.ForeignKey(User, related_name='usuarios', on_delete=models.CASCADE)
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
