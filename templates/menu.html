@@ -22,7 +22,6 @@
                         <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
                     </ul>
                 </li>
-                {% if request.user.is_staff %}
                     <li><a><i class="fa fa-key" aria-hidden="true"></i> Gastos e Ingresos <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             
@@ -30,8 +29,7 @@
                                 <li><a href="/ingresos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Otros Ingresos</a></li>
                             
                         </ul>
-                    </li>
-                {% endif %}    
+                    </li>   
                 <li><a><i class="fa fa-paperclip" aria-hidden="true"></i> Informes por día <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="/cajas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Caja del día</a></li>
