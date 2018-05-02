@@ -47,4 +47,6 @@ urlpatterns = [
         name='gastos'),
     url(r'^ingresos/', include('apps.otros_ingresos.urls'),
         name='gastos'),
+    url(r'^perfiles/', include('apps.perfiles.urls'),
+        name='perfiles'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
