@@ -231,6 +231,7 @@ def buscar_fecha_compra(qs, fecha_compra):
 def buscar_marca(qs, marca):
     
     qs = Articulo.objects.filter(
+        baja=False,
         marca__descripcion__icontains=marca
         )
     return qs
@@ -239,6 +240,7 @@ def buscar_marca(qs, marca):
 def buscar_rubro(qs, rubro):
 
     qs = Articulo.objects.filter(
+        baja=False,
         rubro__descripcion__icontains=rubro
     )
     return qs
@@ -247,6 +249,7 @@ def buscar_rubro(qs, rubro):
 def buscar_categoria(qs, categoria):
 
     qs = Articulo.objects.filter(
+        baja=False,
         rubro__categoria__descripcion__icontains=categoria
     )
     return qs
@@ -257,6 +260,7 @@ def buscar_categoria(qs, categoria):
 def buscar_marca_categoria(qs, marca, categoria):
     
     qs = Articulo.objects.filter(
+        baja=False,
         marca__descripcion__icontains=marca,
         rubro__categoria__id=int(categoria)
         )
@@ -266,6 +270,7 @@ def buscar_marca_categoria(qs, marca, categoria):
 def buscar_rubro_categoria(qs, rubro, categoria):
 
     qs = Articulo.objects.filter(
+        baja=False,
         rubro__descripcion__icontains=rubro,
         rubro__categoria__id=int(categoria)
     )
@@ -274,6 +279,7 @@ def buscar_rubro_categoria(qs, rubro, categoria):
 
 def buscar_nombre_categoria(qs, nombre, categoria):
     qs = Articulo.objects.filter(
+        baja=False,
         nombre__icontains=nombre,
         rubro__categoria__id=int(categoria)
         )
@@ -283,6 +289,7 @@ def buscar_nombre_categoria(qs, nombre, categoria):
 def buscar_descripcion_categoria(qs, descripcion, categoria):
 
     qs = Articulo.objects.filter(
+        baja=False,
         descripcion__icontains=descripcion,
         rubro__categoria__id=int(categoria)
     )
