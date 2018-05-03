@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from reportlab.lib.units import mm
 
 from django.http import JsonResponse, HttpResponse
@@ -10,6 +12,8 @@ from reportlab.graphics.shapes import Drawing
 
 from .forms import MarcaForm, RubroForm, CategoriaForm
 from .models import Articulo, Categoria, Rubro
+
+from apps.sucursales.models import Sucursal
 
 
 ''' --------------------------------- '''
@@ -116,101 +120,185 @@ def buscar_codigo(qs, codigo):
     return qs
 
 
-def buscar_descripcion(qs, descripcion):
-    
-    if qs.exists() is False:
-        qs = Articulo.objects.filter(
-            baja=False,
-            descripcion__icontains=
-            descripcion
-        )
+def buscar_descripcion(qs, descripcion, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                descripcion__icontains=
+                descripcion,
+                sucursal=sucursal
+            )
+    else:
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                descripcion__icontains=
+                descripcion
+            )
     return qs
 
-def buscar_nombre(qs, nombre):
-    if qs.exists() is False:
-        qs = Articulo.objects.filter(
-            baja=False,
-            nombre__icontains=
-            nombre
-        )
+def buscar_nombre(qs, nombre, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__icontains=
+                nombre,
+                sucursal=sucursal
+            )
+    else:
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__icontains=
+                nombre
+            )
     return qs
 
 
-def buscar_precio_venta(qs, precio_venta):
+def buscar_precio_venta(qs, precio_venta, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            if '.' in precio_venta:
+                if precio_venta.split('.')[0].isnumeric() and \
+                        precio_venta.split('.')[1].isnumeric():
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_venta=precio_venta,
+                        sucursal=sucursal
+                    )
+            elif ',' in precio_venta:
+                if precio_venta.split(',')[0].isnumeric() and \
+                        precio_venta.split(',')[1].isnumeric():
+                    precio_formateado = precio_venta.replace(',', '.')
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_venta=precio_formateado,
+                        sucursal=sucursal
+                    )
+            elif precio_venta.isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_venta=precio_venta,
+                    sucursal=sucursal
+                )
+    else:
 
-    if qs.exists() is False:
-        if '.' in precio_venta:
-            if precio_venta.split('.')[0].isnumeric() and \
-                    precio_venta.split('.')[1].isnumeric():
+        if qs.exists() is False:
+            if '.' in precio_venta:
+                if precio_venta.split('.')[0].isnumeric() and \
+                        precio_venta.split('.')[1].isnumeric():
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_venta=precio_venta
+                    )
+            elif ',' in precio_venta:
+                if precio_venta.split(',')[0].isnumeric() and \
+                        precio_venta.split(',')[1].isnumeric():
+                    precio_formateado = precio_venta.replace(',', '.')
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_venta=precio_formateado
+                    )
+            elif precio_venta.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_venta=precio_venta
                 )
-        elif ',' in precio_venta:
-            if precio_venta.split(',')[0].isnumeric() and \
-                    precio_venta.split(',')[1].isnumeric():
-                precio_formateado = precio_venta.replace(',', '.')
-                qs = Articulo.objects.filter(
-                    baja=False,
-                    precio_venta=precio_formateado
-                )
-        elif precio_venta.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                precio_venta=precio_venta
-            )
     return qs
 
 
-def buscar_precio_compra(qs, precio_compra):
-
-    if qs.exists() is False:
-        if '.' in precio_compra:
-            if precio_compra.split('.')[0].isnumeric() and \
-                    precio_compra.split('.')[1].isnumeric():
+def buscar_precio_compra(qs, precio_compra, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            if '.' in precio_compra:
+                if precio_compra.split('.')[0].isnumeric() and \
+                        precio_compra.split('.')[1].isnumeric():
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_compra=precio_compra,
+                        sucursal=sucursal
+                    )
+            elif ',' in precio_compra:
+                if precio_compra.split(',')[0].isnumeric() and \
+                        precio_compra.split(',')[1].isnumeric():
+                    precio_formateado = precio_compra.replace(',', '.')
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_compra=precio_formateado,
+                        sucursal=sucursal
+                    )
+            elif precio_compra.isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    precio_compra=precio_compra,
+                    sucursal=sucursal
+                )
+    else:
+        if qs.exists() is False:
+            if '.' in precio_compra:
+                if precio_compra.split('.')[0].isnumeric() and \
+                        precio_compra.split('.')[1].isnumeric():
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_compra=precio_compra
+                    )
+            elif ',' in precio_compra:
+                if precio_compra.split(',')[0].isnumeric() and \
+                        precio_compra.split(',')[1].isnumeric():
+                    precio_formateado = precio_compra.replace(',', '.')
+                    qs = Articulo.objects.filter(
+                        baja=False,
+                        precio_compra=precio_formateado
+                    )
+            elif precio_compra.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_compra=precio_compra
                 )
-        elif ',' in precio_compra:
-            if precio_compra.split(',')[0].isnumeric() and \
-                    precio_compra.split(',')[1].isnumeric():
-                precio_formateado = precio_compra.replace(',', '.')
+    return qs
+
+
+def buscar_stock(qs, stock, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            if stock.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
-                    precio_compra=precio_formateado
+                    stock=stock,
+                    sucursal=sucursal
                 )
-        elif precio_compra.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                precio_compra=precio_compra
-            )
+    else:
+        if qs.exists() is False:
+            if stock.isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    stock=stock
+                )
     return qs
 
 
-def buscar_stock(qs, stock):
-
-    if qs.exists() is False:
-        if stock.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                stock=stock
-            )
+def buscar_stock_minimo(qs, stock_minimo, sucursal=None):
+    if (sucursal):
+         if qs.exists() is False:
+            if stock_minimo.isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    stock_minimo=stock_minimo,
+                    sucursal=sucursal
+                )
+    else:
+        if qs.exists() is False:
+            if stock_minimo.isnumeric():
+                qs = Articulo.objects.filter(
+                    baja=False,
+                    stock_minimo=stock_minimo
+                )
     return qs
 
 
-def buscar_stock_minimo(qs, stock_minimo):
-
-    if qs.exists() is False:
-        if stock_minimo.isnumeric():
-            qs = Articulo.objects.filter(
-                baja=False,
-                stock_minimo=stock_minimo
-            )
-    return qs
-
-
-def buscar_fecha_compra(qs, fecha_compra):
+def buscar_fecha_compra(qs, fecha_compra, sucursal=None):
 
     if qs.exists() is False:
         if len(fecha_compra.split('/')) is 3:
@@ -228,69 +316,142 @@ def buscar_fecha_compra(qs, fecha_compra):
     return qs
 
 
-def buscar_marca(qs, marca):
-    
-    qs = Articulo.objects.filter(
-        baja=False,
-        marca__descripcion__icontains=marca
+def buscar_marca(qs, marca, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            marca__descripcion__icontains=marca,
+            sucursal=sucursal
+            )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            marca__descripcion__icontains=marca
+            )
+    return qs
+
+
+def buscar_rubro(qs, rubro, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__descripcion__icontains=rubro,
+            sucursal=sucursal
+        )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__descripcion__icontains=rubro
         )
     return qs
 
 
-def buscar_rubro(qs, rubro):
-
-    qs = Articulo.objects.filter(
-        baja=False,
-        rubro__descripcion__icontains=rubro
-    )
-    return qs
-
-
-def buscar_categoria(qs, categoria):
-
-    qs = Articulo.objects.filter(
-        baja=False,
-        rubro__categoria__descripcion__icontains=categoria
-    )
+def buscar_categoria(qs, categoria, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__categoria__descripcion__icontains=categoria,
+            sucursal=sucursal
+        )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__categoria__descripcion__icontains=categoria
+        )
     return qs
 
 
 # en caso de tener categoria como busqueda
 
-def buscar_marca_categoria(qs, marca, categoria):
+def buscar_marca_categoria(qs, marca, categoria, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            marca__descripcion__icontains=marca,
+            rubro__categoria__id=int(categoria),
+            sucursal=sucursal
+            )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            marca__descripcion__icontains=marca,
+            rubro__categoria__id=int(categoria)
+            )
+    return qs
+
+
+def buscar_rubro_categoria(qs, rubro, categoria, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__descripcion__icontains=rubro,
+            rubro__categoria__id=int(categoria),
+            sucursal=sucursal
+        )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            rubro__descripcion__icontains=rubro,
+            rubro__categoria__id=int(categoria)
+        )
+    return qs
+
+
+def buscar_nombre_categoria(qs, nombre, categoria, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            nombre__icontains=nombre,
+            rubro__categoria__id=int(categoria),
+            sucursal=sucursal
+            )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            nombre__icontains=nombre,
+            rubro__categoria__id=int(categoria)
+            )
+    return qs
+
+
+def buscar_descripcion_categoria(qs, descripcion, categoria, sucursal=None):
+    if (sucursal):
+        qs = Articulo.objects.filter(
+            baja=False,
+            descripcion__icontains=descripcion,
+            rubro__categoria__id=int(categoria),
+            sucursal = sucursal
+        )
+    else:
+        qs = Articulo.objects.filter(
+            baja=False,
+            descripcion__icontains=descripcion,
+            rubro__categoria__id=int(categoria)
+        )
+    return qs
+
+
+''' ---------------------------------- '''
+''' Ajax para cambiar la sucursal de un articulo '''
+''' ---------------------------------- '''
+
+def ajax_cambiar_sucursal(request):
+
+    if request.is_ajax():
+        
+        articulo = Articulo.objects.get(pk=request.POST.get('id_articulo'))
+        sucursal = Sucursal.objects.get(pk=request.POST.get('id_nombre_sucursal'))
+
+        articulo_copia = deepcopy(articulo)
+        articulo_copia.id = None
+        articulo_copia.stock = int(request.POST.get('id_cantidad_articulo'))
+        articulo_copia.sucursal = sucursal
+        articulo_copia.save()
+
+        articulo.stock = int(articulo.stock) - int(request.POST.get('id_cantidad_articulo'))
+        articulo.save()
     
-    qs = Articulo.objects.filter(
-        baja=False,
-        marca__descripcion__icontains=marca,
-        rubro__categoria__id=int(categoria)
-        )
-    return qs
-
-
-def buscar_rubro_categoria(qs, rubro, categoria):
-
-    qs = Articulo.objects.filter(
-        baja=False,
-        rubro__descripcion__icontains=rubro,
-        rubro__categoria__id=int(categoria)
-    )
-    return qs
-
-
-def buscar_nombre_categoria(qs, nombre, categoria):
-    qs = Articulo.objects.filter(
-        baja=False,
-        nombre__icontains=nombre,
-        rubro__categoria__id=int(categoria)
-        )
-    return qs
-
-
-def buscar_descripcion_categoria(qs, descripcion, categoria):
-
-    qs = Articulo.objects.filter(
-        baja=False,
-        descripcion__icontains=descripcion,
-        rubro__categoria__id=int(categoria)
-    )
-    return qs
+        data = {
+            'message': 'Se guardo correctamente'
+        }
+        return JsonResponse(data)

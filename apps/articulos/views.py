@@ -13,6 +13,9 @@ from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Cat
 from .forms import ArticuloForm, ArticuloDeleteForm, MarcaForm, RubroForm, \
     ActualizacionPrecioForm, CategoriaForm
 
+from apps.sucursales.models import Sucursal
+from apps.perfiles.models import Perfil
+
 from .helpers import DibujarBarcode
 from . import helpers
 
@@ -63,50 +66,104 @@ class ArticuloListView(ListView):
         return context
 
     def get_queryset(self):
-        if self.request.GET.get('campo_categoria') == '' or self.request.GET.get('campo_categoria') == None:
-            qs = Articulo.objects.filter(baja=False)
+        if self.request.user.is_staff:
+            if self.request.GET.get('campo_categoria') == '' or self.request.GET.get('campo_categoria') == None:
+                qs = Articulo.objects.filter(baja=False)
+            else:
+                qs = Articulo.objects.filter(baja=False, rubro__categoria__id=self.request.GET.get('campo_categoria'))
+
+            if 'texto_buscar' in self.request.GET:
+                if self.request.GET.get('texto_buscar') is not '':
+                    texto_buscar = self.request.GET.get('texto_buscar')
+                    campo_buscar = self.request.GET.get('campo_buscar')
+                    qs = helpers.buscar_codigo(qs, texto_buscar)
+
+                    if 'campo_categoria' in self.request.GET:
+                        if self.request.GET.get('campo_categoria') is not '':
+                            
+                            if qs.exists() == False:
+                                qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                            if qs.exists() == False:
+                                qs = helpers.buscar_rubro_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                            if qs.exists() == False:
+                                qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                            if qs.exists() == False:
+                                qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
+                            
+                    if qs.exists() == False:
+                        qs = helpers.buscar_descripcion(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_marca(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_rubro(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_precio_venta(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_precio_compra(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_stock(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_stock_minimo(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_fecha_compra(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_nombre(qs, texto_buscar)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_categoria(qs, texto_buscar)
+            return qs
         else:
-            qs = Articulo.objects.filter(baja=False, rubro__categoria__id=self.request.GET.get('campo_categoria'))
+            ''' en caso de que no se staff va a venir a crear la lista aca donde se seleeciona la sucursal '''
+            sucursal_unico = '1'
+            perfil = Perfil.objects.filter(usuario__id=self.request.user.id)
+            if perfil.exists():
+                perfil_unico = perfil[0]
+                sucursal = Sucursal.objects.get(id=perfil_unico.sucursal.id)
+                sucursal_unico = sucursal.id
 
-        if 'texto_buscar' in self.request.GET:
-            if self.request.GET.get('texto_buscar') is not '':
-                texto_buscar = self.request.GET.get('texto_buscar')
-                campo_buscar = self.request.GET.get('campo_buscar')
-                qs = helpers.buscar_codigo(qs, texto_buscar)
+            if self.request.GET.get('campo_categoria') == '' or self.request.GET.get('campo_categoria') == None:
+                qs = Articulo.objects.filter(baja=False, sucursal=sucursal_unico)
+            else:
+                qs = Articulo.objects.filter(baja=False, rubro__categoria__id=self.request.GET.get('campo_categoria'),  sucursal=sucursal_unico)
 
-                if 'campo_categoria' in self.request.GET:
-                    if self.request.GET.get('campo_categoria') is not '':
-                        
-                        if qs.exists() == False:
-                            qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
-                        if qs.exists() == False:
-                            qs = helpers.buscar_rubro_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
-                        if qs.exists() == False:
-                            qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
-                        if qs.exists() == False:
-                            qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'))
-                        
-                if qs.exists() == False:
-                    qs = helpers.buscar_descripcion(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_marca(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_rubro(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_precio_venta(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_precio_compra(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_stock(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_stock_minimo(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_fecha_compra(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_nombre(qs, texto_buscar)
-                if qs.exists() == False:
-                    qs = helpers.buscar_categoria(qs, texto_buscar)
-        return qs
+            if 'texto_buscar' in self.request.GET:
+                if self.request.GET.get('texto_buscar') is not '':
+                    texto_buscar = self.request.GET.get('texto_buscar')
+                    campo_buscar = self.request.GET.get('campo_buscar')
+                    qs = helpers.buscar_codigo(qs, texto_buscar)
+
+                    if 'campo_categoria' in self.request.GET:
+                        if self.request.GET.get('campo_categoria') is not '':
+                            
+                            if qs.exists() == False:
+                                qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
+                            if qs.exists() == False:
+                                qs = helpers.buscar_rubro_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
+                            if qs.exists() == False:
+                                qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
+                            if qs.exists() == False:
+                                qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'),  sucursal=sucursal_unico)
+                            
+                    if qs.exists() == False:
+                        qs = helpers.buscar_descripcion(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_marca(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_rubro(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_precio_venta(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_precio_compra(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_stock(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_stock_minimo(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_fecha_compra(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() == False:
+                        qs = helpers.buscar_categoria(qs, texto_buscar, sucursal=sucursal_unico)
+            return qs
 
 
 class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
@@ -183,6 +240,12 @@ class ArticuloDetailView(DetailView):
 
     model = Articulo
     template_name = 'articulos/articulo_detail.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(ArticuloDetailView, self).get_context_data(**kwargs)
+        context['sucursales'] = Sucursal.objects.all()
+        return context
 
 
 def barcode(request, pk):

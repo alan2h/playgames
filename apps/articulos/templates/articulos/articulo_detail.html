@@ -21,7 +21,7 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-
+                    {% csrf_token %}
                       <div class="col-md-7 col-sm-7 col-xs-12" style="border:0px solid #e5e5e5;">
                         {% if object.imagen %}
                             <img src="/media/{{ object.imagen }}"  width="322" height="322" />
@@ -50,10 +50,34 @@
                             <br>
                             
                           </div>
+                          <button type="button" data-toggle="modal" data-target=".id_cambiar_sucursal" class="btn btn-danger">Cambiar de Sucursal</button>
                         </div>
                         <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary">Imprimir código de barras</a>
                       </div>
-
+                      <!-- Small modal sucursal -->
+                        <div class="modal fade id_cambiar_sucursal" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel2">Sucursales</h4>
+                                            <div class="alert alert-danger" id="id_mensaje_sucursal" role="alert"></div>
+                                            <select class="form-control" name="nombre_sucursal" id="id_nombre_sucursal" >
+                                              {% for sucursal in sucursales %}
+                                              <option value="{{ sucursal.id }}">{{ sucursal.descripcion }}</option>
+                                              {% endfor %}
+                                            </select>
+                                            <input class="form-control" id="id_cantidad_articulo" value="1" >
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                                            <button type="button" class="btn btn-primary" onclick="guardar_cambio()">Enviar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- /modals -->
                     </div>
                   </div>
                 </div>
@@ -62,5 +86,24 @@
 {% endblock %}
 
 {% block js %}
+  <script>
+    document.getElementById('id_mensaje_sucursal').style.display = 'none';
 
+    /* Función ajax para cambiar de sucursal un articulo */
+    var guardar_cambio = function(){
+        $.ajax({
+            url: '/articulos/ajax/cambiar/sucursal/',
+            type: 'post',
+            data: {
+                id_nombre_sucursal: $('#id_nombre_sucursal').val(),
+                id_cantidad_articulo: $('#id_cantidad_articulo').val(),
+                id_articulo:'{{ object.pk }}',
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+            },
+            success: function(data){
+               location.reload();
+            }
+        });
+    };
+  </script>
 {% endblock %}

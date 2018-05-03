@@ -40,5 +40,7 @@ urlpatterns = [
    url(r'^ajax/categoria/subcategoria/$', helpers.ajax_query_rubro,
        name='categoria-query-ajax'),   
    url(r'^actualizar/precios/$',
-       ActualizarPrecioTemplateView.as_view(), name='actualizar-precios')
+       ActualizarPrecioTemplateView.as_view(), name='actualizar-precios'),
+   url(r'^ajax/cambiar/sucursal/$', helpers.ajax_cambiar_sucursal,
+       name='cambiar-sucursal-ajax')    
 ]
