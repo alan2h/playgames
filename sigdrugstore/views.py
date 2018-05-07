@@ -79,7 +79,6 @@ class DashBoardTemplateView(CajaCreateIfNoExist, TemplateView):
         return super(DashBoardTemplateView, self).dispatch(request, *args, **kwargs)
 
 
-
 def salir(request):
 
     logout(request)

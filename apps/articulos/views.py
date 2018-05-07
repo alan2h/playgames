@@ -73,9 +73,6 @@ class ArticuloListView(ListView):
                 qs = Articulo.objects.filter(baja=False, rubro__categoria__id=self.request.GET.get('campo_categoria'),
                                              sucursal=self.request.session['id_sucursal'])
 
-            print(self.request.session['id_sucursal'])
-            print(qs)
-
             if 'texto_buscar' in self.request.GET:
                 if self.request.GET.get('texto_buscar') is not '':
                     texto_buscar = self.request.GET.get('texto_buscar')
@@ -87,7 +84,7 @@ class ArticuloListView(ListView):
 
                     if 'campo_categoria' in self.request.GET:
                         if self.request.GET.get('campo_categoria') is not '':
-                            
+
                             if qs.exists() is False:
                                 qs = helpers.buscar_marca_categoria(qs, texto_buscar,
                                                                     self.request.GET.get('campo_categoria'),
@@ -104,7 +101,7 @@ class ArticuloListView(ListView):
                                 qs = helpers.buscar_descripcion_categoria(qs, texto_buscar,
                                                                           self.request.GET.get('campo_categoria'),
                                                                           sucursal=sucursal_unico)
-                            
+
                     if qs.exists() is False:
                         qs = helpers.buscar_descripcion(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
@@ -149,7 +146,7 @@ class ArticuloListView(ListView):
 
                     if 'campo_categoria' in self.request.GET:
                         if self.request.GET.get('campo_categoria') is not '':
-                            
+
                             if qs.exists() is False:
                                 qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
                             if qs.exists() is False:
@@ -158,7 +155,7 @@ class ArticuloListView(ListView):
                                 qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
                             if qs.exists() is False:
                                 qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'),  sucursal=sucursal_unico)
-                            
+
                     if qs.exists() is False:
                         qs = helpers.buscar_descripcion(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
