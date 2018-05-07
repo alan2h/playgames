@@ -28,6 +28,7 @@ urlpatterns = [
                                namespace='rest_framework')),
 
     url(r'^$', views.ingresar, name='login'),
+    url(r'^seleccion/sucursal/$', views.seleccion_sucursal, name='seleccion-sucursal'),
     url(r'^salir/$', views.salir, name='logout'),
     url(r'^dashboard/$', views.DashBoardTemplateView.as_view(),
         name='dashboard'),
