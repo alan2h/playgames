@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         {% for articulo in object_list %}
-                        <tr >
+                        <tr class="{% if articulo.stock <= 0 %}danger {% endif %}" >
                             <td data-toggle="tooltip" title="Este árticulo se encuentra en {{ articulo.sucursal }}">
                                 {% if articulo.imagen %}
                                     <img src="/media/{{ articulo.imagen }}" data-action="zoom" width="52" height="52" />
