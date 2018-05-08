@@ -33,6 +33,7 @@
             <th>Descuento</th>
             <th>Árticulos vendidos</th>
             <th>Precio Venta </th>
+            <th>Sucursal </th>
             <th>Acciones </th>
           </tr>
         </thead>
@@ -50,6 +51,7 @@
                     {% endfor %}
                 </td>
                 <td>$ {{ venta.precio_venta_total }}</td>
+                <td> {{ venta.sucursal }}</td>
                 <td><a href="/ventas/eliminar/{{ venta.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Anular Venta </a></td>
               </tr>
             {% endfor %}

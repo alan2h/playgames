@@ -2,7 +2,7 @@
 from django.db import models
 
 from apps.articulos.models import Articulo
-
+from apps.sucursales.models import Sucursal
 
 class ArticuloVenta(models.Model):
 
@@ -30,6 +30,7 @@ class Venta(models.Model):
                                             blank=False)
     precio_venta_total = models.DecimalField(decimal_places=2, max_digits=12,
                                              null=False, blank=False)
+    sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
 
     # Baja
     baja = models.BooleanField(default=False)

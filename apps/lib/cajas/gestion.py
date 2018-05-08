@@ -57,7 +57,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_efectivo = precio_efectivo
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_venta_descuento(self, precio_efectivo, id_sucursal=None):
 
@@ -76,7 +76,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_efectivo = precio_efectivo
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_venta_debito(self, precio_debito, id_sucursal=None):
 
@@ -95,7 +95,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_debito = precio_debito
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_venta_credito(self, precio_credito, id_sucursal=None):
 
@@ -114,7 +114,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_credito = precio_credito
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_compra(self, precio_compra, id_sucursal=None):
 
@@ -133,7 +133,7 @@ class CajaFunctions(object):
         else:
             caja.compras = precio_compra
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_compra(self, precio_compra, id_sucursal=None):
 
@@ -155,7 +155,7 @@ class CajaFunctions(object):
         else:
             caja.compras = precio_compra
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_gasto(self, monto_gasto, id_sucursal=None):
 
@@ -174,7 +174,7 @@ class CajaFunctions(object):
         else:
             caja.otros_gastos = monto_gasto
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def sumar_ingreso(self, monto_ingreso, id_sucursal=None):
 
@@ -193,7 +193,7 @@ class CajaFunctions(object):
         else:
             caja.otros_ingresos = monto_ingreso
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_gasto(self, monto_gasto, id_sucursal=None):
 
@@ -215,7 +215,7 @@ class CajaFunctions(object):
         else:
             caja.otros_gastos -= monto_gasto
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_ingreso(self, monto_ingreso, id_sucursal=None):
 
@@ -237,7 +237,7 @@ class CajaFunctions(object):
         else:
             caja.otros_ingresos -= monto_ingreso
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_venta_credito(self, precio_credito, id_sucursal=None):
 
@@ -259,7 +259,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_credito = precio_credito
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_venta_debito(self, precio_debito, id_sucursal=None):
 
@@ -281,7 +281,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_debito = precio_debito
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def restar_venta_efectivo(self, precio_efectivo, id_sucursal=None):
 
@@ -303,7 +303,7 @@ class CajaFunctions(object):
         else:
             caja.ventas_efectivo = precio_efectivo
         caja.save()
-        self.saldo_caja()
+        self.saldo_caja(id_sucursal)
 
     def saldo_caja(self, id_sucursal=None):
 

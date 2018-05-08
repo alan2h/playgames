@@ -10,6 +10,7 @@ from apps.lib.articulos.gestion_stock import ArticuloStock
 
 from apps.socios_puntos.models import PuntoConfiguracion
 from apps.clientes.models import Cliente
+from apps.sucursales.models import Sucursal
 
 
 def ajax_guardar_venta(request):
@@ -19,6 +20,7 @@ def ajax_guardar_venta(request):
     porcentaje_descuento = request.POST.get('porcentaje_descuento')
     caja_funciones = CajaFunctions()
     articulo_stock = ArticuloStock()
+    sucursal = Sucursal.objects.get(pk=request.session['id_sucursal'])
 
     if request.is_ajax():
         if 'ventas' in request.POST:
@@ -82,7 +84,8 @@ def ajax_guardar_venta(request):
                     precio_venta_total=request.POST.get('precio_venta_total'),
                     forma_pago=forma_pago,
                     porcentaje_aumento=credito_porcentaje,
-                    porcentaje_descuento=porcentaje_descuento
+                    porcentaje_descuento=porcentaje_descuento,
+                    sucursal=sucursal
                 )
                 venta.save()
 
