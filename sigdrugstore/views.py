@@ -58,6 +58,9 @@ class DashBoardTemplateView(TemplateView):
     template_name = 'dashboard.html'
 
     def dispatch(self, request, *args, **kwargs):
+        if 'id_sucursal' not in self.request.session:
+            logout(request)
+            return HttpResponseRedirect('/')
         id_sucursal = self.request.session['id_sucursal']
         sucursal = Sucursal.objects.get(pk=id_sucursal)
 

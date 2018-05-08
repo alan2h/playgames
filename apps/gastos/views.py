@@ -27,6 +27,7 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
+            form.cleaned_data['sucursal'] = self.request.session['id_sucursal']
             caja_funciones = CajaFunctions()
             caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
         return super(GastoCreateView, self).form_valid(form)
