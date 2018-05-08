@@ -20,9 +20,9 @@ class CajaCreateView(SuccessMessageMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         caja_actual = gestion.CajaFunctions()
-        if caja_actual.exists():
+        if caja_actual.exists(self.request.session['id_sucursal']):
             return HttpResponseRedirect('/cajas/editar/%s' %
-                                        caja_actual.first_field_pk())
+                                        caja_actual.first_field_pk(self.request.session['id_sucursal']))
         return super(CajaCreateView, self).dispatch(request,*args, **kwargs)
 
     def form_valid(self, form):

@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.sucursales.models import Sucursal
+
 
 class Caja(models.Model):
 
@@ -17,9 +19,10 @@ class Caja(models.Model):
     ventas_credito = models.DecimalField(max_digits=12, decimal_places=2,
                                          null=True, blank=True)
     otros_ingresos = models.DecimalField(max_digits=12, decimal_places=2,
-                                  null=True, blank=True)
+                                         null=True, blank=True)
     otros_gastos = models.DecimalField(max_digits=12, decimal_places=2,
                                        null=True, blank=True)
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
 
     def __str__(self):
         return str(self.fecha)

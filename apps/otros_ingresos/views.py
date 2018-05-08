@@ -28,7 +28,7 @@ class OtroIngresoCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         if form.is_valid():
             caja_funciones = CajaFunctions()
-            caja_funciones.sumar_ingreso(form.data['monto'])
+            caja_funciones.sumar_ingreso(form.data['monto'], self.request.session['id_sucursal'])
         return super(OtroIngresoCreateView, self).form_valid(form)
 
 
@@ -44,8 +44,8 @@ class OtroIngresoUpdateView(SuccessMessageMixin, UpdateView):
         if form.is_valid():
             caja_funciones = CajaFunctions()
             otro_ingreso = OtroIngreso.objects.get(pk=self.kwargs['pk']).monto
-            caja_funciones.restar_ingreso(otro_ingreso)
-            caja_funciones.sumar_ingreso(form.data['monto'])
+            caja_funciones.restar_ingreso(otro_ingreso, self.request.session['id_sucursal'])
+            caja_funciones.sumar_ingreso(form.data['monto'], self.request.session['id_sucursal'])
         return super(OtroIngresoUpdateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -61,5 +61,5 @@ class OtroIngresoDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.error(request, 'El gasto se elimino correctamente')
         caja_funciones = CajaFunctions()
-        caja_funciones.restar_ingreso(self.get_object().monto)
+        caja_funciones.restar_ingreso(self.get_object().monto, self.request.session['id_sucursal'])
         return super(OtroIngresoDeleteView, self).delete(request, *args, **kwargs)

@@ -14,6 +14,7 @@ from apps.cajas.models import Caja
 from apps.lib.cajas.gestion import CajaCreateIfNoExist
 from apps.articulos.models import Articulo
 from apps.sucursales.models import Sucursal
+from apps.perfiles.models import Perfil
 
 import time 
 
@@ -38,6 +39,8 @@ def ingresar(request):
                         if request.user.is_staff:
                             return HttpResponseRedirect('/seleccion/sucursal')
                         else:
+                            perfil = Perfil.objects.filter(usuario__id=request.user.id)[0]
+                            request.session['id_sucursal'] = perfil.sucursal.id
                             return HttpResponseRedirect('/dashboard')
                     else:
                         return render(request, 'noactivo.html')
@@ -50,22 +53,32 @@ def ingresar(request):
         return render(request, 'login.html', {'formulario': formulario})
 
 
-class DashBoardTemplateView(CajaCreateIfNoExist, TemplateView):
+class DashBoardTemplateView(TemplateView):
 
     template_name = 'dashboard.html'
 
     def dispatch(self, request, *args, **kwargs):
-        articulos = Articulo.objects.filter(precio_credito=None)
+        id_sucursal = self.request.session['id_sucursal']
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+
+        today = datetime.now().date()
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        if caja.exists() is False:
+            caja = Caja(fecha=today, caja_inicial=500, sucursal=sucursal)
+            caja.save()
+        # articulos = Articulo.objects.filter(precio_credito=None)
         # este metodo verifica que al loguearse el admin y no se haya
         # seleccionado una sucursal, que cargue la primera por default
-        # -----------------------------------------------------------
-        '''if self.request.user.is_staff:
-            if 'id_sucursal' in self.request.session:
-                sucursal = Sucursal.objects.all()
-                if sucursal.exists():
-                    self.request.session['id_sucursal'] = sucursal[0].id'''
-        # -----------------------------------------------------------
-        if articulos.exists():
+        # --------------------------------------------------------------
+        # ---------- en caso de que no sea staff guarda la sucursal ----
+        # --------------------------------------------------------------
+        ''' if self.request.user.is_staff is False:
+            if 'id_sucursal' not in self.request.session:
+                perfil = Perfil.objects.filter(usuario__id=self.request.user.id)[0]
+                self.request.session['id_sucursal'] = perfil.sucursal.id'''
+        # --------------------------------------------------------------
+        # --------------------------------------------------------------
+        '''if articulos.exists():
             for articulo in articulos:
                 iva = float(articulo.alicuota_iva)
                 time.sleep(5)
@@ -75,7 +88,7 @@ class DashBoardTemplateView(CajaCreateIfNoExist, TemplateView):
                 articulo_create = Articulo.objects.get(pk=articulo.id)
                 articulo_create.precio_credito = precio_credito
                 articulo_create.precio_debito = precio_debito
-                articulo_create.save()
+                articulo_create.save()'''
         return super(DashBoardTemplateView, self).dispatch(request, *args, **kwargs)
 
 

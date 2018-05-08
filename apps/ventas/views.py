@@ -58,7 +58,6 @@ class VentaListView(ListView):
         return queryset
 
 
-
 class VentaDeleteView(DeleteView):
 
     model = Venta
@@ -72,18 +71,18 @@ class VentaDeleteView(DeleteView):
 
         venta = Venta.objects.get(pk=self.kwargs['pk'])
         if venta.forma_pago == 'efectivo':
-            caja_funciones.restar_venta_efectivo(venta.precio_venta_total)
+            caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
         if venta.forma_pago == 'descuento':
-            caja_funciones.restar_venta_efectivo(venta.precio_venta_total)    
+            caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
         if venta.forma_pago == 'credito':
             aumentar_precio = float(venta.precio_venta_total) * int(venta.porcentaje_aumento)
             precio_enviar = float(venta.precio_venta_total) + (float(aumentar_precio)/100)
-            caja_funciones.restar_venta_credito(precio_enviar)
+            caja_funciones.restar_venta_credito(precio_enviar, self.request.session['id_sucursal'])
         if venta.forma_pago == 'debito':
-            caja_funciones.restar_venta_debito(venta.precio_venta_total)
+            caja_funciones.restar_venta_debito(venta.precio_venta_total, self.request.session['id_sucursal'])
         for articulo_venta in venta.articulo_venta.all():
             articulos_stock.sumar_stock(articulo_venta.articulo.id,
-                                         articulo_venta.cantidad)
+                                        articulo_venta.cantidad)
             articulos_stock.restar_vendida(articulo_venta.articulo.id,
                                            articulo_venta.cantidad)
         venta.fecha_baja = datetime.datetime.now().date()

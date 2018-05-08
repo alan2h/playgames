@@ -56,7 +56,7 @@ class CompraDeleteView(DeleteView):
 
         compra = Compra.objects.get(pk=self.kwargs['pk'])
 
-        caja_funciones.restar_compra(compra.precio_compra_total)
+        caja_funciones.restar_compra(compra.precio_compra_total, self.request.session['id_sucursal'])
         for articulo_compra in compra.articulo_compra.all():
             articulo_stock.restar_stock(articulo_compra.articulo.id,
                                         articulo_compra.cantidad)

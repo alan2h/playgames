@@ -2,16 +2,21 @@
 from datetime import datetime, timedelta, time
 
 from apps.cajas.models import Caja
+from apps.perfiles.models import Perfil
+from apps.sucursales.models import Sucursal
 
 
 class CajaCreateIfNoExist(object):
 
     def dispatch(self, request, *args, **kwargs):
 
+        id_sucursal = self.request.session['id_sucursal']
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=500)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
         return super(CajaCreateIfNoExist, self).dispatch(request,
@@ -20,26 +25,31 @@ class CajaCreateIfNoExist(object):
 
 class CajaFunctions(object):
 
-    def exists(self):
+    def exists(self, id_sucursal=None):
+        # sucursal = Sucursal.objects.get(pk=id_sucursal)
+
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal=id_sucursal)
         return caja.exists()
 
-    def first_field_pk(self):
+    def first_field_pk(self, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal=id_sucursal)
         return str(caja[0].pk)
 
-    def sumar_venta_efectivo(self, precio_efectivo):
+    def sumar_venta_efectivo(self, precio_efectivo, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        print(id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_efectivo is not None:
             resultado = float(precio_efectivo) + float(caja.ventas_efectivo)
@@ -49,15 +59,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_venta_descuento(self, precio_efectivo):
+    def sumar_venta_descuento(self, precio_efectivo, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_efectivo is not None:
             resultado = float(precio_efectivo) + float(caja.ventas_efectivo)
@@ -67,15 +78,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_venta_debito(self, precio_debito):
+    def sumar_venta_debito(self, precio_debito, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_debito is not None:
             resultado = float(precio_debito) + float(caja.ventas_debito)
@@ -85,15 +97,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_venta_credito(self, precio_credito):
+    def sumar_venta_credito(self, precio_credito, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_credito is not None:
             resultado = float(precio_credito) + float(caja.ventas_credito)
@@ -103,15 +116,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_compra(self, precio_compra):
+    def sumar_compra(self, precio_compra, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.compras is not None:
             resultado = float(precio_compra) + float(caja.compras)
@@ -121,15 +135,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_compra(self, precio_compra):
+    def restar_compra(self, precio_compra, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.compras is not None:
             resultado = float(precio_compra) - float(caja.compras)
@@ -142,15 +157,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_gasto(self, monto_gasto):
+    def sumar_gasto(self, monto_gasto, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.otros_gastos is not None:
             resultado = float(monto_gasto) + float(caja.otros_gastos)
@@ -160,15 +176,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def sumar_ingreso(self, monto_ingreso):
+    def sumar_ingreso(self, monto_ingreso, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.otros_ingresos is not None:
             resultado = float(monto_ingreso) + float(caja.otros_ingresos)
@@ -178,15 +195,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_gasto(self, monto_gasto):
+    def restar_gasto(self, monto_gasto, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.otros_gastos is not None:
             resultado = float(monto_gasto) - float(caja.otros_gastos)
@@ -199,15 +217,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_ingreso(self, monto_ingreso):
+    def restar_ingreso(self, monto_ingreso, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.otros_ingresos is not None:
             resultado = float(monto_ingreso) - float(caja.otros_ingresos)
@@ -220,15 +239,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_venta_credito(self, precio_credito):
+    def restar_venta_credito(self, precio_credito, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_credito is not None:
             resultado = float(precio_credito) - float(caja.ventas_credito)
@@ -241,15 +261,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_venta_debito(self, precio_debito):
+    def restar_venta_debito(self, precio_debito, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_debito is not None:
             resultado = float(precio_debito) - float(caja.ventas_debito)
@@ -262,15 +283,16 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def restar_venta_efectivo(self, precio_efectivo):
+    def restar_venta_efectivo(self, precio_efectivo, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
         if caja.exists() is False:
-            caja = Caja(fecha=today, caja_inicial=0)
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
 
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
 
         if caja.ventas_efectivo is not None:
             resultado = float(precio_efectivo) - float(caja.ventas_efectivo)
@@ -283,10 +305,10 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja()
 
-    def saldo_caja(self):
+    def saldo_caja(self, id_sucursal=None):
 
         today = datetime.now().date()
-        caja = Caja.objects.filter(fecha=today)[0]
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
         saldo = 0.0
         if caja.caja_inicial is not None:
             saldo += float(caja.caja_inicial)

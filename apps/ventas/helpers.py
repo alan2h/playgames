@@ -11,6 +11,7 @@ from apps.lib.articulos.gestion_stock import ArticuloStock
 from apps.socios_puntos.models import PuntoConfiguracion
 from apps.clientes.models import Cliente
 
+
 def ajax_guardar_venta(request):
     articulo_venta_array = []
     forma_pago = request.POST.get('forma_pago')
@@ -90,21 +91,21 @@ def ajax_guardar_venta(request):
             if forma_pago == 'efectivo':
                 caja_funciones.sumar_venta_efectivo(precio_efectivo=
                                                     request.POST.get(
-                                                        'precio_venta_total'))
+                                                        'precio_venta_total'), id_sucursal=request.session['id_sucursal'])
             if forma_pago == 'descuento':
                 caja_funciones.sumar_venta_descuento(precio_efectivo=
                                                     request.POST.get(
-                                                        'total_con_descuento'))
+                                                        'total_con_descuento'), id_sucursal=request.session['id_sucursal'])
             if forma_pago == 'debito':
                 caja_funciones.sumar_venta_debito(precio_debito=request.POST
-                                                  .get('precio_venta_total'))
+                                                  .get('precio_venta_total'), id_sucursal=request.session['id_sucursal'])
             if forma_pago == 'credito':
                 aumento = (float(request.POST.get('precio_venta_total')) *
                            float(credito_porcentaje)) / 100
                 precio_aumentado = \
                     float(request.POST.get('precio_venta_total')) + aumento
                 caja_funciones.sumar_venta_credito(
-                    precio_credito=precio_aumentado)
+                    precio_credito=precio_aumentado, id_sucursal=request.session['id_sucursal'])
 
             for a in articulo_venta_array:
                 venta.articulo_venta.add(a)

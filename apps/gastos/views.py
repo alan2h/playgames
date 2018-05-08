@@ -28,7 +28,7 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         if form.is_valid():
             caja_funciones = CajaFunctions()
-            caja_funciones.sumar_gasto(form.data['monto'])
+            caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
         return super(GastoCreateView, self).form_valid(form)
 
 
@@ -43,8 +43,8 @@ class GastoUpdateView(SuccessMessageMixin, UpdateView):
         if form.is_valid():
             caja_funciones = CajaFunctions()
             gasto = Gasto.objects.get(pk=self.kwargs['pk']).monto
-            caja_funciones.restar_gasto(gasto)
-            caja_funciones.sumar_gasto(form.data['monto'])
+            caja_funciones.restar_gasto(gasto, self.request.session['id_sucursal'])
+            caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
         return super(GastoUpdateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -59,6 +59,6 @@ class GastoDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         caja_funciones = CajaFunctions()
-        caja_funciones.restar_gasto(self.get_object().monto)
+        caja_funciones.restar_gasto(self.get_object().monto, self.request.session['id_sucursal'])
         messages.error(request, 'El gasto se elimino correctamente')
         return super(GastoDeleteView, self).delete(request, *args, **kwargs)
