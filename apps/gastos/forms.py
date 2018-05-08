@@ -5,6 +5,8 @@ from django import forms
 
 from .models import Gasto
 
+from apps.sucursales.models import Sucursal
+
 
 class GastoForm(forms.ModelForm):
 
@@ -27,6 +29,8 @@ class GastoForm(forms.ModelForm):
             }
         )))
 
+    sucursal = forms.ModelChoiceField(required=False, queryset=Sucursal.objects.all())
+
     class Meta:
-        fields = ['fecha', 'motivo', 'monto']
+        fields = ['fecha', 'motivo', 'monto', 'sucursal']
         model = Gasto

@@ -28,6 +28,7 @@
                     <th>Fecha</th>
                     <th>Motivo</th>
                     <th>Monto</th>
+                    <th>Sucursal</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -38,6 +39,7 @@
                     <td>{{ gasto.fecha }}</td>
                     <td>{{ gasto.motivo }}</td>
                     <td>$ {{ gasto.monto }}</td>
+                    <td>{{ gasto.sucursal }}</td>
                     <td>
                          <a href="/gastos/editar/{{ gasto.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>
                          <a href="/gastos/eliminar/{{ gasto.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Eliminar </a>
