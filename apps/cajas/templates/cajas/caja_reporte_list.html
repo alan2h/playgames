@@ -71,22 +71,38 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                   <table class="table" id="tbl">
-          <thead>
-            <tr>
-              <th>Haber</th>
-              <th>Debe</th>
-            
-            </tr>
-          </thead>
-          <tbody>
-                <tr>
-                  <td><input id="id_total_haber" class="form-control" disabled="disabled"></td>
-                  <td><input id="id_total_debe" class="form-control" disabled="disabled"></td>
-                 
-                </tr>
-          </tbody>
-        </table>
+              <table class="table" id="tbl">
+                <thead>
+                  <tr>
+                    <th>Efectivo</th>
+                    <th>Gastos y compras</th>
+                  
+                  </tr>
+                </thead>
+                <tbody>
+                      <tr>
+                        <td><input id="id_total_efectivo" class="form-control" disabled="disabled"></td>
+                        <td><input id="id_total_gastos" class="form-control" disabled="disabled"></td>
+                      
+                      </tr>
+                </tbody>
+              </table>
+              <table class="table" id="tbl">
+                  <thead>
+                    <tr>
+                      <th>Crédito</th>
+                      <th>Débito</th>
+                    
+                    </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                          <td><input id="id_total_credito" class="form-control" disabled="disabled"></td>
+                          <td><input id="id_total_debito" class="form-control" disabled="disabled"></td>
+                        
+                        </tr>
+                  </tbody>
+                </table>
                   
               
             </div>
@@ -148,8 +164,10 @@
          {% endfor %}
          haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
          debe = otros_gastos_acumulados + compras_acumulados
-         $('#id_total_haber').val('$ ' + haber)
-         $('#id_total_debe').val('$ ' + debe)
+         $('#id_total_efectivo').val('$ ' + venta_acumulada)
+         $('#id_total_gastos').val('$ ' + debe)
+         $('#id_total_credito').val('$ ' + credito_acumulado)
+         $('#id_total_debito').val('$ ' + debito_acumulada)
          /* ------------------------------------------- */
         /*    script para calcular los totales         */
         /* ------------------------------------------- */
