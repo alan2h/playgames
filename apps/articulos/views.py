@@ -124,7 +124,7 @@ class ArticuloListView(ListView):
                         qs = helpers.buscar_categoria(qs, texto_buscar, sucursal=sucursal_unico)
             return qs
         else:
-            ''' en caso de que no se staff va a venir a crear la lista aca donde se seleeciona la sucursal '''
+            ''' en caso de que no sea staff va a venir a crear la lista aca donde se seleeciona la sucursal '''
             sucursal_unico = '1'
             perfil = Perfil.objects.filter(usuario__id=self.request.user.id)
             if perfil.exists():
