@@ -95,6 +95,65 @@
       </div>
     </div>
   </div>
+
+<!-- listado de gastos -->
+
+        <div class="clearfix"></div>
+         <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Lista de Gastos</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Fecha</th>
+                          <th>Motivo</th>
+                          <th>Monto</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for gasto in gastos.object_list %}
+                         <tr>
+                           <th scope="row">{{ gasto.id }}</th>
+                           <td>{{ gasto.fecha }}</td>
+                           <td>{{ gasto.motivo }}</td>
+                           <td>{{ gasto.monto }}</td>
+                         </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    <nav aria-label="...">
+                      <ul class="pager">
+                        {% if gastos.has_previous %}
+                          <li class="previous"><a href="/gastos/alta/?page={{ gastos.previous_page_number }}"><span aria-hidden="true">&larr;</span> Átras</a></li>
+                        {% endif %}
+                        {% if gastos.has_next %}
+                          <li class="next"><a href="/gastos/alta/?page={{ gastos.next_page_number }}" >Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+<!-- listado de gastos -->
 {% endblock %}
 
 {% block js %}

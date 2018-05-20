@@ -5,6 +5,8 @@ from django.views.generic import (ListView, CreateView,
                                   UpdateView, DeleteView)
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
 from .models import Gasto
 from .forms import GastoForm
@@ -22,8 +24,30 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
 
     model = Gasto
     form_class = GastoForm
+    template_name = 'gastos/gasto_form.html'
     success_url = '/gastos/alta/'
     success_message = 'El gasto se registro de forma correcta'
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(GastoCreateView, self).get_context_data(**kwargs)
+        gastos = Paginator(Gasto.objects.all().order_by('-fecha'), 10)
+        page = gastos.page(1)
+        context['gastos'] = page
+        return context
+
+    def get(self, request, *args, **kwargs):
+
+        gastos = Paginator(Gasto.objects.all().order_by('-fecha'), 10)
+        if 'page' in self.request.GET:
+            page = gastos.page(self.request.GET.get('page'))
+        else:
+            page = gastos.page(1)
+        gastos = page
+        form = GastoForm
+        return render(request, self.template_name, {'form': form, 'gastos': gastos})
+        
+    
 
     def form_valid(self, form):
         if form.is_valid():
