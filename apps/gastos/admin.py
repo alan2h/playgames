@@ -8,7 +8,8 @@ class GastoAdmin(admin.ModelAdmin):
     list_display = [
         'fecha',
         'motivo',
-        'monto'
+        'monto',
+        'sucursal'
     ]
 
     list_filter = [

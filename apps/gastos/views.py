@@ -12,6 +12,7 @@ from .models import Gasto
 from .forms import GastoForm
 
 from apps.lib.cajas.gestion import CajaFunctions
+from apps.sucursales.models import Sucursal
 
 
 class GastoListView(ListView):
@@ -27,7 +28,7 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
     template_name = 'gastos/gasto_form.html'
     success_url = '/gastos/alta/'
     success_message = 'El gasto se registro de forma correcta'
-    
+
 
     def get_context_data(self, **kwargs):
         context = super(GastoCreateView, self).get_context_data(**kwargs)
@@ -48,12 +49,13 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
         return render(request, self.template_name, {'form': form, 'gastos': gastos})
         
     
-
     def form_valid(self, form):
         if form.is_valid():
             form.cleaned_data['sucursal'] = self.request.session['id_sucursal']
             caja_funciones = CajaFunctions()
             caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
+            sucursal = Sucursal.objects.get(pk=self.request.session['id_sucursal'])
+            form.instance.sucursal = sucursal
         return super(GastoCreateView, self).form_valid(form)
 
 
@@ -70,6 +72,7 @@ class GastoUpdateView(SuccessMessageMixin, UpdateView):
             gasto = Gasto.objects.get(pk=self.kwargs['pk']).monto
             caja_funciones.restar_gasto(gasto, self.request.session['id_sucursal'])
             caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
+            
         return super(GastoUpdateView, self).form_valid(form)
 
     def get_success_url(self):
