@@ -73,40 +73,22 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <table class="table" id="tbl">
-                <thead>
-                  <tr>
-                    <th>Efectivo</th>
-                    <th>Gastos y compras</th>
-                  
-                  </tr>
-                </thead>
-                <tbody>
-                      <tr>
-                        <td><input id="id_total_efectivo" class="form-control" disabled="disabled"></td>
-                        <td><input id="id_total_gastos" class="form-control" disabled="disabled"></td>
-                      
-                      </tr>
-                </tbody>
-              </table>
-              <table class="table" id="tbl">
+             <div class="table-responsive">  
+                <table class="table" id="id_totales">
                   <thead>
                     <tr>
+                      <th>Sucursal</th>
+                      <th>Efectivo</th>
+                      <th>Gastos y compras</th>
                       <th>Crédito</th>
                       <th>Débito</th>
-                    
                     </tr>
                   </thead>
                   <tbody>
-                        <tr>
-                          <td><input id="id_total_credito" class="form-control" disabled="disabled"></td>
-                          <td><input id="id_total_debito" class="form-control" disabled="disabled"></td>
-                        
-                        </tr>
+                        <!-- aca se agrega los totales de cada sucursal -->
                   </tbody>
                 </table>
-                  
-              
+              </div>  
             </div>
           </div>
       </div>
@@ -148,6 +130,7 @@
          var debe = 0.0
 
          {% for caja in object_list %}
+            // voy sumando todos los totales de cada caja // falta las ganancias en realidad en este sector 
             {% if caja.ventas_efectivo %}
               venta_acumulada += parseFloat(('{{ caja.ventas_efectivo }}').replace(',','.'))
             {% endif %}
@@ -163,13 +146,14 @@
             {% if caja.compras %}
               compras_acumulados += parseFloat(('{{ caja.compras }}').replace(',','.'))
             {% endif %}
+
+            // se crea una tabla y se agrega con append los totales de cada debe y haber de la caja
+            haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
+            debe = otros_gastos_acumulados + compras_acumulados
+            $('#id_totales tr:last').after('<tr><td>{{ caja.sucursal }}</td><td>' + venta_acumulada + '</td><td>' + debe +'</td><td>' + credito_acumulado + '</td><td>' + debito_acumulada + '</td></tr>');
+
          {% endfor %}
-         haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
-         debe = otros_gastos_acumulados + compras_acumulados
-         $('#id_total_efectivo').val('$ ' + venta_acumulada)
-         $('#id_total_gastos').val('$ ' + debe)
-         $('#id_total_credito').val('$ ' + credito_acumulado)
-         $('#id_total_debito').val('$ ' + debito_acumulada)
+        
          /* ------------------------------------------- */
         /*    script para calcular los totales         */
         /* ------------------------------------------- */
