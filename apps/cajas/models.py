@@ -18,6 +18,8 @@ class Caja(models.Model):
                                         null=True, blank=True)
     ventas_credito = models.DecimalField(max_digits=12, decimal_places=2,
                                          null=True, blank=True)
+    venta_sin_ganancia = models.DecimalField(max_digits=12, decimal_places=2,
+                                       null=True, blank=True)
     otros_ingresos = models.DecimalField(max_digits=12, decimal_places=2,
                                          null=True, blank=True)
     otros_gastos = models.DecimalField(max_digits=12, decimal_places=2,

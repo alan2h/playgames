@@ -54,6 +54,14 @@ class CajaForm(forms.ModelForm):
                                                 'readonly': 'readonly'
                                             }
                                         )))
+    venta_sin_ganancia = forms.DecimalField(required=False, max_digits=12,
+                                        decimal_places=2,
+                                        widget=forms.NumberInput(attrs=(
+                                            {
+                                                'class': 'form-control',
+                                                'readonly': 'readonly'
+                                            }
+                                        )))
     otros_ingresos = forms.DecimalField(required=False, max_digits=12,
                                  decimal_places=2,
                                  widget=forms.NumberInput(attrs=(
@@ -73,5 +81,6 @@ class CajaForm(forms.ModelForm):
 
     class Meta:
         fields = ['caja_inicial', 'caja_actual', 'compras', 'ventas_efectivo',
-                  'ventas_debito', 'ventas_credito', 'otros_ingresos', 'otros_gastos']
+                  'ventas_debito', 'ventas_credito', 'otros_ingresos', 'otros_gastos',
+                  'venta_sin_ganancia']
         model = Caja
