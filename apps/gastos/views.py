@@ -32,14 +32,14 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(GastoCreateView, self).get_context_data(**kwargs)
-        gastos = Paginator(Gasto.objects.all().order_by('-fecha'), 10)
+        gastos = Paginator(Gasto.objects.filter(sucursal__id=self.request.session['id_sucursal']).order_by('-fecha'), 10)
         page = gastos.page(1)
         context['gastos'] = page
         return context
 
     def get(self, request, *args, **kwargs):
 
-        gastos = Paginator(Gasto.objects.all().order_by('-fecha'), 10)
+        gastos = Paginator(Gasto.objects.filter(sucursal__id=self.request.session['id_sucursal']).order_by('-fecha'), 10)
         if 'page' in self.request.GET:
             page = gastos.page(self.request.GET.get('page'))
         else:
@@ -64,6 +64,7 @@ class GastoUpdateView(SuccessMessageMixin, UpdateView):
     model = Gasto
     form_class = GastoForm
     success_url = '/gastos/listado/'
+    template_name = 'gastos/gasto_form.html'
     success_message = 'El gasto se modifico de forma correcta'
 
     def form_valid(self, form):
@@ -72,8 +73,20 @@ class GastoUpdateView(SuccessMessageMixin, UpdateView):
             gasto = Gasto.objects.get(pk=self.kwargs['pk']).monto
             caja_funciones.restar_gasto(gasto, self.request.session['id_sucursal'])
             caja_funciones.sumar_gasto(form.data['monto'], self.request.session['id_sucursal'])
-            
+            sucursal = Sucursal.objects.get(pk=self.request.session['id_sucursal'])
+            form.instance.sucursal = sucursal
         return super(GastoUpdateView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+
+        gastos = Paginator(Gasto.objects.filter(sucursal__id=self.request.session['id_sucursal']).order_by('-fecha'), 10)
+        if 'page' in self.request.GET:
+            page = gastos.page(self.request.GET.get('page'))
+        else:
+            page = gastos.page(1)
+        gastos = page
+        form = GastoForm(instance=Gasto.objects.get(pk=self.kwargs.get('pk')))
+        return render(request, self.template_name, {'form': form, 'gastos': gastos})
 
     def get_success_url(self):
         return '/gastos/editar/%s' % str(self.object.pk)
