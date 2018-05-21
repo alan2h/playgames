@@ -103,3 +103,26 @@ class GastoDeleteView(DeleteView):
         caja_funciones.restar_gasto(self.get_object().monto, self.request.session['id_sucursal'])
         messages.error(request, 'El gasto se elimino correctamente')
         return super(GastoDeleteView, self).delete(request, *args, **kwargs)
+
+
+class GastoReporte(ListView):
+
+    model = Gasto
+    template_name = 'gastos/gasto_reporte.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        if 'texto_buscar' in self.request.GET:
+            fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
+            fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
+            queryset = Gasto.objects.filter(
+                fecha__gte=
+                fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] +
+                '-' + fecha_desde.split('/')[0],
+                fecha__lte=
+                fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
+                '-' + fecha_hasta.split('/')[0]
+            ).order_by('fecha')
+        else:
+            queryset = super(GastoReporte, self).get_queryset()
+        return queryset
