@@ -43,6 +43,8 @@
 
             var guardar_compra = function(){
                 total_con_descuento = resultado;
+                var no_sumar = false;
+                if ($('#id_no_sumar').is(':checked')){no_sumar = true;}
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
                     type: 'post',
@@ -54,6 +56,7 @@
                         total_con_descuento: total_con_descuento,
                         precio_venta_total: total.toString(),
                         forma_pago: forma_pago,
+                        no_sumar: no_sumar,
                         credito_porcentaje: credito_porcentaje,
                         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
                     },
@@ -135,6 +138,7 @@
                 $('#id_button_buscar').prop( "disabled", false );
                 $('#buscar_socio').prop( "disabled", false );
                 $('#id_button_guardar_compra').prop( "disabled", false );
+                $('#id_no_sumar').prop( "disabled", false );
                 // Pongo disabled la seleccion de la forma de pago
                 forma_pago = forma_pago_parametro;
                 if (forma_pago == 'efectivo'){

@@ -195,6 +195,25 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja(id_sucursal)
 
+    def sumar_sin_ganancia(self, monto, id_sucursal=None):
+
+        today = datetime.now().date()
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+        if caja.exists() is False:
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
+            caja.save()
+
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
+
+        if caja.venta_sin_ganancia is not None:
+            resultado = float(monto) + float(caja.venta_sin_ganancia)
+            caja.venta_sin_ganancia = resultado
+        else:
+            caja.venta_sin_ganancia = monto
+        caja.save()
+        self.saldo_caja(id_sucursal)
+
     def restar_gasto(self, monto_gasto, id_sucursal=None):
 
         today = datetime.now().date()
@@ -304,6 +323,7 @@ class CajaFunctions(object):
             caja.ventas_efectivo = precio_efectivo
         caja.save()
         self.saldo_caja(id_sucursal)
+
 
     def saldo_caja(self, id_sucursal=None):
 

@@ -32,6 +32,7 @@
                 <th>V. Efectivo</th>
                 <th>V. Débito</th>
                 <th>V. Crédito</th>
+                <th>No ingresa a Caja</th>
                 <th>Otros Ingresos</th>
                 <th>Otros Gastos</th>
                 <th>Sucursal</th>
@@ -48,6 +49,7 @@
                     <td>${{ caja.ventas_efectivo|default_if_none:'-' }}</td>
                     <td>${{ caja.ventas_debito|default_if_none:'-' }}</td>
                     <td>${{ caja.ventas_credito|default_if_none:'-' }}</td>
+                    <td>${{ caja.venta_sin_ganancia|default_if_none:'-' }}</td>
                     <td>${{ caja.otros_ingresos|default_if_none:'-' }}</td>
                     <td>${{ caja.otros_gastos|default_if_none:'-' }}</td>
                     <td>{{ caja.sucursal|default_if_none:'-' }}</td>

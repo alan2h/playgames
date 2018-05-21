@@ -5,6 +5,7 @@
     $('#id_button_buscar').prop( "disabled", true );
     $('#id_button_guardar_compra').prop( "disabled", true );
     $('#buscar_socio').prop( "disabled", true );
+    $('#id_no_sumar').prop( "disabled", true );
 
     $('#id_fecha').daterangepicker({
            singleDatePicker: true,
