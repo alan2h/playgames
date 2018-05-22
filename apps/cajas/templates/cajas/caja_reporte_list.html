@@ -150,7 +150,11 @@
             // se crea una tabla y se agrega con append los totales de cada debe y haber de la caja
             haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
             debe = otros_gastos_acumulados + compras_acumulados
-            $('#id_totales tr:last').after('<tr><td>{{ caja.sucursal }}</td><td>' + venta_acumulada + '</td><td>' + debe +'</td><td>' + credito_acumulado + '</td><td>' + debito_acumulada + '</td></tr>');
+            {% if caja.sucursal %} // si es None la sucursal imprime formosa
+              $('#id_totales tr:last').after('<tr><td>{{ caja.sucursal }}</td><td>' + venta_acumulada + '</td><td>' + debe +'</td><td>' + credito_acumulado + '</td><td>' + debito_acumulada + '</td></tr>');
+            {% else %}
+              $('#id_totales tr:last').after('<tr><td>Formosa</td><td>' + venta_acumulada + '</td><td>' + debe +'</td><td>' + credito_acumulado + '</td><td>' + debito_acumulada + '</td></tr>');
+            {% endif %}
             // una vez que termina de acumular los totales se ponen a 0 las variables acumuladores 
             haber = 0.0;
             debe = 0.0;
