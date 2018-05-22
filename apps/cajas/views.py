@@ -57,7 +57,7 @@ class CajaListView(ListView):
 
 class CajaReportListView(ListView):
 
-    queryset = Caja.objects.all()[:3]
+    queryset = Caja.objects.filter(fecha__month=datetime.datetime.now().month)
     template_name = 'cajas/caja_reporte_list.html'
 
     def get_context_data(self, **kwargs):

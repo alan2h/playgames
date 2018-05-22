@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'apps.sucursales',
     'apps.perfiles',
     'apps.socios_puntos',
+    'apps.reservas',
 ]
 
 MIDDLEWARE_CLASSES = [

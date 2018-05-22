@@ -20,11 +20,7 @@ import time
 
 
 def ingresar(request):
-    '''today = datetime.now().date()
-    caja = Caja.objects.filter(fecha=today)
-    if caja.exists() is False:
-        caja = Caja(fecha=today, caja_inicial=0)
-        caja.save()'''
+
     if request.user.is_authenticated():
         return HttpResponseRedirect('/dashboard/')
     else:
@@ -63,11 +59,7 @@ class DashBoardTemplateView(TemplateView):
             return HttpResponseRedirect('/')
         id_sucursal = self.request.session['id_sucursal']
         sucursal = Sucursal.objects.get(pk=id_sucursal)
-        print('***************************')
-        print('***************************')
-        print(id_sucursal)
-        print('***************************')
-        print('***************************')
+        
         today = datetime.now().date()
         caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
         if caja.exists() is False:
