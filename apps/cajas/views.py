@@ -57,7 +57,7 @@ class CajaListView(ListView):
 
 class CajaReportListView(ListView):
 
-    queryset = Caja.objects.filter(fecha__month=datetime.datetime.now().month).order_by('-fecha')
+    queryset = Caja.objects.all() # cuando inicia no filtra, los filtros se encuentran en queryset
     template_name = 'cajas/caja_reporte_list.html'
 
     def get_context_data(self, **kwargs):
@@ -66,6 +66,8 @@ class CajaReportListView(ListView):
 
     def get_queryset(self):
         if 'texto_buscar' in self.request.GET:
+            # En caso de que se filtre por parametros de fechas, si o si se suma
+            # el filtro por sucursal
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
             queryset = Caja.objects.filter(
@@ -74,8 +76,13 @@ class CajaReportListView(ListView):
                 '-' + fecha_desde.split('/')[0],
                 fecha__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
-                '-' + fecha_hasta.split('/')[0]
+                '-' + fecha_hasta.split('/')[0], 
+                sucursal__id=self.request.session.get('id_sucursal')
             ).order_by('fecha')
         else:
-            queryset = super(CajaReportListView, self).get_queryset()
+            # se filtrar por el mes actual y por la sucursal. Al mismo tiempo
+            # que se ordena por fecha, la fecha mayor va primero y al menor.
+            queryset = Caja.objects.filter(
+                fecha__month=datetime.datetime.now().month, 
+                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
         return queryset
