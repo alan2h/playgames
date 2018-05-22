@@ -12,6 +12,9 @@ class Reserva(models.Model):
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
     entrega = models.DecimalField(max_digits=12, decimal_places=2,
                                   null=True, blank=True)
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
+    title =  models.CharField(max_length=800, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Reserva'

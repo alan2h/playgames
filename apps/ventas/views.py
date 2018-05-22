@@ -96,7 +96,7 @@ class VentaDeleteView(DeleteView):
 
 class VentaReportListView(ListView):
 
-    queryset = Venta.objects.all()
+    queryset = Venta.objects.filter(fecha_no_time__month=datetime.datetime.now().month)
     template_name = 'ventas/venta_report_list.html'
 
     def get_queryset(self):
@@ -104,10 +104,10 @@ class VentaReportListView(ListView):
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
             queryset = Venta.objects.filter(
-                fecha__gte=
+                fecha_no_time__gte=
                 fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] +
                 '-' + fecha_desde.split('/')[0],
-                fecha__lte=
+                fecha_no_time__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
                 '-' + fecha_hasta.split('/')[0], baja=False,
             ).order_by('fecha')
