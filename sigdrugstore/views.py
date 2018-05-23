@@ -37,6 +37,7 @@ def ingresar(request):
                         else:
                             perfil = Perfil.objects.filter(usuario__id=request.user.id)[0]
                             request.session['id_sucursal'] = perfil.sucursal.id
+                            request.session['nombre_sucursal'] = Sucursal.objects.get(pk=perfil.sucursal.id).descripcion
                             return HttpResponseRedirect('/dashboard')
                     else:
                         return render(request, 'noactivo.html')
@@ -65,29 +66,7 @@ class DashBoardTemplateView(TemplateView):
         if caja.exists() is False:
             caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
             caja.save()
-        # articulos = Articulo.objects.filter(precio_credito=None)
-        # este metodo verifica que al loguearse el admin y no se haya
-        # seleccionado una sucursal, que cargue la primera por default
-        # --------------------------------------------------------------
-        # ---------- en caso de que no sea staff guarda la sucursal ----
-        # --------------------------------------------------------------
-        ''' if self.request.user.is_staff is False:
-            if 'id_sucursal' not in self.request.session:
-                perfil = Perfil.objects.filter(usuario__id=self.request.user.id)[0]
-                self.request.session['id_sucursal'] = perfil.sucursal.id'''
-        # --------------------------------------------------------------
-        # --------------------------------------------------------------
-        '''if articulos.exists():
-            for articulo in articulos:
-                iva = float(articulo.alicuota_iva)
-                time.sleep(5)
-                incremento = (float(articulo.precio_venta) * float(iva)) / 100
-                precio_credito = float(articulo.precio_venta) + float(incremento)
-                precio_debito = float(articulo.precio_venta) + float(incremento)
-                articulo_create = Articulo.objects.get(pk=articulo.id)
-                articulo_create.precio_credito = precio_credito
-                articulo_create.precio_debito = precio_debito
-                articulo_create.save()'''
+       
         return super(DashBoardTemplateView, self).dispatch(request, *args, **kwargs)
 
 

@@ -101,6 +101,8 @@ class VentaReportListView(ListView):
 
     def get_queryset(self):
         if 'texto_buscar' in self.request.GET:
+            # en caso de filtrar por fechas, tambien se agrega la sucursal 
+            # si el admin desea ver otra sucursal, debe acceder
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
             queryset = Venta.objects.filter(
@@ -109,12 +111,21 @@ class VentaReportListView(ListView):
                 '-' + fecha_desde.split('/')[0],
                 fecha_no_time__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
-                '-' + fecha_hasta.split('/')[0], baja=False,
+                '-' + fecha_hasta.split('/')[0], baja=False, sucursal__id=self.request.session.get('id_sucursal')
             ).order_by('fecha')
             if fecha_desde == fecha_hasta:
-                queryset = Venta.objects.filter(fecha_no_time=fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0], baja=False).order_by('fecha')
+                # si las fechas son iguales no las compara, solo buscar esa fecha
+                # y tambien lo hace por sucursal
+                queryset = Venta.objects.filter(
+                    fecha_no_time=fecha_desde.split('/')[2] + '-' + 
+                    fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0], 
+                    baja=False, sucursal__id=self.request.session.get('id_sucursal')).order_by('fecha')
         else:
-            queryset = super(VentaReportListView, self).get_queryset()
+            # se filtra por mes actual y la sucursal , al mismo tiempo
+            # se ordena por fecha de forma descendente
+            queryset = Venta.objects.filter(
+                fecha_no_time__month=datetime.datetime.now().month, 
+                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha_no_time')
         return queryset
 
 

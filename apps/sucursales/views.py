@@ -17,5 +17,8 @@ class CambiarSucursalTemplateView(TemplateView):
             return context
 
         def post(self, request, *args, **kwargs):
+            # en caso de cambiar de sucursal: se actualizan las variables de session
+            # la variable nombre_sucursal solo es para los titulos
             self.request.session['id_sucursal'] = self.request.POST.get('sucursal')
+            self.request.session['nombre_sucursal'] = Sucursal.objects.get(pk=request.POST.get('sucursal')).descripcion 
             return HttpResponseRedirect('/dashboard/')
