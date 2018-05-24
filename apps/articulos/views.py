@@ -77,9 +77,8 @@ class ArticuloListView(ListView):
                 if self.request.GET.get('texto_buscar') is not '':
                     texto_buscar = self.request.GET.get('texto_buscar')
                     campo_buscar = self.request.GET.get('campo_buscar')
-                    qs = helpers.buscar_codigo(qs, texto_buscar)
                     sucursal_unico=self.request.session['id_sucursal']
-
+                    qs = helpers.buscar_codigo(qs, texto_buscar, sucursal=sucursal_unico)
 
 
                     if 'campo_categoria' in self.request.GET:
@@ -142,7 +141,7 @@ class ArticuloListView(ListView):
                 if self.request.GET.get('texto_buscar') is not '':
                     texto_buscar = self.request.GET.get('texto_buscar')
                     campo_buscar = self.request.GET.get('campo_buscar')
-                    qs = helpers.buscar_codigo(qs, texto_buscar)
+                    qs = helpers.buscar_codigo(qs, texto_buscar, sucursal=sucursal_unico)
 
                     if 'campo_categoria' in self.request.GET:
                         if self.request.GET.get('campo_categoria') is not '':

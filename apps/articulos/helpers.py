@@ -111,12 +111,12 @@ class DibujarBarcode(Drawing):
         self.add(barcode, name='barcode')
 
 
-def buscar_codigo(qs, codigo):
+def buscar_codigo(qs, codigo, sucursal=None):
     qs = Articulo.objects.filter(
         baja=False,
-        codigo_barra__icontains=codigo
+        codigo_barra__icontains=codigo,
+        sucursal=sucursal
     )
-    print(qs)
     return qs
 
 
