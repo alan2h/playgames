@@ -219,6 +219,11 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
             form.instance.precio_debito = precio_debito
+            # para actualizar los articulos en todas las sucursales aplico un filtro
+            # por el codigo de barras, aqui abajo el codigo
+            Articulo.objects.filter(codigo_barra=form.instance.codigo_barra).update(
+                precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'], 
+                precio_credito=precio_credito, precio_debito=precio_debito)
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo se modifico con éxito')
         return HttpResponseRedirect('/articulos/listado/')
