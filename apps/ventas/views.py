@@ -53,8 +53,10 @@ class VentaListView(ListView):
 
     def get_queryset(self):
         queryset = super(VentaListView, self).get_queryset()
-        queryset = Venta.objects.filter(baja=False, fecha_no_time=datetime.datetime.now()).order_by('-id')
-        
+        queryset = Venta.objects.filter(
+            baja=False, 
+            fecha_no_time=datetime.datetime.now(),
+            sucursal=self.request.session.get('id_sucursal')).order_by('-id')
         return queryset
 
 
