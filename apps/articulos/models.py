@@ -74,7 +74,7 @@ class Articulo(models.Model):
     causa_baja = models.TextField(max_length=600, null=True, blank=True)
 
     def __str__(self):
-        return '%s' % self.descripcion
+        return '%s, %s' % (self.descripcion, self.nombre)
 
     class Meta:
         verbose_name = 'Árticulos'

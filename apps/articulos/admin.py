@@ -118,11 +118,13 @@ class HistorialPreciosVentaAdmin(admin.ModelAdmin):
 
     list_display = [
         'fecha_modificacion',
+        'articulo',
         'precio'
     ]
 
     search_fields = [
         'fecha_modificacion',
+        'articulo',
         'precio'
     ]
 
