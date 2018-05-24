@@ -112,6 +112,11 @@ class GastoReporte(ListView):
     paginate_by = 20
 
     def get_queryset(self):
+        '''
+        En caso de venir el parametro texto_buscar
+        se filtran las fechas,
+        caso contrario, se envia el mes en curso
+        '''
         if 'texto_buscar' in self.request.GET:
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
@@ -121,8 +126,11 @@ class GastoReporte(ListView):
                 '-' + fecha_desde.split('/')[0],
                 fecha__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
-                '-' + fecha_hasta.split('/')[0]
+                '-' + fecha_hasta.split('/')[0],
+                sucursal=self.request.session.get('id_sucursal')
             ).order_by('fecha')
         else:
-            queryset = super(GastoReporte, self).get_queryset()
+            queryset = Gasto.objects.filter(fecha__month=datetime.datetime.now().month, 
+                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
+            
         return queryset
