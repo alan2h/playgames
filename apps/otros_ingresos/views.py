@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from apps.lib.cajas.gestion import CajaFunctions
+from apps.sucursales.models import Sucursal
 
 from .models import OtroIngreso
 from .forms import OtroIngresoForm
@@ -15,6 +16,11 @@ class OtroIngresoListView(ListView):
 
     queryset = OtroIngreso.objects.filter(fecha=datetime.datetime.now())
     template_name = 'otros_ingresos/otro_ingreso_list.html'
+
+    def get_queryset(self):
+        queryset = OtroIngreso.objects.filter(fecha__month=datetime.datetime.now().month, 
+                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
+        return queryset
 
 
 class OtroIngresoCreateView(SuccessMessageMixin, CreateView):
@@ -27,6 +33,10 @@ class OtroIngresoCreateView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
+            # Se guarda la sucursal a la que pertenece
+            sucursal = Sucursal.objects.get(pk=self.request.session.get('id_sucursal'))
+            form.instance.sucursal = sucursal
+            # Se guarda a caja el ingreso
             caja_funciones = CajaFunctions()
             caja_funciones.sumar_ingreso(form.data['monto'], self.request.session['id_sucursal'])
         return super(OtroIngresoCreateView, self).form_valid(form)
@@ -42,6 +52,10 @@ class OtroIngresoUpdateView(SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         if form.is_valid():
+            # Se modifica la sucursal a la que pertenece 
+            sucursal = Sucursal.objects.get(pk=self.request.session.get('id_sucursal'))
+            form.instance.sucursal = sucursal
+            # Se guarda a caja el ingreso 
             caja_funciones = CajaFunctions()
             otro_ingreso = OtroIngreso.objects.get(pk=self.kwargs['pk']).monto
             caja_funciones.restar_ingreso(otro_ingreso, self.request.session['id_sucursal'])

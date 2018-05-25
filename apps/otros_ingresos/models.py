@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.sucursales.models import Sucursal
+
 
 class OtroIngreso(models.Model):
 
@@ -14,6 +16,7 @@ class OtroIngreso(models.Model):
                               null=False, blank=False)
     monto = models.DecimalField(max_digits=12, decimal_places=2,
                                 null=False, blank=False)
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
 
     def __str__(self):
         return str(self.fecha) + ' - ' + str(self.motivo)
