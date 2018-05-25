@@ -80,6 +80,7 @@
                       <th>Sucursal</th>
                       <th>Efectivo</th>
                       <th>Gastos y compras</th>
+                      <th>Ventas sin Ganancia</th>
                       <th>Crédito</th>
                       <th>Débito</th>
                     </tr>
@@ -125,6 +126,7 @@
 
          var otros_gastos_acumulados = 0.0
          var compras_acumulados = 0.0
+         var venta_sin_ganancia = 0.0
 
          var haber = 0.0
          var debe = 0.0
@@ -146,14 +148,17 @@
             {% if caja.compras %}
               compras_acumulados += parseFloat(('{{ caja.compras }}').replace(',','.'))
             {% endif %}
+            {% if caja.venta_sin_ganancia %}
+              venta_sin_ganancia += parseFloat(('{{ caja.venta_sin_ganancia }}').replace(',','.'))
+            {% endif %}
          {% endfor %}
             // se crea una tabla y se agrega con append los totales de cada debe y haber de la caja
             haber = parseFloat(venta_acumulada + debito_acumulada + credito_acumulado)
             debe = otros_gastos_acumulados + compras_acumulados
             {% if caja.sucursal %} // si es None la sucursal imprime formosa
-              $('#id_totales tr:last').after('<tr><td>{{ caja.sucursal }}</td><td>$' + venta_acumulada + '</td><td>$' + debe +'</td><td>$' + credito_acumulado + '</td><td>$' + debito_acumulada + '</td></tr>');
+              $('#id_totales tr:last').after('<tr><td>{{ caja.sucursal }}</td><td>$' + venta_acumulada + '</td><td>$' + debe +'</td><td>$' + venta_sin_ganancia + '</td><td>$' + credito_acumulado + '</td><td>$' + debito_acumulada + '</td></tr>');
             {% else %}
-              $('#id_totales tr:last').after('<tr><td>Formosa</td><td>$' + venta_acumulada + '</td><td>$' + debe +'</td><td>$' + credito_acumulado + '</td><td>$' + debito_acumulada + '</td></tr>');
+              $('#id_totales tr:last').after('<tr><td>Formosa</td><td>$' + venta_acumulada + '</td><td>$' + debe +'</td><td>$' + venta_sin_ganancia + '</td><td>$' + credito_acumulado + '</td><td>$' + debito_acumulada + '</td></tr>');
             {% endif %}
             // una vez que termina de acumular los totales se ponen a 0 las variables acumuladores 
             haber = 0.0;
@@ -163,6 +168,7 @@
             credito_acumulado = 0.0;
             otros_gastos_acumulados = 0.0;
             compras_acumulados = 0.0;
+            venta_sin_ganancia = 0.0;
             // inicializa las variables a 0 ---> para volver a cargar para cada sucursal
         
          /* ------------------------------------------- */
