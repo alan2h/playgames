@@ -17,8 +17,13 @@ from apps.sucursales.models import Sucursal
 
 class GastoListView(ListView):
 
-    queryset = Gasto.objects.filter(fecha=datetime.datetime.now())
+    queryset = Gasto.objects.all()
     template_name = 'gastos/gasto_list.html'
+
+    def get_queryset(self):
+        queryset = Gasto.objects.filter(fecha=datetime.datetime.now(),
+                                        sucursal__id=self.request.session.get('id_sucursal'))
+        return queryset
 
 
 class GastoCreateView(SuccessMessageMixin, CreateView):

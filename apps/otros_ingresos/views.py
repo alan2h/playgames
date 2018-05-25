@@ -18,8 +18,8 @@ class OtroIngresoListView(ListView):
     template_name = 'otros_ingresos/otro_ingreso_list.html'
 
     def get_queryset(self):
-        queryset = OtroIngreso.objects.filter(fecha__month=datetime.datetime.now().month, 
-                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
+        queryset = OtroIngreso.objects.filter(fecha=datetime.datetime.now(), 
+                                              sucursal__id=self.request.session.get('id_sucursal'))
         return queryset
 
 
@@ -77,3 +77,14 @@ class OtroIngresoDeleteView(DeleteView):
         caja_funciones = CajaFunctions()
         caja_funciones.restar_ingreso(self.get_object().monto, self.request.session['id_sucursal'])
         return super(OtroIngresoDeleteView, self).delete(request, *args, **kwargs)
+
+
+class OtroIngresoReportList(ListView):
+
+    queryset = OtroIngreso.objects.all()
+    template_name = 'otros_ingresos/otro_ingreso_list.html'
+
+    def get_queryset(self):
+        queryset = OtroIngreso.objects.filter(fecha__month=datetime.datetime.now().month, 
+                                              sucursal__id=self.request.session.get('id_sucursal'))
+        return queryset
