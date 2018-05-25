@@ -82,9 +82,26 @@ class OtroIngresoDeleteView(DeleteView):
 class OtroIngresoReportList(ListView):
 
     queryset = OtroIngreso.objects.all()
-    template_name = 'otros_ingresos/otro_ingreso_list.html'
+    template_name = 'otros_ingresos/otro_ingreso_report.html'
 
     def get_queryset(self):
         queryset = OtroIngreso.objects.filter(fecha__month=datetime.datetime.now().month, 
                                               sucursal__id=self.request.session.get('id_sucursal'))
+        '''
+        En caso de venir el parametro texto_buscar
+        se filtran las fechas,
+        caso contrario, se envia el mes en curso
+        '''
+        if 'texto_buscar' in self.request.GET:
+            fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
+            fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
+            queryset = OtroIngreso.objects.filter(
+                fecha__gte=
+                fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] +
+                '-' + fecha_desde.split('/')[0],
+                fecha__lte=
+                fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
+                '-' + fecha_hasta.split('/')[0],
+                sucursal=self.request.session.get('id_sucursal')
+            ).order_by('fecha')
         return queryset

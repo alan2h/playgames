@@ -1,0 +1,103 @@
+{% extends 'reporte_base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+     <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2> Lista de ingresos por Fecha </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                         
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Fecha</th>
+                          <th>Motivo</th>
+                          <th>Monto</th>
+                          <th>Sucursal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for ingreso in object_list %}
+                            <tr>
+                                <th scope="row">{{ ingreso.id }}</th>
+                                <td>{{ingreso.fecha}}</td>
+                                <td>{{ingreso.motivo}}</td>
+                                <td>${{ ingreso.monto }}</td>
+                                <td>{{ ingreso.sucursal }}</td>
+                            </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+{% endblock %}
+
+{% block js %}
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'pdf-generate/jspdf.js' %}"></script>
+    <script src="{% static 'pdf-generate/FileSaver.js' %}"></script>
+    <script src="{% static 'pdf-generate/jspdf.plugin.table.js' %}"></script>
+    <script>
+            $('#id_texto_buscar').daterangepicker({
+                       locale: {
+                              "format": "DD/MM/YYYY",
+                              "separator": " - ",
+                              "applyLabel": "Aplicar",
+                              "cancelLabel": "Cancelar",
+                              "fromLabel": "From",
+                              "toLabel": "a",
+                              "customRangeLabel": "Custom",
+                              "daysOfWeek": [
+                                  "Do",
+                                  "Lu",
+                                  "Ma",
+                                  "Mi",
+                                  "Ju",
+                                  "Vi",
+                                  "Sa"
+                              ],
+                              "monthNames": [
+                                  "Enero",
+                                  "Febrero",
+                                  "Marzo",
+                                  "Abril",
+                                  "Mayo",
+                                  "Junio",
+                                  "Julio",
+                                  "Agosto",
+                                  "Septiembre",
+                                  "Octubre",
+                                  "Noviembre",
+                                  "Diciembre"
+                              ]
+                       }
+                });
+        </script>
+{% endblock %}
