@@ -34,7 +34,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-3">Sucursal</label>
             <div class="col-md-9 col-sm-9 col-xs-9">
-              <select class="form-control" name="sucursal">
+              <select id="id_sucursal" class="form-control" name="sucursal">
                 {% for sucursal in sucursales %}
                     <option value="{{ sucursal.id }}"> 
                         {{ sucursal.descripcion }}
@@ -65,5 +65,8 @@
 
 {% block js %}
     <script>
+    {% if request.session.id_sucursal %}
+      $('#id_sucursal').val('{{request.session.id_sucursal}}')
+    {% endif %}
     </script>
 {% endblock %}
