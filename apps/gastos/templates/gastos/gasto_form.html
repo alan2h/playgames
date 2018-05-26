@@ -49,7 +49,7 @@
             <!-- Input del formulario -->
                 <div class="form-group">
                   <label class="control-label col-md-3 col-sm-3 col-xs-3">Motivo</label>
-                  <div class="col-md-9 col-sm-9 col-xs-9">
+                  <div class="col-md-7 col-sm-7 col-xs-7">
                       {{ form.motivo }}
                     <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
                       <!-- Mensaje de error del input -->
@@ -62,6 +62,11 @@
                       {% endif %}
                       <!-- Mensaje de error del input -->
                   </div>
+                   <!-- boton agregar una opción nueva -->
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <button onclick="abrirLista()" data-toggle="tooltip" title="Ver lista de gastos, que son requeridos. Son listas de motivos para ser seleccionados." type="button" class="btn btn-default btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                  <!-- boton agregar una opción nueva -->
                 </div>
               <!-- Input del formulario -->
 
@@ -159,6 +164,35 @@
                 </div>
               </div>
 <!-- listado de gastos -->
+
+<!-- Small modal motivos de gastos -->
+  <div id="id_motivo_lista" class="modal fade id_motivo_lista" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel2">Motivos de Gastos</h4><br>
+                  <div class="alert alert-info">
+                    <strong>Información</strong> Seleccione un motivo de gasto. Estos motivos irán 
+                    desapareciendo a medida que son pagados por mes, el administrador es encargado de cargar los motivos.
+                  </div>
+                   <ul class="list-group">
+                      <li class="list-group-item"><a>Cras justo odio</a></li>
+                      <li class="list-group-item"><a>Dapibus ac facilisis in</a></li>
+                      <li class="list-group-item"><a>Morbi leo risus</a></li>
+                      <li class="list-group-item"><a>Porta ac consectetur ac</a></li>
+                      <li class="list-group-item"><a>Vestibulum at eros</a></li>
+                    </ul>
+              </div>
+              <div class="modal-footer">
+                 
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- /modals -->
+
 {% endblock %}
 
 {% block js %}
@@ -171,6 +205,13 @@
     <script src="{% static 'vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
 
     <script>
+      // Abro la lista de motivos de gatos 
+      var abrirLista = function(){
+        //alert('cccccccc')
+        $('#id_motivo_lista').modal('show'); 
+      };
+      
+
        // date range picker
         $('#id_fecha').daterangepicker({
             singleDatePicker: true,
@@ -209,7 +250,5 @@
         });
     // input mask
     $('#id_fecha').inputmask({"mask": "99/99/9999"});
-    // select 2
-    $('#id_motivo').select2({});
     </script>
 {% endblock %}
