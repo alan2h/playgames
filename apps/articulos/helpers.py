@@ -441,8 +441,11 @@ def ajax_cambiar_sucursal(request):
         
         articulo = Articulo.objects.get(pk=request.POST.get('id_articulo'))
         sucursal = Sucursal.objects.get(pk=request.POST.get('id_nombre_sucursal'))
-        # verifico si el articulo ya existe
-        articulo_en_otra_sucursal = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+        # verifico si el articulo ya existe, filtro por todos los datos posibles
+        articulo_en_otra_sucursal = Articulo.objects.filter(codigo_barra=articulo.codigo_barra,
+                                                            nombre=articulo.nombre,
+                                                            descripcion=articulo.descripcion,
+                                                            marca__descripcion=articulo.marca.descripcion,
                                                             sucursal__id=request.POST.get('id_nombre_sucursal'), 
                                                             baja=False)
         # si el articulo ya existe en la otra sucursal, solo modifico su stock

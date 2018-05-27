@@ -50,9 +50,7 @@
                             <br>
                             
                           </div>
-                          {% if object.codigo_barra %}
-                            <button type="button" data-toggle="modal" data-target=".id_cambiar_sucursal" class="btn btn-danger">Cambiar de Sucursal</button>
-                          {% endif %}
+                          <button type="button" data-toggle="modal" data-target=".id_cambiar_sucursal" class="btn btn-danger">Cambiar de Sucursal</button>
                         </div>
                         <a href="/articulos/barcode/{{ articulo.pk }}" class="btn btn-primary">Imprimir código de barras</a>
                       </div>
