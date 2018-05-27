@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from .models import Gasto
+from .models import Gasto, Motivo
+
+
+class MotivoAdmin(admin.ModelAdmin): 
+
+    list_display = [
+        'descripcion',
+        'sucursal'
+    ]
 
 
 class GastoAdmin(admin.ModelAdmin):
@@ -25,4 +33,5 @@ class GastoAdmin(admin.ModelAdmin):
     ]
 
 
+admin.site.register(Motivo, MotivoAdmin)
 admin.site.register(Gasto, GastoAdmin)

@@ -1,4 +1,5 @@
 {% extends 'form_base.html' %}
+{% load cadenas %}
 {% load staticfiles %}
 {% block css %}
     <!-- select 2  -->
@@ -174,15 +175,14 @@
                   </button>
                   <h4 class="modal-title" id="myModalLabel2">Motivos de Gastos</h4><br>
                   <div class="alert alert-info">
-                    <strong>Información</strong> Seleccione un motivo de gasto. Estos motivos irán 
-                    desapareciendo a medida que son pagados por mes, el administrador es encargado de cargar los motivos.
+                    <strong>Información</strong> Seleccione un motivo de gasto. Estos motivos indican las obligaciones por mes, cambiarán de color 
+                    a medida que se van pagando. 
                   </div>
+                 
                    <ul class="list-group">
-                      <li class="list-group-item"><a>Cras justo odio</a></li>
-                      <li class="list-group-item"><a>Dapibus ac facilisis in</a></li>
-                      <li class="list-group-item"><a>Morbi leo risus</a></li>
-                      <li class="list-group-item"><a>Porta ac consectetur ac</a></li>
-                      <li class="list-group-item"><a>Vestibulum at eros</a></li>
+                      {% for motivo_sucursal in motivos %}
+                        <li style="background-color:#{{ motivo_sucursal|dividirClase }};" class="list-group-item"><a onclick="seleccionMotivo('{{ motivo_sucursal|dividirMotivoEnviar }}')"> {{ motivo_sucursal|dividirMotivo }}</a></li>
+                      {% endfor %}
                     </ul>
               </div>
               <div class="modal-footer">
@@ -207,10 +207,13 @@
     <script>
       // Abro la lista de motivos de gatos 
       var abrirLista = function(){
-        //alert('cccccccc')
         $('#id_motivo_lista').modal('show'); 
       };
-      
+      // se selecciona un motivo y carga en la caja de texto
+      var seleccionMotivo = function(seleccion){
+        $('#id_motivo').val(seleccion); // cargo en el intput
+        $('#id_motivo_lista').modal('hide'); // cierro el modal
+      }
 
        // date range picker
         $('#id_fecha').daterangepicker({

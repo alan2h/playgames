@@ -81,6 +81,7 @@ TEMPLATES = [
             ],
             'libraries':{
                 'calculos_tags': 'apps.lib.templatetags.calculos_tags',
+                'cadenas': 'apps.lib.templatetags.cadenas',
             }
         },
     },

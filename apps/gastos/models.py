@@ -3,6 +3,19 @@ from django.db import models
 from apps.sucursales.models import Sucursal
 
 
+class Motivo(models.Model):
+
+    descripcion = models.CharField(max_length=1000, blank=True, null=True)
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
+
+    def __str__(self):
+        return '%s' % self.descripcion
+
+    class Meta:
+        verbose_name = 'Motivo'
+        verbose_name_plural = 'Motivos'
+
+
 class Gasto(models.Model):
 
     fecha = models.DateField(auto_created=True)

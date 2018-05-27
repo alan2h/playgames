@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-from .models import Gasto
+from .models import Gasto, Motivo # los motivos son obligaciones de cada sucursal a pagar
 from .forms import GastoForm
 
 from apps.lib.cajas.gestion import CajaFunctions
@@ -40,6 +40,7 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
         gastos = Paginator(Gasto.objects.filter(sucursal__id=self.request.session['id_sucursal']).order_by('-fecha'), 10)
         page = gastos.page(1)
         context['gastos'] = page
+       
         return context
 
     def get(self, request, *args, **kwargs):
@@ -49,9 +50,20 @@ class GastoCreateView(SuccessMessageMixin, CreateView):
             page = gastos.page(self.request.GET.get('page'))
         else:
             page = gastos.page(1)
+        # filtro motivos de gastos por sucursales 
+        # luego se realiza una comparativa, si este ya fue pagado, lo marcara de la lista
+        motivos = Motivo.objects.filter(sucursal__id=self.request.session.get('id_sucursal'))
+        motivo_enviar = []
+        i = 0
+        for motivo in motivos:
+            gasto = Gasto.objects.filter(fecha__month=datetime.datetime.now().month, motivo=motivo.descripcion)
+            if gasto.exists():
+                motivo_enviar.append('%s, pagado este mes -0ee4ed' % motivo.descripcion)
+            else:
+                motivo_enviar.append('%s -FFF' % motivo.descripcion)
         gastos = page
         form = GastoForm
-        return render(request, self.template_name, {'form': form, 'gastos': gastos})
+        return render(request, self.template_name, {'form': form, 'gastos': gastos, 'motivos': motivo_enviar})
         
     
     def form_valid(self, form):
@@ -89,9 +101,21 @@ class GastoUpdateView(SuccessMessageMixin, UpdateView):
             page = gastos.page(self.request.GET.get('page'))
         else:
             page = gastos.page(1)
+
+        # filtro motivos de gastos por sucursales 
+        # luego se realiza una comparativa, si este ya fue pagado, lo marcara de la lista
+        motivos = Motivo.objects.filter(sucursal__id=self.request.session.get('id_sucursal'))
+        motivo_enviar = []
+        i = 0
+        for motivo in motivos:
+            gasto = Gasto.objects.filter(fecha__month=datetime.datetime.now().month, motivo=motivo.descripcion)
+            if gasto.exists():
+                motivo_enviar.append('%s, pagado este mes -0ee4ed' % motivo.descripcion)
+            else:
+                motivo_enviar.append('%s -FFF' % motivo.descripcion)
         gastos = page
         form = GastoForm(instance=Gasto.objects.get(pk=self.kwargs.get('pk')))
-        return render(request, self.template_name, {'form': form, 'gastos': gastos})
+        return render(request, self.template_name, {'form': form, 'gastos': gastos, 'motivos': motivo_enviar})
 
     def get_success_url(self):
         return '/gastos/editar/%s' % str(self.object.pk)
