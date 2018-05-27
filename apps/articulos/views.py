@@ -232,7 +232,10 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             form.instance.precio_debito = precio_debito
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
-            Articulo.objects.filter(codigo_barra=form.instance.codigo_barra).update(
+            Articulo.objects.filter(codigo_barra=form.instance.codigo_barra, 
+                nombre=form.instance.nombre, descripcion=form.instance.descripcion, 
+                marca__descripcion=form.instance.marca.descripcion, 
+                rubro__descripcion=form.instance.rubro.descripcion).update(
                 precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'], 
                 precio_credito=precio_credito, precio_debito=precio_debito)
         form.save(commit=True)
