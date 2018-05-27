@@ -38,9 +38,9 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         if Articulo.objects.filter(
             codigo_barra=form.data['codigo_barra'], 
-            sucursal__id=self.request.session.get('id_sucursal'), 
+            sucursal__id=form.data['sucursal'], 
             baja=False):
-            form.add_error('codigo_barra', '''Este código de barras ya existe, '''
+            form.add_error('codigo_barra', '''Este código de barras ya existe en esa sucursal, '''
                                   '''por favor busque el árticulo, '''
                                   '''los código de barras deben ser únicos''')
             return render(self.request, 'articulos/articulo_form.html',
