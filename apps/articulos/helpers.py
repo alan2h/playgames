@@ -441,12 +441,47 @@ def ajax_cambiar_sucursal(request):
         
         articulo = Articulo.objects.get(pk=request.POST.get('id_articulo'))
         sucursal = Sucursal.objects.get(pk=request.POST.get('id_nombre_sucursal'))
-
-        articulo_copia = deepcopy(articulo)
-        articulo_copia.id = None
-        articulo_copia.stock = int(request.POST.get('id_cantidad_articulo'))
-        articulo_copia.sucursal = sucursal
-        articulo_copia.save()
+        # verifico si el articulo ya existe
+        articulo_en_otra_sucursal = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                                                            sucursal__id=request.POST.get('id_nombre_sucursal'), 
+                                                            baja=False)
+        # si el articulo ya existe en la otra sucursal, solo modifico su stock
+        if articulo_en_otra_sucursal.exists():
+            # verifico que no sea None y que sea mayor a 0
+            if articulo_en_otra_sucursal[0].stock:
+                if int(articulo_en_otra_sucursal[0].stock) > 0:
+                    # si es mayor que 0 le suma al stock
+                    articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
+                    articulo_sucursal_object.stock = int(articulo_en_otra_sucursal[0].stock) + int(request.POST.get('id_cantidad_articulo'))
+                    print('+++++++ en el primer condicional +++++++++++++')
+                    print(articulo_sucursal_object.stock)
+                    print('++++++++++++++++++++')
+                    articulo_sucursal_object.save()
+                else:
+                    # en caso que sea 0 le agrega el stock
+                    articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
+                    articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
+                    print('+++++++ en el segundo condicional +++++++++++++')
+                    print(articulo_sucursal_object.stock)
+                    print('++++++++++++++++++++')
+                    articulo_sucursal_object.save()
+            else:
+                # en caso que sea 0 le agrega el stock
+                articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
+                articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
+                print('+++++++ en el tercero condicional +++++++++++++')
+                print(articulo_sucursal_object.stock)
+                print('++++++++++++++++++++')
+                articulo_sucursal_object.save()
+        else:
+            articulo_copia = deepcopy(articulo)
+            articulo_copia.id = None
+            articulo_copia.stock = int(request.POST.get('id_cantidad_articulo'))
+            articulo_copia.sucursal = sucursal
+            print('+++++++ en el cuarto condicional +++++++++++++')
+            print(articulo_copia.stock)
+            print('++++++++++++++++++++')
+            articulo_copia.save()
 
         articulo.stock = int(articulo.stock) - int(request.POST.get('id_cantidad_articulo'))
         articulo.save()

@@ -80,6 +80,7 @@ class ArticuloForm(forms.ModelForm):
     widget=forms.Select(
         {'class': 'form-control'}))
 
+
     class Meta:
         fields = [
             'codigo_barra', 'descripcion', 'precio_compra', 'precio_venta',
