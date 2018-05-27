@@ -36,15 +36,16 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        if Articulo.objects.filter(
-            codigo_barra=form.data['codigo_barra'], 
-            sucursal__id=form.data['sucursal'], 
-            baja=False):
-            form.add_error('codigo_barra', '''Este código de barras ya existe en esa sucursal, '''
-                                  '''por favor busque el árticulo, '''
-                                  '''los código de barras deben ser únicos''')
-            return render(self.request, 'articulos/articulo_form.html',
-                      {'form': form})
+        if form.data['codigo_barra'] != '':
+            if Articulo.objects.filter(
+                codigo_barra=form.data['codigo_barra'], 
+                sucursal__id=form.data['sucursal'], 
+                baja=False):
+                form.add_error('codigo_barra', '''Este código de barras ya existe en esa sucursal, '''
+                                    '''por favor busque el árticulo, '''
+                                    '''los código de barras deben ser únicos''')
+                return render(self.request, 'articulos/articulo_form.html',
+                        {'form': form})
 
         if 'alicuota_iva' in form.data:
             iva = float(form.data['alicuota_iva'])
