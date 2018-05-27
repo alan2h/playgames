@@ -29,6 +29,7 @@ class VentaAdmin(admin.ModelAdmin):
         'fecha_no_time',
         'get_parents',
         'forma_pago',
+        'venta_sin_ganancia',
         'porcentaje_aumento',
         'precio_venta_total',
         'baja'

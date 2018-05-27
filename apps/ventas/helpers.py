@@ -66,13 +66,17 @@ def ajax_guardar_venta(request):
                                             articulo_venta.cantidad)
 
                 articulo_venta_array.append(articulo_venta)
-
+            # esta variable se guardara en el modelo venta
+            # la idea es registrar las ventas que no ingresan a caja para poder anularlas
+            venta_sin_ganancia = (request.POST.get('no_sumar') == 'true') 
+            
             if forma_pago == 'descuento':
                 con_descuento = (float(request.POST.get('precio_venta_total')) * float(porcentaje_descuento)) / 100
                 resultado_descuento = float(request.POST.get('precio_venta_total')) - float(con_descuento)
                 venta = Venta(
                     fecha=request.POST.get('fecha'),
                     precio_venta_total=resultado_descuento,
+                    venta_sin_ganancia=venta_sin_ganancia,
                     forma_pago=forma_pago,
                     porcentaje_aumento=credito_porcentaje,
                     porcentaje_descuento=porcentaje_descuento
@@ -82,6 +86,7 @@ def ajax_guardar_venta(request):
                 venta = Venta(
                     fecha=request.POST.get('fecha'),
                     precio_venta_total=request.POST.get('precio_venta_total'),
+                    venta_sin_ganancia=venta_sin_ganancia,
                     forma_pago=forma_pago,
                     porcentaje_aumento=credito_porcentaje,
                     porcentaje_descuento=porcentaje_descuento,
@@ -90,7 +95,6 @@ def ajax_guardar_venta(request):
                 venta.save()
 
             # Guarda en la caja el precio total del efectivo
-            
             if forma_pago == 'efectivo':
                 if (request.POST.get('no_sumar') == 'true'): # esta condicion verifica que se haya tildado que no sume a caja
                     # en caso de que no sume a caja, ira a un campo especial que lo acumula

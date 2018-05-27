@@ -41,7 +41,6 @@ class CajaFunctions(object):
     def sumar_venta_efectivo(self, precio_efectivo, id_sucursal=None):
 
         today = datetime.now().date()
-        print(id_sucursal)
         sucursal = Sucursal.objects.get(pk=id_sucursal)
 
         caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
@@ -321,6 +320,28 @@ class CajaFunctions(object):
                 caja.ventas_efectivo = resultado * -1
         else:
             caja.ventas_efectivo = precio_efectivo
+        caja.save()
+        self.saldo_caja(id_sucursal)
+
+    def restar_sin_ganancia(self, venta_sin_ganancia, id_sucursal=None):
+
+        today = datetime.now().date()
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+        if caja.exists() is False:
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
+            caja.save()
+
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
+
+        if caja.venta_sin_ganancia is not None:
+            resultado = float(venta_sin_ganancia) - float(caja.venta_sin_ganancia)
+            if resultado > 0:
+                caja.venta_sin_ganancia = resultado
+            else:
+                caja.venta_sin_ganancia = resultado * -1
+        else:
+            caja.venta_sin_ganancia = venta_sin_ganancia
         caja.save()
         self.saldo_caja(id_sucursal)
 

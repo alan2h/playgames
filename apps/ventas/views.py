@@ -70,18 +70,23 @@ class VentaDeleteView(DeleteView):
 
         caja_funciones = CajaFunctions()
         articulos_stock = ArticuloStock()
-
+        # se busca la venta por id
         venta = Venta.objects.get(pk=self.kwargs['pk'])
-        if venta.forma_pago == 'efectivo':
-            caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
-        if venta.forma_pago == 'descuento':
-            caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
-        if venta.forma_pago == 'credito':
-            aumentar_precio = float(venta.precio_venta_total) * int(venta.porcentaje_aumento)
-            precio_enviar = float(venta.precio_venta_total) + (float(aumentar_precio)/100)
-            caja_funciones.restar_venta_credito(precio_enviar, self.request.session['id_sucursal'])
-        if venta.forma_pago == 'debito':
-            caja_funciones.restar_venta_debito(venta.precio_venta_total, self.request.session['id_sucursal'])
+        if venta.venta_sin_ganancia: # en caso de ser verdadero solo se resta sin ganancia
+            caja_funciones.restar_sin_ganancia(venta.precio_venta_total, self.request.session.get('id_sucursal'))
+        else: # en caso de ser falso, se verifica la forma de pago
+            # de acuerdo a la forma de pago se resta en la caja el monto
+            if venta.forma_pago == 'efectivo':
+                caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
+            if venta.forma_pago == 'descuento':
+                caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
+            if venta.forma_pago == 'credito':
+                aumentar_precio = float(venta.precio_venta_total) * int(venta.porcentaje_aumento)
+                precio_enviar = float(venta.precio_venta_total) + (float(aumentar_precio)/100)
+                caja_funciones.restar_venta_credito(precio_enviar, self.request.session['id_sucursal'])
+            if venta.forma_pago == 'debito':
+                caja_funciones.restar_venta_debito(venta.precio_venta_total, self.request.session['id_sucursal'])
+            
         for articulo_venta in venta.articulo_venta.all():
             articulos_stock.sumar_stock(articulo_venta.articulo.id,
                                         articulo_venta.cantidad)

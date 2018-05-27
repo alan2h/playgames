@@ -30,6 +30,9 @@ class Venta(models.Model):
                                             blank=False)
     precio_venta_total = models.DecimalField(decimal_places=2, max_digits=12,
                                              null=False, blank=False)
+    # este campo es para las ventas que que no ingresan a caja
+    venta_sin_ganancia = models.BooleanField(default=False) 
+    # sucursal para dividir las ventas 
     sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
 
     # Baja
