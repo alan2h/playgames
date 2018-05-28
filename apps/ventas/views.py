@@ -103,7 +103,7 @@ class VentaDeleteView(DeleteView):
 
 class VentaReportListView(ListView):
 
-    queryset = Venta.objects.filter(fecha_no_time__month=datetime.datetime.now().month, baja=False)
+    queryset = Venta.objects.filter(fecha_no_time__month=datetime.datetime.now().month, baja=False).order_by('-fecha')
     template_name = 'ventas/venta_report_list.html'
 
     def get_queryset(self):
@@ -119,20 +119,20 @@ class VentaReportListView(ListView):
                 fecha_no_time__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
                 '-' + fecha_hasta.split('/')[0], baja=False, sucursal__id=self.request.session.get('id_sucursal')
-            ).order_by('fecha')
+            ).order_by('-fecha')
             if fecha_desde == fecha_hasta:
                 # si las fechas son iguales no las compara, solo buscar esa fecha
                 # y tambien lo hace por sucursal
                 queryset = Venta.objects.filter(
                     fecha_no_time=fecha_desde.split('/')[2] + '-' + 
                     fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0], 
-                    baja=False, sucursal__id=self.request.session.get('id_sucursal')).order_by('fecha')
+                    baja=False, sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
         else:
             # se filtra por mes actual y la sucursal , al mismo tiempo
             # se ordena por fecha de forma descendente
             queryset = Venta.objects.filter(
                 fecha_no_time__month=datetime.datetime.now().month, 
-                sucursal__id=self.request.session.get('id_sucursal'), baja=False).order_by('-fecha_no_time')
+                sucursal__id=self.request.session.get('id_sucursal'), baja=False).order_by('-fecha')
         return queryset
 
 

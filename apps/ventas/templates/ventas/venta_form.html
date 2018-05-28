@@ -405,10 +405,18 @@
                     alert(self.datos_socio + ' ' + 'seleccionado')
                 },
                 envioDatos: function(articulo){
+                    var marca_descripcion = ''
+                    var rubro_descripcion = ''
+                    if (articulo.marca){
+                        marca_descripcion = articulo.marca.descripcion 
+                    }
+                    if (articulo.rubro){
+                        rubro_descripcion = articulo.rubro.descripcion
+                    }
                     seleccion_articulo(
                             articulo.id, articulo.nombre,
-                            articulo.marca.descripcion,
-                            articulo.rubro.descripcion,
+                            marca_descripcion,
+                            rubro_descripcion,
                             articulo.precio_venta,
                             articulo.precio_credito,
                             articulo.precio_debito,

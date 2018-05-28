@@ -154,7 +154,7 @@ def ajax_get_articulo_unico(request):
         if 'codigo_articulo' in request.POST:
             codigo_articulo = request.POST.get('codigo_articulo')
             articulo = Articulo.objects.filter(codigo_barra=codigo_articulo,
-                                               baja=False)
+                                               baja=False, stock__gte=1)
 
             if articulo.exists():
 
@@ -183,5 +183,6 @@ def ajax_get_articulo_unico(request):
                     'stock_minimo': articulo[0].stock_minimo,
                     'cantidad': '1'
                 }
-
-                return JsonResponse(data)
+            else:
+                data = {}
+            return JsonResponse(data)

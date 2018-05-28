@@ -78,6 +78,7 @@
     /* ---- funcion para el lector de codigo de barras --- */
             $('#id_codigo_articulo_buscar').keypress(function(e){
                 if (e.which == 13){
+                    
                     $.ajax({
                         url: '/ventas/ajax/codigo/articulo/',
                         type: 'post',
@@ -86,27 +87,32 @@
                             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
                         },
                         success: function(data){
-                            var precio_enviar = '';
-                            switch (forma_pago){
-                                case 'efectivo':
-                                    precio_enviar = data.precio_venta;
-                                    break;
-                                case 'descuento':
-                                    precio_enviar = data.precio_venta;
-                                    break;    
-                                case 'credito':
-                                    precio_enviar = data.precio_credito;
-                                    break;
-                                case 'debito':
-                                    precio_enviar = data.precio_debito;
-                                    break;
-                            };
-                            contador_tabla +=1;
-                            calcular_total('1', data.id, precio_enviar);
-                            $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' +
-                                    data.cantidad + '</td>' + '<td>' + data.nombre + '</td>' + '<td> $' + precio_enviar
-                            + '</td>' + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
-                                                                    'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
+                            if (Object.keys(data).length == 0){
+                                alert('El árticulo no fue encontrado o el stock es 0. Verifique en la lista de árticulos. ')
+                            }else{
+
+                                var precio_enviar = '';
+                                switch (forma_pago){
+                                    case 'efectivo':
+                                        precio_enviar = data.precio_venta;
+                                        break;
+                                    case 'descuento':
+                                        precio_enviar = data.precio_venta;
+                                        break;    
+                                    case 'credito':
+                                        precio_enviar = data.precio_credito;
+                                        break;
+                                    case 'debito':
+                                        precio_enviar = data.precio_debito;
+                                        break;
+                                };
+                                contador_tabla +=1;
+                                calcular_total('1', data.id, precio_enviar);
+                                $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' +
+                                        data.cantidad + '</td>' + '<td>' + data.nombre + '</td>' + '<td> $' + precio_enviar
+                                + '</td>' + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
+                                                                        'class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a></td></tr>');
+                            }
                         }
                     });
                     $('#id_codigo_articulo_buscar').val('');
