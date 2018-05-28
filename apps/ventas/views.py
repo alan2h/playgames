@@ -103,7 +103,7 @@ class VentaDeleteView(DeleteView):
 
 class VentaReportListView(ListView):
 
-    queryset = Venta.objects.filter(fecha_no_time__month=datetime.datetime.now().month)
+    queryset = Venta.objects.filter(fecha_no_time__month=datetime.datetime.now().month, baja=False)
     template_name = 'ventas/venta_report_list.html'
 
     def get_queryset(self):
