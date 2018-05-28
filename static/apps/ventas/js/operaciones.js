@@ -88,7 +88,7 @@
                         },
                         success: function(data){
                             if (Object.keys(data).length == 0){
-                                alert('El árticulo no fue encontrado o el stock es 0. Verifique en la lista de árticulos. ')
+                                alert('El árticulo no fue encontrado o el stock es 0. Verifique en la lista de árticulos los datos correspondientes. ')
                             }else{
 
                                 var precio_enviar = '';
