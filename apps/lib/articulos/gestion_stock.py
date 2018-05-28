@@ -9,7 +9,9 @@ class ArticuloStock(object):
         articulo = Articulo.objects.get(pk=id)
         if articulo.stock is not None:
             # formula: resta stock en caso de venta
-            articulo.stock = int(articulo.stock) - int(cantidad)
+            # codicion: verifico que el stock sea mayor 0
+            if int(articulo.stock) > 0:
+                articulo.stock = int(articulo.stock) - int(cantidad)
             # formula: suma la cantidad vendida en caso de venta
             articulo.cantidad_vendida = int(articulo.cantidad_vendida) + int(cantidad)
             articulo.save()

@@ -8,6 +8,8 @@ class ArticuloVenta(models.Model):
 
     cantidad = models.IntegerField(null=False, blank=False)
     articulo = models.ForeignKey(Articulo, null=False, blank=False)
+    # stock anterior: audtoria, para un mejor control. 
+    stock_anterior = models.IntegerField(null=True, blank=True)
     precio_venta = models.DecimalField(decimal_places=2, max_digits=12,
                                        null=False, blank=False)
 
@@ -34,7 +36,8 @@ class Venta(models.Model):
     venta_sin_ganancia = models.BooleanField(default=False) 
     # sucursal para dividir las ventas 
     sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
-
+    # para controlar quien vende
+    usuario = models.CharField(max_length=900, null=True, blank=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)

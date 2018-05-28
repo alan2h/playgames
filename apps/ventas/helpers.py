@@ -57,6 +57,7 @@ def ajax_guardar_venta(request):
 
                 articulo_venta = ArticuloVenta(
                     articulo=articulo_vendidos,
+                    stock_anterior=articulo_vendidos.stock,
                     cantidad=element['cantidad'],
                     precio_venta=precio_guardar)
 
@@ -69,7 +70,7 @@ def ajax_guardar_venta(request):
             # esta variable se guardara en el modelo venta
             # la idea es registrar las ventas que no ingresan a caja para poder anularlas
             venta_sin_ganancia = (request.POST.get('no_sumar') == 'true') 
-            
+           
             if forma_pago == 'descuento':
                 con_descuento = (float(request.POST.get('precio_venta_total')) * float(porcentaje_descuento)) / 100
                 resultado_descuento = float(request.POST.get('precio_venta_total')) - float(con_descuento)
@@ -79,7 +80,9 @@ def ajax_guardar_venta(request):
                     venta_sin_ganancia=venta_sin_ganancia,
                     forma_pago=forma_pago,
                     porcentaje_aumento=credito_porcentaje,
-                    porcentaje_descuento=porcentaje_descuento
+                    porcentaje_descuento=porcentaje_descuento,
+                    sucursal=sucursal,
+                    usuario=str(request.user.get_username())
                 )
                 venta.save()
             else:    
@@ -90,7 +93,8 @@ def ajax_guardar_venta(request):
                     forma_pago=forma_pago,
                     porcentaje_aumento=credito_porcentaje,
                     porcentaje_descuento=porcentaje_descuento,
-                    sucursal=sucursal
+                    sucursal=sucursal,
+                    usuario=str(request.user.get_username())
                 )
                 venta.save()
 
