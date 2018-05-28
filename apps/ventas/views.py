@@ -132,7 +132,7 @@ class VentaReportListView(ListView):
             # se ordena por fecha de forma descendente
             queryset = Venta.objects.filter(
                 fecha_no_time__month=datetime.datetime.now().month, 
-                sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha_no_time')
+                sucursal__id=self.request.session.get('id_sucursal'), baja=False).order_by('-fecha_no_time')
         return queryset
 
 
