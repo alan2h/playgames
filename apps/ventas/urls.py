@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .views import (VentaCreateView, TicketDetailView,
                     VentaListView, VentaDeleteView, VentaReportListView,
-                    VentaReportPieListView)
+                    VentaReportLineListView)
 from . import helpers
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^informe/$', VentaListView.as_view(), name='ventas-reporte'),
     url(r'^informe/texto/$', VentaReportListView.as_view(),
         name='ventas-reporte-texto'),
-    url(r'^informe/pie/$', VentaReportPieListView.as_view(),
+    url(r'^informe/line/$', VentaReportLineListView.as_view(),
         name='ventas-reporte-pie'),
     url(r'^eliminar/(?P<pk>(\d+))$', VentaDeleteView.as_view(),
         name='venta-delete'),

@@ -136,10 +136,10 @@ class VentaReportListView(ListView):
         return queryset
 
 
-class VentaReportPieListView(ListView):
+class VentaReportLineListView(ListView):
 
     queryset = Venta.objects.all()[:10]
-    template_name = 'ventas/venta_report_pie.html'
+    template_name = 'ventas/venta_report_line.html'
 
     def get_queryset(self):
         if 'texto_buscar' in self.request.GET:
@@ -154,5 +154,5 @@ class VentaReportPieListView(ListView):
                 '-' + fecha_hasta.split('/')[0]
             ).order_by('-fecha')
         else:
-            queryset = super(VentaReportPieListView, self).get_queryset()
+            queryset = super(VentaReportLineListView, self).get_queryset()
         return queryset
