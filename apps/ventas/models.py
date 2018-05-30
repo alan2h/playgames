@@ -10,6 +10,7 @@ class ArticuloVenta(models.Model):
     articulo = models.ForeignKey(Articulo, null=False, blank=False)
     # stock anterior: audtoria, para un mejor control. 
     stock_anterior = models.IntegerField(null=True, blank=True)
+    stock_actual = models.IntegerField(default=0, null=True, blank=True)
     precio_venta = models.DecimalField(decimal_places=2, max_digits=12,
                                        null=False, blank=False)
 

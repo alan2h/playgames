@@ -38,7 +38,7 @@
                 <!--<td>% {{ venta.porcentaje_aumento|default_if_none:'--' }}</td>-->
                 <td>
                     {% for articulo_venta in venta.articulo_venta.all %}
-                        {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.descripcion }} --> {{ articulo_venta.cantidad }} --> ${{ articulo_venta.precio_venta }},{% if articulo_venta.stock_anterior %} --> el stock anterior es: {{ articulo_venta.stock_anterior }} {% endif %} <br>
+                        {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.descripcion }} --> {{ articulo_venta.cantidad }} --> ${{ articulo_venta.precio_venta }},{% if articulo_venta.stock_anterior %} --> queda en stock: {{ articulo_venta.stock_actual }} {% endif %} <br>
                     {% endfor %}
                 </td>
                 <td>$ {{ venta.precio_venta_total }}</td>
