@@ -44,6 +44,7 @@
             var guardar_compra = function(){
                 total_con_descuento = resultado;
                 var no_sumar = false;
+                $('#id_button_guardar_compra').prop( "disabled", true );
                 if ($('#id_no_sumar').is(':checked')){no_sumar = true;}
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
