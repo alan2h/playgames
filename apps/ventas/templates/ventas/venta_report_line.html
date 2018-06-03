@@ -22,15 +22,15 @@
                 <thead>
                     <tr>
                     <th>sucursal</th>
-                    <th>mes</th>
+                    <th>fecha</th>
                     <th>venta</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for caja in cajas %}
+                    {% for caja in object_list %}
                         <tr>
                         <th scope="row">{{ caja.sucursal }}</th>
-                        <th scope="row">{{ caja.mes }}</th>
+                        <th scope="row">{{ caja.fecha }}</th>
                         <th scope="row">{{ caja.ventas }}</th>
                         </tr>
                     {% endfor %}
@@ -57,7 +57,7 @@
                var sucursal = ''
                var totales = 0 
 
-              {% for caja in cajas %}
+              {% for caja in object_list %}
                 fechas.push('{{ caja.fecha }}')
                 ventas_mostrar.push(parseInt('{{ caja.ventas }}'))
               {% endfor %}
@@ -103,13 +103,13 @@
         // specify chart configuration item and data
        option = {
             title: {
-                text: '折线图堆叠'
+                text: 'Ingreso de efectivo a caja'
             },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data:['Enero','Febrero','Marzo','Abril','Mayo']
+                data:fechas
             },
             grid: {
                 left: '3%',

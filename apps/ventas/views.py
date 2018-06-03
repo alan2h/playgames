@@ -145,14 +145,14 @@ class VentaReportLineListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(VentaReportLineListView, self).get_context_data(**kwargs)
         cajas = Caja.objects.filter(fecha__year=datetime.datetime.now().year, sucursal__id=
-                                    self.request.session.get('id_sucursal')).order_by('sucursal')
+                                    self.request.session.get('id_sucursal'))
         caja_enviar = []
         for caja in cajas:
             if caja.ventas_efectivo:
                 a = {
                     'sucursal': caja.sucursal,
                     'ventas': caja.ventas_efectivo,
-                    'fecha': str(caja.fecha)
+                    'fecha': str(caja.fecha).split('-')[2] + '/' + str(caja.fecha).split('-')[1] + '/' + str(caja.fecha).split('-')[0]
                 }
                 caja_enviar.append(a)
         context['cajas'] = caja_enviar
@@ -162,15 +162,38 @@ class VentaReportLineListView(ListView):
         if 'texto_buscar' in self.request.GET:
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
-            queryset = Venta.objects.filter(
+            caja_enviar = []
+
+            cajas = Caja.objects.filter(
                 fecha__gte=
                 fecha_desde.split('/')[2] + '-' + fecha_desde.split('/')[1] +
                 '-' + fecha_desde.split('/')[0],
                 fecha__lte=
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
-                '-' + fecha_hasta.split('/')[0]
+                '-' + fecha_hasta.split('/')[0], sucursal__id=
+                self.request.session.get('id_sucursal')
             ).order_by('-fecha')
+            for caja in cajas:
+                if caja.ventas_efectivo:
+                    a = {
+                        'sucursal': caja.sucursal,
+                        'ventas': caja.ventas_efectivo,
+                        'fecha': str(caja.fecha).split('-')[2] + '/' + str(caja.fecha).split('-')[1] + '/' + str(caja.fecha).split('-')[0]
+                    }
+                    caja_enviar.append(a)
+            queryset = caja_enviar
+
         else:
-            queryset = Caja.objects.filter(fecha__year=datetime.datetime.now().year).order_by('-fecha')
-        print(queryset)
+            cajas = Caja.objects.filter(fecha__year=datetime.datetime.now().year, sucursal__id=
+                                    self.request.session.get('id_sucursal'))
+            caja_enviar = []
+            for caja in cajas:
+                if caja.ventas_efectivo:
+                    a = {
+                        'sucursal': caja.sucursal,
+                        'ventas': caja.ventas_efectivo,
+                        'fecha': str(caja.fecha).split('-')[2] + '/' + str(caja.fecha).split('-')[1] + '/' + str(caja.fecha).split('-')[0]
+                    }
+                    caja_enviar.append(a)
+            queryset = caja_enviar
         return queryset
