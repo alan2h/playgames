@@ -89,7 +89,22 @@
                         },
                         success: function(data){
                             if (Object.keys(data).length == 0){
-                                alert('El árticulo no fue encontrado o el stock es 0. Verifique en la lista de árticulos los datos correspondientes. ')
+                                swal({
+                                    title: "El árticulo no fue encontrado o el stock es 0. Verifique en la lista de árticulos los datos correspondientes. ",
+                                    text: "Desea realizar el pedido ? ",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                  })
+                                  /*.then((willDelete) => {
+                                    if (willDelete) {
+                                      swal("Poof! Your imaginary file has been deleted!", {
+                                        icon: "success",
+                                      });
+                                    } else {
+                                      swal("El pedido ha sido enviado");
+                                    }
+                                  });*/
                             }else{
 
                                 var precio_enviar = '';

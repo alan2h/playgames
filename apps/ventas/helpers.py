@@ -155,8 +155,9 @@ def ajax_get_articulo_unico(request):
         if 'codigo_articulo' in request.POST:
             codigo_articulo = request.POST.get('codigo_articulo')
             articulo = Articulo.objects.filter(codigo_barra=codigo_articulo,
-                                               baja=False, stock__gte=1)
-
+                                               baja=False, stock__gte=1, 
+                                               sucursal__id=request.session.get('id_sucursal'))
+            
             if articulo.exists():
 
                 if articulo[0].marca is not None:

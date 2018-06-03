@@ -172,7 +172,7 @@ class VentaReportLineListView(ListView):
                 fecha_hasta.split('/')[2] + '-' + fecha_hasta.split('/')[1] +
                 '-' + fecha_hasta.split('/')[0], sucursal__id=
                 self.request.session.get('id_sucursal')
-            ).order_by('-fecha')
+            ).order_by('fecha')
             for caja in cajas:
                 if caja.ventas_efectivo:
                     a = {
@@ -185,7 +185,7 @@ class VentaReportLineListView(ListView):
 
         else:
             cajas = Caja.objects.filter(fecha__year=datetime.datetime.now().year, sucursal__id=
-                                    self.request.session.get('id_sucursal'))
+                                    self.request.session.get('id_sucursal')).order_by('fecha')
             caja_enviar = []
             for caja in cajas:
                 if caja.ventas_efectivo:
