@@ -3,12 +3,43 @@
 {% block css %}
     <!-- bootstrap-daterangepicker -->
        <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+<style>
+.invisible {
+  visibility: hidden;
+}
+</style>
 {% endblock %}
 
 {% block content %}
-           <!-- prepare a DOM container with width and height -->
-    <div id="main" style="width: 1000px;height:400px;"></div>   
-
+ <div class="x_panel">
+    <div class="x_content">
+        <!-- prepare a DOM container with width and height -->
+        <div class="table-responsive">
+            <div id="main" style="width: 900px;height:400px;"></div>
+              <div  class="table-responsive">
+                <!-- class="invisible" -->
+                <table class="table" id="datos_tbl">
+                <thead>
+                    <tr>
+                    <th>sucursal</th>
+                    <th>mes</th>
+                    <th>venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for caja in cajas %}
+                        <tr>
+                        <th scope="row">{{ caja.sucursal }}</th>
+                        <th scope="row">{{ caja.mes }}</th>
+                        <th scope="row">{{ caja.ventas }}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            <div>  
+        </div>   
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -18,12 +49,19 @@
            <script src="{% static 'echarts.simple.min.js' %}"></script>
 
            <script>
+
                var ventas = [];
                var ventas_mostrar = [];
                var myObject = new Object();
                var fechas = [];
-              
-               console.log(ventas_mostrar);
+               var sucursal = ''
+               var totales = 0 
+
+              {% for caja in cajas %}
+                fechas.push('{{ caja.fecha }}')
+                ventas_mostrar.push(parseInt('{{ caja.ventas }}'))
+              {% endfor %}
+               console.log(ventas);
                $('#id_texto_buscar').daterangepicker({
                           locale: {
                                  "format": "DD/MM/YYYY",
@@ -64,49 +102,43 @@
 
         // specify chart configuration item and data
        option = {
-    title: {
-        text: '折线图堆叠'
-    },
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['周一','周二','周三','周四','周五','周六','周日']
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-        {
-            name:'邮件营销',
-            type:'line',
-            stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name:'联盟广告',
-            type:'line',
-            stack: '总量',
-            data:[220, 182, 191, 234, 290, 330, 310]
-        }
-    ]
-};
+            title: {
+                text: '折线图堆叠'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['Enero','Febrero','Marzo','Abril','Mayo']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data:fechas
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name:'邮件营销',
+                    type:'line',
+                    stack: '总量',
+                    data:ventas_mostrar
+                }
+            ]
+        };
         // use configuration item and data specified to show chart
         myChart.setOption(option);
 

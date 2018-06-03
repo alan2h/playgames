@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, ListView, DeleteView
 
 from apps.articulos.models import Articulo
+from apps.cajas.models import Caja
 
 from .forms import VentaForm
 from .models import Venta, ArticuloVenta
@@ -138,8 +139,24 @@ class VentaReportListView(ListView):
 
 class VentaReportLineListView(ListView):
 
-    queryset = Venta.objects.all()[:10]
+    queryset = Caja.objects.filter(fecha__year=datetime.datetime.now().year).order_by('-fecha')
     template_name = 'ventas/venta_report_line.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VentaReportLineListView, self).get_context_data(**kwargs)
+        cajas = Caja.objects.filter(fecha__year=datetime.datetime.now().year, sucursal__id=
+                                    self.request.session.get('id_sucursal')).order_by('sucursal')
+        caja_enviar = []
+        for caja in cajas:
+            if caja.ventas_efectivo:
+                a = {
+                    'sucursal': caja.sucursal,
+                    'ventas': caja.ventas_efectivo,
+                    'fecha': str(caja.fecha)
+                }
+                caja_enviar.append(a)
+        context['cajas'] = caja_enviar
+        return context
 
     def get_queryset(self):
         if 'texto_buscar' in self.request.GET:
@@ -154,5 +171,6 @@ class VentaReportLineListView(ListView):
                 '-' + fecha_hasta.split('/')[0]
             ).order_by('-fecha')
         else:
-            queryset = super(VentaReportLineListView, self).get_queryset()
+            queryset = Caja.objects.filter(fecha__year=datetime.datetime.now().year).order_by('-fecha')
+        print(queryset)
         return queryset
