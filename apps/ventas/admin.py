@@ -14,6 +14,7 @@ class ArticuloVentaAdmin(admin.ModelAdmin):
     list_display = [
         'cantidad',
         'articulo',
+        'stock_actual',
         'precio_venta'
     ]
 

@@ -1,5 +1,6 @@
 
     /* ---- colocar en disabled todos los controles ----- */
+    /*---------------------------------------------------*/
     $('#id_fecha').prop( "disabled", true );
     $('#id_codigo_articulo_buscar').prop( "disabled", true );
     $('#id_button_buscar').prop( "disabled", true );

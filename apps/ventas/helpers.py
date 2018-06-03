@@ -58,6 +58,7 @@ def ajax_guardar_venta(request):
                 articulo_venta = ArticuloVenta(
                     articulo=articulo_vendidos,
                     stock_anterior=articulo_vendidos.stock,
+                    stock_actual=int(articulo_vendidos.stock) - int(element['cantidad']), # cantidad actual en stock
                     cantidad=element['cantidad'],
                     precio_venta=precio_guardar)
 
