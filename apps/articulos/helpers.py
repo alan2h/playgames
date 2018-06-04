@@ -128,14 +128,14 @@ def buscar_descripcion(qs, descripcion, sucursal=None):
                 descripcion__icontains=
                 descripcion,
                 sucursal=sucursal
-            )
+            ).order_by('nombre')
     else:
         if qs.exists() is False:
             qs = Articulo.objects.filter(
                 baja=False,
                 descripcion__icontains=
                 descripcion
-            )
+            ).order_by('nombre')
     return qs
 
 def buscar_nombre(qs, nombre, sucursal=None):
@@ -146,14 +146,14 @@ def buscar_nombre(qs, nombre, sucursal=None):
                 nombre__icontains=
                 nombre,
                 sucursal=sucursal
-            )
+            ).order_by('nombre')
     else:
         if qs.exists() is False:
             qs = Articulo.objects.filter(
                 baja=False,
                 nombre__icontains=
                 nombre
-            )
+            ).order_by('nombre')
     return qs
 
 
@@ -167,7 +167,7 @@ def buscar_precio_venta(qs, precio_venta, sucursal=None):
                         baja=False,
                         precio_venta=precio_venta,
                         sucursal=sucursal
-                    )
+                    ).order_by('nombre')
             elif ',' in precio_venta:
                 if precio_venta.split(',')[0].isnumeric() and \
                         precio_venta.split(',')[1].isnumeric():
@@ -176,13 +176,13 @@ def buscar_precio_venta(qs, precio_venta, sucursal=None):
                         baja=False,
                         precio_venta=precio_formateado,
                         sucursal=sucursal
-                    )
+                    ).order_by('nombre')
             elif precio_venta.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_venta=precio_venta,
                     sucursal=sucursal
-                )
+                ).order_by('nombre')
     else:
 
         if qs.exists() is False:
@@ -192,7 +192,7 @@ def buscar_precio_venta(qs, precio_venta, sucursal=None):
                     qs = Articulo.objects.filter(
                         baja=False,
                         precio_venta=precio_venta
-                    )
+                    ).order_by('nombre')
             elif ',' in precio_venta:
                 if precio_venta.split(',')[0].isnumeric() and \
                         precio_venta.split(',')[1].isnumeric():
@@ -200,12 +200,12 @@ def buscar_precio_venta(qs, precio_venta, sucursal=None):
                     qs = Articulo.objects.filter(
                         baja=False,
                         precio_venta=precio_formateado
-                    )
+                    ).order_by('nombre')
             elif precio_venta.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_venta=precio_venta
-                )
+                ).order_by('nombre')
     return qs
 
 
@@ -219,7 +219,7 @@ def buscar_precio_compra(qs, precio_compra, sucursal=None):
                         baja=False,
                         precio_compra=precio_compra,
                         sucursal=sucursal
-                    )
+                    ).order_by('nombre')
             elif ',' in precio_compra:
                 if precio_compra.split(',')[0].isnumeric() and \
                         precio_compra.split(',')[1].isnumeric():
@@ -228,13 +228,13 @@ def buscar_precio_compra(qs, precio_compra, sucursal=None):
                         baja=False,
                         precio_compra=precio_formateado,
                         sucursal=sucursal
-                    )
+                    ).order_by('nombre')
             elif precio_compra.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_compra=precio_compra,
                     sucursal=sucursal
-                )
+                ).order_by('nombre')
     else:
         if qs.exists() is False:
             if '.' in precio_compra:
@@ -243,7 +243,7 @@ def buscar_precio_compra(qs, precio_compra, sucursal=None):
                     qs = Articulo.objects.filter(
                         baja=False,
                         precio_compra=precio_compra
-                    )
+                    ).order_by('nombre')
             elif ',' in precio_compra:
                 if precio_compra.split(',')[0].isnumeric() and \
                         precio_compra.split(',')[1].isnumeric():
@@ -251,12 +251,12 @@ def buscar_precio_compra(qs, precio_compra, sucursal=None):
                     qs = Articulo.objects.filter(
                         baja=False,
                         precio_compra=precio_formateado
-                    )
+                    ).order_by('nombre')
             elif precio_compra.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     precio_compra=precio_compra
-                )
+                ).order_by('nombre')
     return qs
 
 
@@ -268,14 +268,14 @@ def buscar_stock(qs, stock, sucursal=None):
                     baja=False,
                     stock=stock,
                     sucursal=sucursal
-                )
+                ).order_by('nombre')
     else:
         if qs.exists() is False:
             if stock.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     stock=stock
-                )
+                ).order_by('nombre')
     return qs
 
 
@@ -287,14 +287,14 @@ def buscar_stock_minimo(qs, stock_minimo, sucursal=None):
                     baja=False,
                     stock_minimo=stock_minimo,
                     sucursal=sucursal
-                )
+                ).order_by('nombre')
     else:
         if qs.exists() is False:
             if stock_minimo.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
                     stock_minimo=stock_minimo
-                )
+                ).order_by('nombre')
     return qs
 
 
@@ -311,7 +311,7 @@ def buscar_fecha_compra(qs, fecha_compra, sucursal=None):
                                                     fecha_compra=
                                                     fecha_compra.split('/')[2] + "-" +
                                                     fecha_compra.split('/')[1] + "-" +
-                                                    fecha_compra.split('/')[0])
+                                                    fecha_compra.split('/')[0]).order_by('nombre')
 
     return qs
 
@@ -322,12 +322,12 @@ def buscar_marca(qs, marca, sucursal=None):
             baja=False,
             marca__descripcion__icontains=marca,
             sucursal=sucursal
-            )
+            ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             marca__descripcion__icontains=marca
-            )
+            ).order_by('nombre')
     return qs
 
 
@@ -337,12 +337,12 @@ def buscar_rubro(qs, rubro, sucursal=None):
             baja=False,
             rubro__descripcion__icontains=rubro,
             sucursal=sucursal
-        )
+        ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             rubro__descripcion__icontains=rubro
-        )
+        ).order_by('nombre')
     return qs
 
 
@@ -352,12 +352,12 @@ def buscar_categoria(qs, categoria, sucursal=None):
             baja=False,
             rubro__categoria__descripcion__icontains=categoria,
             sucursal=sucursal
-        )
+        ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             rubro__categoria__descripcion__icontains=categoria
-        )
+        ).order_by('nombre')
     return qs
 
 
@@ -370,13 +370,13 @@ def buscar_marca_categoria(qs, marca, categoria, sucursal=None):
             marca__descripcion__icontains=marca,
             rubro__categoria__id=int(categoria),
             sucursal=sucursal
-            )
+            ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             marca__descripcion__icontains=marca,
             rubro__categoria__id=int(categoria)
-            )
+            ).order_by('nombre')
     return qs
 
 
@@ -387,13 +387,13 @@ def buscar_rubro_categoria(qs, rubro, categoria, sucursal=None):
             rubro__descripcion__icontains=rubro,
             rubro__categoria__id=int(categoria),
             sucursal=sucursal
-        )
+        ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             rubro__descripcion__icontains=rubro,
             rubro__categoria__id=int(categoria)
-        )
+        ).order_by('nombre')
     return qs
 
 
@@ -404,13 +404,13 @@ def buscar_nombre_categoria(qs, nombre, categoria, sucursal=None):
             nombre__icontains=nombre,
             rubro__categoria__id=int(categoria),
             sucursal=sucursal
-            )
+            ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             nombre__icontains=nombre,
             rubro__categoria__id=int(categoria)
-            )
+            ).order_by('nombre')
     return qs
 
 
@@ -421,13 +421,13 @@ def buscar_descripcion_categoria(qs, descripcion, categoria, sucursal=None):
             descripcion__icontains=descripcion,
             rubro__categoria__id=int(categoria),
             sucursal = sucursal
-        )
+        ).order_by('nombre')
     else:
         qs = Articulo.objects.filter(
             baja=False,
             descripcion__icontains=descripcion,
             rubro__categoria__id=int(categoria)
-        )
+        ).order_by('nombre')
     return qs
 
 
@@ -457,34 +457,26 @@ def ajax_cambiar_sucursal(request):
                     # si es mayor que 0 le suma al stock
                     articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                     articulo_sucursal_object.stock = int(articulo_en_otra_sucursal[0].stock) + int(request.POST.get('id_cantidad_articulo'))
-                    print('+++++++ en el primer condicional +++++++++++++')
-                    print(articulo_sucursal_object.stock)
-                    print('++++++++++++++++++++')
+                    
                     articulo_sucursal_object.save()
                 else:
                     # en caso que sea 0 le agrega el stock
                     articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                     articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
-                    print('+++++++ en el segundo condicional +++++++++++++')
-                    print(articulo_sucursal_object.stock)
-                    print('++++++++++++++++++++')
+                    
                     articulo_sucursal_object.save()
             else:
                 # en caso que sea 0 le agrega el stock
                 articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                 articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
-                print('+++++++ en el tercero condicional +++++++++++++')
-                print(articulo_sucursal_object.stock)
-                print('++++++++++++++++++++')
+                
                 articulo_sucursal_object.save()
         else:
             articulo_copia = deepcopy(articulo)
             articulo_copia.id = None
             articulo_copia.stock = int(request.POST.get('id_cantidad_articulo'))
             articulo_copia.sucursal = sucursal
-            print('+++++++ en el cuarto condicional +++++++++++++')
-            print(articulo_copia.stock)
-            print('++++++++++++++++++++')
+            
             articulo_copia.save()
 
         articulo.stock = int(articulo.stock) - int(request.POST.get('id_cantidad_articulo'))
