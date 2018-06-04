@@ -9,7 +9,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import render
 
-from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro
+from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro, Marca
 from .forms import ArticuloForm, ArticuloDeleteForm, MarcaForm, RubroForm, \
     ActualizacionPrecioForm, CategoriaForm
 
@@ -230,14 +230,28 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
             form.instance.precio_debito = precio_debito
+
+            marca = None
+            rubro = None
+            if not form.data['marca'] is '':
+                marca = Marca.objects.get(pk=form.data['marca']) # obtengo la marca
+            
+            if not form.data['rubro'] is '':
+                rubro = Rubro.objects.get(pk=form.data['rubro']) # obtengo el rubro
+
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
-            Articulo.objects.filter(codigo_barra=form.instance.codigo_barra, 
-                nombre=form.instance.nombre, descripcion=form.instance.descripcion, 
-                marca__descripcion=form.instance.marca.descripcion, 
-                rubro__descripcion=form.instance.rubro.descripcion).update(
-                precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'], 
-                precio_credito=precio_credito, precio_debito=precio_debito)
+            # se filtra por el articulo y luego se actualiza todo 
+
+            Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                nombre=articulo.nombre, descripcion=articulo.descripcion, 
+                marca__descripcion=articulo.marca.descripcion, # se filtra por los elementos que son iguales
+                rubro__descripcion=articulo.rubro.descripcion).update(
+                nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
+                marca=marca, rubro=rubro,
+                precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
+                precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
+
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo se modifico con éxito')
         return HttpResponseRedirect('/articulos/listado/')
