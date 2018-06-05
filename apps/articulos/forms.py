@@ -18,7 +18,7 @@ class ArticuloForm(forms.ModelForm):
                                   widget=forms.TextInput(attrs=(
                                       {'class': 'form-control'}
                                   )))
-    marca = forms.ModelChoiceField(required=True,
+    marca = forms.ModelChoiceField(required=False,
                                    queryset=Marca.objects.all(),
                                    widget=forms.Select(attrs=(
                                        {'class': 'form-control'}
