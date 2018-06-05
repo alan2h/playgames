@@ -248,6 +248,11 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
             # se filtra por el articulo y luego se actualiza todo 
+
+            articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                                                          nombre=articulo.nombre, 
+                                                          descripcion=articulo.descripcion)
+
             if articulo.rubro  and  articulo.marca: # Filtro si existe rubro y marca
 
                articulo_actualizar = Articulo.objects.filter(
@@ -258,23 +263,17 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             
             elif articulo.rubro is None and articulo.marca: # Filtro si existe marca pero no rubro
 
-                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
                                         nombre=articulo.nombre, 
                                         descripcion=articulo.descripcion, 
                                         marca__descripcion=marca_descripcion)
 
             elif articulo.marca is None and articulo.rubro: # Filtro si existe rubro pero no la marca
 
-                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
                                         nombre=articulo.nombre,
                                         descripcion=articulo.descripcion, 
                                         rubro__descripcion=rubro_descripcion)
-
-            elif articulo.marca is None and articulo.rubro is None: # Filtro por los demas datos 
-
-                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
-                                        nombre=articulo.nombre, 
-                                        descripcion=articulo.descripcion)
 
         # aca se actualizan los campos, independientemente de la sucursal
         articulo_actualizar.update(
