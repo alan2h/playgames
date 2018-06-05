@@ -233,11 +233,17 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
 
             marca = None
             rubro = None
+            marca_descripcion = ''
+            rubro_descripcion = ''
             if not form.data['marca'] is '':
                 marca = Marca.objects.get(pk=form.data['marca']) # obtengo la marca
+                if articulo.marca:
+                    marca_descripcion = articulo.marca.descripcion
             
             if not form.data['rubro'] is '':
                 rubro = Rubro.objects.get(pk=form.data['rubro']) # obtengo el rubro
+                if articulo.rubro:
+                    rubro_descripcion = articulo.rubro.descripcion
 
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
@@ -245,8 +251,8 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
 
             Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
                 nombre=articulo.nombre, descripcion=articulo.descripcion, 
-                marca__descripcion=articulo.marca.descripcion, # se filtra por los elementos que son iguales
-                rubro__descripcion=articulo.rubro.descripcion).update(
+                marca__descripcion=marca_descripcion, # se filtra por los elementos que son iguales
+                rubro__descripcion=rubro_descripcion).update(
                 nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
                 marca=marca, rubro=rubro,
                 precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
