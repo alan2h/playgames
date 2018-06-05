@@ -230,7 +230,7 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
             form.instance.precio_debito = precio_debito
-
+            
             marca = None
             rubro = None
             marca_descripcion = ''
