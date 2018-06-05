@@ -244,19 +244,49 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                 rubro = Rubro.objects.get(pk=form.data['rubro']) # obtengo el rubro
                 if articulo.rubro:
                     rubro_descripcion = articulo.rubro.descripcion
-
+            
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
             # se filtra por el articulo y luego se actualiza todo 
+            if articulo.rubro  and  articulo.marca:
 
-            Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
-                nombre=articulo.nombre, descripcion=articulo.descripcion, 
-                marca__descripcion=marca_descripcion, # se filtra por los elementos que son iguales
-                rubro__descripcion=rubro_descripcion).update(
-                nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
-                marca=marca, rubro=rubro,
-                precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
-                precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
+                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                    nombre=articulo.nombre, descripcion=articulo.descripcion, 
+                    marca__descripcion=marca_descripcion, # se filtra por los elementos que son iguales
+                    rubro__descripcion=rubro_descripcion).update(
+                    nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
+                    marca=marca, rubro=rubro,
+                    precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
+                    precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
+            
+            elif articulo.rubro is None and articulo.marca:
+
+                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                    nombre=articulo.nombre, descripcion=articulo.descripcion, 
+                    marca__descripcion=marca_descripcion).update(
+                    nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
+                    marca=marca, rubro=rubro,
+                    precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
+                    precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
+
+            elif articulo.marca is None and articulo.rubro:
+
+                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                    nombre=articulo.nombre, descripcion=articulo.descripcion, 
+                    rubro__descripcion=rubro_descripcion).update(
+                    nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
+                    marca=marca, rubro=rubro,
+                    precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
+                    precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
+
+            elif articulo.marca is None and articulo.rubro is None:
+
+                Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                    nombre=articulo.nombre, descripcion=articulo.descripcion).update(
+                    nombre=form.data['nombre'], descripcion=form.data['descripcion'],  # aca se actualizan los campos
+                    marca=marca, rubro=rubro,
+                    precio_compra=form.data['precio_compra'], precio_venta=form.data['precio_venta'],  
+                    precio_credito=precio_credito, precio_debito=precio_debito, alicuota_iva=form.data['alicuota_iva'])
 
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo se modifico con éxito')
