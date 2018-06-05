@@ -138,6 +138,7 @@ def buscar_descripcion(qs, descripcion, sucursal=None):
             ).order_by('nombre')
     return qs
 
+# busqueda por nombre del articulo
 def buscar_nombre(qs, nombre, sucursal=None):
     if (sucursal):
         if qs.exists() is False:
@@ -153,6 +154,30 @@ def buscar_nombre(qs, nombre, sucursal=None):
                 baja=False,
                 nombre__icontains=
                 nombre
+            ).order_by('nombre')
+    return qs
+
+
+# Buscar por nombre y descripcion
+def buscar_nombre_descripcion(qs, nombre, descripcion, sucursal=None):
+    if (sucursal):
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__icontains=
+                nombre,
+                descripcion__icontains=
+                descripcion,
+                sucursal=sucursal
+            ).order_by('nombre')
+    else:
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__icontains=
+                nombre,
+                descripcion__icontains=
+                descripcion,
             ).order_by('nombre')
     return qs
 
