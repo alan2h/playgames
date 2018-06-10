@@ -52,4 +52,6 @@ urlpatterns = [
         name='perfiles'),
     url(r'^sucursales/', include('apps.sucursales.urls'),
         name='sucursales'),
+    url(r'^gastos/mes/', include('apps.gastos_mensuales.urls'),
+        name='gastos-mensuales'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
