@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
@@ -128,3 +128,8 @@ class ClienteUpdateView(SuccessMessageMixin, UpdateView):
     '''def get_success_url(self):
         return '/clientes/modi/%s' % str(self.form_class.id)'''
 
+
+class ClienteDeleteView(DeleteView):
+
+    model = Cliente
+    
