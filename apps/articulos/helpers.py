@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from reportlab.lib.units import mm
 
+from itertools import chain
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 
@@ -111,7 +112,21 @@ class DibujarBarcode(Drawing):
         self.add(barcode, name='barcode')
 
 
+def buscar_all_campos(qs, texto, sucursal=None):
+    
+    # esta función debe buscar y concatenar
+    # todos los resultados obtenidos
+    parametro1 = Articulo.objects.filter(baja=False, nombre__icontains=texto, sucursal=sucursal)
+    parametro2 = Articulo.objects.filter(baja=False, descripcion__icontains=texto, sucursal=sucursal)
+    parametro3 = Articulo.objects.filter(baja=False, marca__descripcion__icontains=texto, sucursal=sucursal)
+    parametro4 = Articulo.objects.filter(baja=False, rubro__descripcion__icontains=texto, sucursal=sucursal)
+    # concateno las busquedas
+    qs = parametro1 | parametro2 | parametro3 | parametro4
+    print(qs)
+    return qs
+
 def buscar_codigo(qs, codigo, sucursal=None):
+    # busca por codigo de barra para cada sucursal
     qs = Articulo.objects.filter(
         baja=False,
         codigo_barra__icontains=codigo,
@@ -121,6 +136,7 @@ def buscar_codigo(qs, codigo, sucursal=None):
 
 
 def buscar_descripcion(qs, descripcion, sucursal=None):
+    # buscar por descripcion para cada sucursal
     if (sucursal):
         if qs.exists() is False:
             qs = Articulo.objects.filter(
