@@ -15,6 +15,12 @@ class ClienteTemplateView(ListView):
     template_name = 'clientes/clientes_list.html'
     queryset = Cliente.objects.filter(baja=False)
 
+    def get_queryset(self):
+        queryset = super(ClienteTemplateView, self).get_queryset()
+        queryset = Cliente.objects.filter(sucursal__id=
+                                          self.request.session.get('id_sucursal')) # Filtrar solo los socios de la sucursal
+        return queryset
+
 
 class ClienteCreateView(SuccessMessageMixin, CreateView):
 
