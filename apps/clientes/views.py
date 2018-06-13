@@ -132,4 +132,11 @@ class ClienteUpdateView(SuccessMessageMixin, UpdateView):
 class ClienteDeleteView(DeleteView):
 
     model = Cliente
+    template_name = 'clientes/cliente_confirm_delete.html'
+    success_url = '/clientes/listado/'
+
+    def delete(self, request, *args, **kwargs):
+        
+        messages.error(request, 'El cliente se elimino correctamente')
+        return super(ClienteDeleteView, self).delete(request, *args, **kwargs)
     

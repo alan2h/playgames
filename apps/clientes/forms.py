@@ -18,7 +18,7 @@ class ClienteForm(forms.ModelForm):
                                         'class': 'form-control'
                                    }
                                )))
-    direccion = forms.CharField(max_length=800, required=True,
+    direccion = forms.CharField(max_length=800, required=False,
                                 widget=forms.Textarea(attrs=(
                                     {
                                         'class': 'form-control'
