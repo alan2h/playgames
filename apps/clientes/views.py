@@ -7,6 +7,8 @@ from django.contrib import messages
 from .models import Cliente, Contacto
 from .forms import ClienteForm, ContactoForm
 
+from apps.sucursales.models import Sucursal
+
 
 class ClienteTemplateView(ListView):
 
@@ -23,6 +25,8 @@ class ClienteCreateView(SuccessMessageMixin, CreateView):
     success_url = '/clientes/alta'
 
     def form_valid(self, form):
+        sucursal = Sucursal.objects.get(id=self.request.session.get('id_sucursal'))
+        form.instance.sucursal = sucursal
         return super(ClienteCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -123,6 +127,8 @@ class ClienteUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
     def form_valid(self, form):
+        sucursal = Sucursal.objects.get(id=self.request.session.get('id_sucursal'))
+        form.instance.sucursal = sucursal
         return super(ClienteUpdateView, self).form_valid(form)
 
     '''def get_success_url(self):

@@ -2,6 +2,9 @@ from django.db import models
 import datetime
 import django
 
+from apps.sucursales.models import Sucursal
+
+
 class Cliente(models.Model):
 
     nombre = models.CharField(max_length=600, null=False, blank=False)
@@ -11,6 +14,8 @@ class Cliente(models.Model):
     fecha_nacimiento = models.DateField(blank=True, null=True)
     fecha_alta = models.DateField(default=django.utils.timezone.now, blank=True, null=True)
     puntos = models.IntegerField(blank=True, null=True)
+    # cada cliente tiene una sucursal
+    sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)
