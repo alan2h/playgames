@@ -87,9 +87,10 @@ class ContactoUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ContactoUpdateView, self).get_context_data(**kwargs)
+        # print(self.kwargs['p'])
         context['pk'] = self.kwargs['p']
 
-        cliente = Cliente.objects.get(pk=self.kwargs['pk'])
+        cliente = Cliente.objects.get(pk=self.kwargs['p'])
         context['cliente'] = cliente.nombre
 
         contactos = Contacto.objects.filter(cliente__id=self.kwargs['p'],
@@ -152,3 +153,14 @@ class ClienteDeleteView(DeleteView):
         messages.error(request, 'El cliente se elimino correctamente')
         return super(ClienteDeleteView, self).delete(request, *args, **kwargs)
     
+
+class ContactoDeleteView(DeleteView):
+    
+    model = Contacto
+    template_name = 'clientes/contacto_confirm_delete.html'
+    success_url = '/clientes/listado/'
+
+    def delete(self, request, *args, **kwargs):
+        
+        messages.error(request, 'El contacto se elimino correctamente')
+        return super(ContactoDeleteView, self).delete(request, *args, **kwargs)
