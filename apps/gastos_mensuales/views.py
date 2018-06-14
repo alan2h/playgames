@@ -31,6 +31,7 @@ class GastoMensualCreateView(CreateView):
     def get(self, request, *args, **kwargs):
     
         gastos = Paginator(GastoMensual.objects.filter(sucursal__id=self.request.session['id_sucursal']).order_by('-fecha'), 10)
+        print(gastos)
         if 'page' in self.request.GET:
             page = gastos.page(self.request.GET.get('page'))
         else:

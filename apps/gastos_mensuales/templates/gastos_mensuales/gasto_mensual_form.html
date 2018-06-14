@@ -154,10 +154,10 @@
                     <nav aria-label="...">
                       <ul class="pager">
                         {% if gastos.has_previous %}
-                          <li class="previous"><a href="/gastos/alta/?page={{ gastos.previous_page_number }}"><span aria-hidden="true">&larr;</span> Átras</a></li>
+                          <li class="previous"><a href="/gastos/mes/alta/?page={{ gastos.previous_page_number }}"><span aria-hidden="true">&larr;</span> Átras</a></li>
                         {% endif %}
                         {% if gastos.has_next %}
-                          <li class="next"><a href="/gastos/alta/?page={{ gastos.next_page_number }}" >Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+                          <li class="next"><a href="/gastos/mes/alta/?page={{ gastos.next_page_number }}" >Siguiente <span aria-hidden="true">&rarr;</span></a></li>
                         {% endif %}
                       </ul>
                     </nav>
