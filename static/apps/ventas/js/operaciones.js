@@ -1,4 +1,4 @@
-/* ---- variables globales ---- */
+            /* ---- variables globales ---- */
             var total = 0.0;
             var total_con_descuento = 0.0;
             var resultado = 0.0;
@@ -6,14 +6,16 @@
             var credito_porcentaje = 0;
             var articulos_vendidos = [];
             var forma_pago = '';
-     /* --- hacer invisible los campos que solo son para efectivo ---- */
+            /* --- hacer invisible los campos que solo son para efectivo ---- */
             document.getElementById('id_div_pago').style.display = 'none';
             document.getElementById('id_div_vuelto').style.display = 'none';
-     /* --- hacer invisible los campos que solo son para crédito ---- */
+            /* --- hacer invisible los campos que solo son para crédito ---- */
             document.getElementById('id_div_porcentaje').style.display = 'none';
             document.getElementById('id_div_credito_total').style.display = 'none';
-     /* --- hacer invisible los campos que solo son para descuento ---- */
+            /* --- hacer invisible los campos que solo son para descuento ---- */
             document.getElementById('id_div_descuento').style.display = 'none';  
+            /* ---- hacer invisible los campos que solo son para los socios ---*/
+            document.getElementById('id_div_puntos_socios').style.display = 'none';
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
@@ -179,6 +181,14 @@
                     document.getElementById('id_div_porcentaje').style.display = 'block';
                     document.getElementById('id_div_credito_total').style.display = 'block';
                 };
+                if (forma_pago == 'socio'){
+                    // si es un socio habilito sus respectivos descuentos y puntos
+                    document.getElementById('id_div_puntos_socios').style.display = 'block';
+                    document.getElementById('id_div_pago').style.display = 'block';
+                    document.getElementById('id_div_vuelto').style.display = 'block';
+                    document.getElementById('id_div_descuento').style.display = 'block';
+                }
+                // hago invisibles las imagenes de tipos de pagos
                 if (forma_pago != 'efectivo'){
                     $('#id_efectivo').hide();
                 };
