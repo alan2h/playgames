@@ -5,6 +5,21 @@ from .models import Cliente, Contacto
 
 
 class ClienteForm(forms.ModelForm):
+    
+    codigo_barras = forms.CharField(max_length=3000, required=False, 
+                                    widget=(forms.TextInput(attrs=(
+                                        {
+                                            'class': 'form-control'
+                                        }
+                                    ))))
+
+    email = forms.EmailField(max_length=3000, required=True, 
+                            widget=(forms.TextInput(attrs=(
+                                {
+                                    'class': 'form-control',
+                                    'type': 'email'
+                                }
+                            ))))
 
     nombre = forms.CharField(max_length=600, required=True,
                              widget=(forms.TextInput(attrs=(
@@ -32,7 +47,7 @@ class ClienteForm(forms.ModelForm):
     numero_documento = forms.IntegerField(required=True, widget=forms.NumberInput(attrs=({'class': 'form-control'})))
 
     class Meta:
-        fields = ['nombre', 'apellido', 'direccion', 'fecha_nacimiento', 'numero_documento']
+        fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion', 'fecha_nacimiento', 'numero_documento']
         model = Cliente
 
 

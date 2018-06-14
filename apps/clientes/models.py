@@ -7,6 +7,8 @@ from apps.sucursales.models import Sucursal
 
 class Cliente(models.Model):
 
+    codigo_barras = models.CharField(max_length=3000, blank=True, null=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     nombre = models.CharField(max_length=600, null=False, blank=False)
     apellido = models.TextField(max_length=800, null=True, blank=True)
     numero_documento = models.IntegerField(blank=True, null=True)

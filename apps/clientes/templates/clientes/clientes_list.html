@@ -1,5 +1,6 @@
 {% extends 'form_base.html' %}
 {% load staticfiles %}
+{% load calculos_tags %}
 {% block css %}
     <!-- Datatables -->
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
@@ -25,9 +26,10 @@
             <table id="datatable" class="table table-striped table-bordered">
               <thead>
                 <tr>
+                  <th>Código</th>
                   <th>Nombre</th>
                   <th>Apellido</th>
-                  <th>Dirección</th>
+                  <th>Email</th>
                   <th>Puntos</th>
                   <th>Datos</th>
                   <th>Acciones</th>
@@ -37,9 +39,10 @@
               <tbody>
               {% for cliente in object_list %}
                 <tr>
+                  <td>{{ cliente.codigo_barras|quitar_none }}</td>
                   <td>{{ cliente.nombre }}</td>
                   <td>{{ cliente.apellido }}</td>
-                  <td>{{ cliente.direccion }}</td>
+                  <td>{{ cliente.email|quitar_none }}</td>
                   {% if cliente.puntos %}
                     <td>{{ cliente.puntos }}</td>
                   {% else %}
