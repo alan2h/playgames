@@ -191,6 +191,9 @@
                 if (forma_pago != 'descuento'){
                     $('#id_descuento').hide();
                 };
+                if (forma_pago != 'socio'){
+                    $('#id_paga_socio').hide();
+                }
             };
     /* ---- detectar que tipo de pago es ---- */
 

@@ -85,6 +85,10 @@
 	background-image: url("/media/logos_sistema/logos_tipos_pagos/pago_descuento.png");
 }
 
+.paymentWrap .paymentBtnGroup .paymentMethod .method.socio {
+	background-image: url("/media/logos_sistema/logos_tipos_pagos/pago_socio.png");
+}
+
 .paymentWrap .paymentBtnGroup .paymentMethod .method:hover {
 	
 	border-color: #4cd264;

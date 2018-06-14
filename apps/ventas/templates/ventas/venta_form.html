@@ -189,6 +189,10 @@
                                       <div class="method desc"></div>
                                       <input type="radio" name="options">
                                   </label>
+                                  <label title="Pagar con Puntos" class="btn paymentMethod " id="id_paga_socio" onclick="calcular_tipo_pago('socio')">
+                                    <div class="method socio"></div>
+                                    <input type="radio" name="options">
+                                </label>
                               </div>
                           </div>
                       </div>
@@ -403,7 +407,12 @@
                     var self = this;
                     self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento 
                     self.id_socio = socio.id
-                    alert(self.datos_socio + ' ' + 'seleccionado')
+                    swal({
+                        title: self.datos_socio,
+                        text: "El socio fue seleccionado, sus puntos serán cargados de esta venta",
+                        icon: "success",
+                        button: "Aceptar",
+                      });
                 },
                 envioDatos: function(articulo){
                     var marca_descripcion = ''
@@ -501,7 +510,6 @@
             },
             mounted: function(){
                 this.cargarDatos();
-                console.log(this.articulos)
                 this.cargarSocios();    
             }
         });
