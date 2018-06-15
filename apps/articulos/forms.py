@@ -80,13 +80,18 @@ class ArticuloForm(forms.ModelForm):
     widget=forms.Select(
         {'class': 'form-control'}))
 
+    no_suma_caja = forms.BooleanField(initial=False, required=False, widget=forms.CheckboxInput(attrs=(
+                                        {
+                                            'class': 'form-control'
+                                        }
+                                    )))
 
     class Meta:
         fields = [
             'codigo_barra', 'descripcion', 'precio_compra', 'precio_venta',
             'precio_credito', 'precio_debito', 'stock', 'stock_minimo',
             'rubro', 'marca', 'impuesto_interno', 'alicuota_iva', 'fecha_compra',
-            'imagen', 'nombre', 'sucursal'
+            'imagen', 'nombre', 'sucursal', 'no_suma_caja'
         ]
 
         model = Articulo

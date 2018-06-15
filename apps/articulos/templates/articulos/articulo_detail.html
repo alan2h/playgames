@@ -13,6 +13,7 @@
                     <div class="x_title">
                       <h2>Detalle del Árticulo</h2>
                       <ul class="nav navbar-right panel_toolbox">
+                        
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                         <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -21,6 +22,13 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
+                      {% if object.no_suma_caja %}
+                        <!-- en caso de que el árticulo no se sume a caja -->
+                          <div class="alert alert-info">
+                              <strong>Información!</strong> La venta de este árticulo no se suma a caja. Se sumará a la sección de 'Ventas sin Ganancia'.
+                          </div>
+                        <!-- en caso de que el árticulo no se sume a caja -->
+                      {% endif %}
                     {% csrf_token %}
                       <div class="col-md-7 col-sm-7 col-xs-12" style="border:0px solid #e5e5e5;">
                         {% if object.imagen %}

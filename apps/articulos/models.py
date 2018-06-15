@@ -67,6 +67,8 @@ class Articulo(models.Model):
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
     # cantidad vendida, esto marca un historial de la cantidad vendidad de un articulo
     cantidad_vendida = models.IntegerField(default='0', null=True, blank=True)
+    # si el articulo no se suma a caja este check debe tildarse. Si suma debe ser falso
+    no_suma_caja = models.BooleanField(default=False)
 
     # Baja
     baja = models.BooleanField(default=False)

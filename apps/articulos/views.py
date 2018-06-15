@@ -283,6 +283,7 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                                         rubro__descripcion=rubro_descripcion)
 
         # aca se actualizan los campos, independientemente de la sucursal
+
         articulo_actualizar.update(
                     codigo_barra=form.data['codigo_barra'],
                     nombre=form.data['nombre'], 
@@ -290,12 +291,13 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                     marca=marca, 
                     rubro=rubro,
                     precio_venta=form.data['precio_venta'],
-                    precio_debito=precio_debito,
-                    precio_credito=precio_credito,
+                    precio_debito=precio_debito,   # campos calculados 
+                    precio_credito=precio_credito, # campos calculados
                     precio_compra=form.data['precio_compra'],
                     stock_minimo=form.data['stock_minimo'],                 
                     impuesto_interno=form.data['impuesto_interno'],
-                    alicuota_iva=form.data['alicuota_iva'])
+                    alicuota_iva=form.data['alicuota_iva'],
+                    no_suma_caja=(form.data.get('no_suma_caja') is 'on')) # si el check viene on, quedara verdadero
         form.save(commit=True)
         messages.success(self.request, 'El Árticulo se modifico con éxito')
         return HttpResponseRedirect('/articulos/listado/')

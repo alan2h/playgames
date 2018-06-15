@@ -303,6 +303,29 @@
                     </div>
                 <!-- Input del formulario -->
 
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+            <!-- Este checkbox solo debe ser tildado si es que no suma a caja -->
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">No se suma a caja</label>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    {{ form.no_suma_caja }}
+                    
+                    <!-- Mensaje de error del input -->
+                    {% if form.no_suma_caja.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="sr-only">Error:</span>
+                            {{ form.no_suma_caja.errors|striptags }}
+                        </div>
+                    {% endif %}
+                    <!-- Mensaje de error del input -->
+                </div>
+            </div>
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+            <!-- Este checkbox solo debe ser tildado si es que no suma a caja -->
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
           <div class="ln_solid"></div>
 
           <div class="form-group">
