@@ -28,76 +28,31 @@ def ajax_guardar_venta(request):
             ventas = request.POST.get('ventas')
             the_dict = json.loads(ventas)
 
-            for element in the_dict:
-                articulo_vendidos = Articulo.objects.get(
-                    pk=element['id'])
+            # -------- desarma el diccionario y procesa stock y demas resultados ----
+            articulo_venta_array = split_component_venta(the_dict, forma_pago, request, articulo_stock) # esta variable se guardara en el modelo venta
+            # -----------------------------------------------------------------------
 
-                precio_guardar = 0.0
-                if forma_pago == 'efectivo':
-                    precio_guardar = articulo_vendidos.precio_venta
-                if forma_pago == 'debito':
-                    precio_guardar = articulo_vendidos.precio_debito
-                if forma_pago == 'credito':
-                    precio_guardar = articulo_vendidos.precio_credito
-                if forma_pago == 'descuento':
-                    precio_guardar = articulo_vendidos.precio_venta  
-
-                # calculos de puntos si hay socio
-                if request.POST.get('id_socio') != '':
-                    pesos_puntos = PuntoConfiguracion.objects.all()[0]
-                    cliente = Cliente.objects.get(pk=request.POST.get('id_socio'))
-                   
-                    cantidad_puntos = (int(precio_guardar) / int(pesos_puntos.precio)) * int(pesos_puntos.punto)
-                    if (cliente.puntos): 
-                        cliente.puntos = int(cliente.puntos) + int(cantidad_puntos)
-                    else:
-                        cliente.puntos = int(cantidad_puntos)
-                    cliente.save()
-                # calculos de puntos si hay socio  
-
-                articulo_venta = ArticuloVenta(
-                    articulo=articulo_vendidos,
-                    stock_anterior=articulo_vendidos.stock,
-                    stock_actual=int(articulo_vendidos.stock) - int(element['cantidad']), # cantidad actual en stock
-                    cantidad=element['cantidad'],
-                    precio_venta=precio_guardar)
-
-                articulo_venta.save()
-                # Resta en el stock el articulo vendido
-                articulo_stock.restar_stock(articulo_venta.articulo.id,
-                                            articulo_venta.cantidad)
-
-                articulo_venta_array.append(articulo_venta)
-            # esta variable se guardara en el modelo venta
             # la idea es registrar las ventas que no ingresan a caja para poder anularlas
             venta_sin_ganancia = (request.POST.get('no_sumar') == 'true') 
            
-            if forma_pago == 'descuento':
+            if forma_pago == 'descuento': # en caso de tener descuento lo calcula
                 con_descuento = (float(request.POST.get('precio_venta_total')) * float(porcentaje_descuento)) / 100
-                resultado_descuento = float(request.POST.get('precio_venta_total')) - float(con_descuento)
-                venta = Venta(
-                    fecha=request.POST.get('fecha'),
-                    precio_venta_total=resultado_descuento,
-                    venta_sin_ganancia=venta_sin_ganancia,
-                    forma_pago=forma_pago,
-                    porcentaje_aumento=credito_porcentaje,
-                    porcentaje_descuento=porcentaje_descuento,
-                    sucursal=sucursal,
-                    usuario=str(request.user.get_username())
-                )
-                venta.save()
-            else:    
-                venta = Venta(
-                    fecha=request.POST.get('fecha'),
-                    precio_venta_total=request.POST.get('precio_venta_total'),
-                    venta_sin_ganancia=venta_sin_ganancia,
-                    forma_pago=forma_pago,
-                    porcentaje_aumento=credito_porcentaje,
-                    porcentaje_descuento=porcentaje_descuento,
-                    sucursal=sucursal,
-                    usuario=str(request.user.get_username())
-                )
-                venta.save()
+                resultado_venta_total = float(request.POST.get('precio_venta_total')) - float(con_descuento)
+            else:
+                resultado_venta_total = request.POST.get('precio_venta_total')
+            
+            # guarda la venta en un historial
+            venta = Venta(
+                fecha=request.POST.get('fecha'),
+                precio_venta_total=resultado_venta_total,
+                venta_sin_ganancia=venta_sin_ganancia,
+                forma_pago=forma_pago,
+                porcentaje_aumento=credito_porcentaje,
+                porcentaje_descuento=porcentaje_descuento,
+                sucursal=sucursal,
+                usuario=str(request.user.get_username())
+            )
+            venta.save()
 
             # Guarda en la caja el precio total del efectivo
             if forma_pago == 'efectivo':
@@ -188,3 +143,64 @@ def ajax_get_articulo_unico(request):
             else:
                 data = {}
             return JsonResponse(data)
+
+
+def sumar_puntos_socios(id, precio_guardar):
+    ''' esta funcion se encarga de sumarle puntos a los socios '''
+    if id:
+        pesos_puntos = PuntoConfiguracion.objects.all()[0]
+        cliente = Cliente.objects.get(pk=id)
+        
+        cantidad_puntos = (int(precio_guardar) / int(pesos_puntos.precio)) * int(pesos_puntos.punto)
+        if (cliente.puntos): 
+            cliente.puntos = int(cliente.puntos) + int(cantidad_puntos)
+        else:
+            cliente.puntos = int(cantidad_puntos)
+        return cliente.save()
+    else:
+        return 0
+
+
+def guardar_articulo_venta(articulo_vendidos, element, precio_guardar):
+    ''' guarda la relacion entre articulo y la venta '''
+    articulo_venta = ArticuloVenta(
+                                    articulo=articulo_vendidos,
+                                    stock_anterior=articulo_vendidos.stock,
+                                    stock_actual=int(articulo_vendidos.stock) - int(element['cantidad']), # cantidad actual en stock
+                                    cantidad=element['cantidad'],
+                                    precio_venta=precio_guardar
+                                )
+    articulo_venta.save()
+    return articulo_venta
+
+
+def split_component_venta(the_dict, forma_pago, request, articulo_stock):
+    ''' desarma el diccionario de las ventas para procesarlo '''
+    ''' al final devuelve un diccionario para guardarlo en el historial de ventas '''
+
+    articulo_venta_array = []
+    for element in the_dict:
+        articulo_vendidos = Articulo.objects.get(
+            pk=element['id'])
+
+        precio_guardar = 0.0
+        if forma_pago == 'efectivo':
+            precio_guardar = articulo_vendidos.precio_venta
+        if forma_pago == 'debito':
+            precio_guardar = articulo_vendidos.precio_debito
+        if forma_pago == 'credito':
+            precio_guardar = articulo_vendidos.precio_credito
+        if forma_pago == 'descuento':
+            precio_guardar = articulo_vendidos.precio_venta  
+        # --------- calculos de puntos si hay socio ----------
+        sumar_puntos_socios(request.POST.get('id_socio', None), precio_guardar)
+        # ----------------------------------------------------
+        # --------- guardar la relacion entra articulo y venta
+        articulo_venta = guardar_articulo_venta(articulo_vendidos, element, precio_guardar)
+        # ----------------------------------------------------
+        # --------- Resta en el stock el articulo vendido ----
+        articulo_stock.restar_stock(articulo_venta.articulo.id, articulo_venta.cantidad)
+        # ----------------------------------------------------
+        articulo_venta_array.append(articulo_venta)
+        
+    return articulo_venta_array

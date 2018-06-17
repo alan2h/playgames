@@ -15,7 +15,7 @@
             /* --- hacer invisible los campos que solo son para descuento ---- */
             document.getElementById('id_div_descuento').style.display = 'none';  
             /* ---- hacer invisible los campos que solo son para los socios ---*/
-            document.getElementById('id_div_puntos_socios').style.display = 'none';
+            //document.getElementById('id_div_puntos_socios').style.display = 'none';
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
@@ -181,13 +181,7 @@
                     document.getElementById('id_div_porcentaje').style.display = 'block';
                     document.getElementById('id_div_credito_total').style.display = 'block';
                 };
-                if (forma_pago == 'socio'){
-                    // si es un socio habilito sus respectivos descuentos y puntos
-                    document.getElementById('id_div_puntos_socios').style.display = 'block';
-                    document.getElementById('id_div_pago').style.display = 'block';
-                    document.getElementById('id_div_vuelto').style.display = 'block';
-                    document.getElementById('id_div_descuento').style.display = 'block';
-                }
+                
                 // hago invisibles las imagenes de tipos de pagos
                 if (forma_pago != 'efectivo'){
                     $('#id_efectivo').hide();
@@ -201,9 +195,7 @@
                 if (forma_pago != 'descuento'){
                     $('#id_descuento').hide();
                 };
-                if (forma_pago != 'socio'){
-                    $('#id_paga_socio').hide();
-                }
+               
             };
     /* ---- detectar que tipo de pago es ---- */
 

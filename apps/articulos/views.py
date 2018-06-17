@@ -283,7 +283,11 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                                         rubro__descripcion=rubro_descripcion)
 
         # aca se actualizan los campos, independientemente de la sucursal
-
+        print('------- articulos que se van a actualizar -------')
+        for a in articulo_actualizar:
+            print('articulo: ', a.nombre)
+            print('sucursal: ', a.sucursal.descripcion)
+        print('-------------------------------------------------')
         articulo_actualizar.update(
                     codigo_barra=form.data['codigo_barra'],
                     nombre=form.data['nombre'], 
