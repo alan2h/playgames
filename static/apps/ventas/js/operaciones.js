@@ -16,6 +16,7 @@
             document.getElementById('id_div_descuento').style.display = 'none';  
             /* ---- hacer invisible los campos que solo son para los socios ---*/
             document.getElementById('id_div_puntos_socios').style.display = 'none';
+            document.getElementById('id_form_canjear').style.display = 'none';
 
             /* ----------- habilitar campos para canje de puntos en socio ---*/
             habilitar_campos_canje = function(socio){
@@ -236,6 +237,14 @@
             };
     /* ---- Agregar cantidad a un articulo desde la tabla ---- */
 
+    /*------ cuando selecciona el canje se agrega las cajas de texto ----*/
+    $("#id_canje_socios").change(function() {
+        if(this.checked) {
+            document.getElementById('id_form_canjear').style.display = 'block';
+        }
+    });
+    /*-------------------------------------------------------------------*/
+
     /* ---- Evento y metodos para vueltos si es efectivo ---- */
             $('#id_pago').click( function(){
                 if ($('#id_pago').val() == '0'){
@@ -272,6 +281,16 @@
                 }
                 calcular_vuelto();
             });
+
+            $('#id_descuento_socios').keypress(function(e){
+                if (e.keyCode == 13) {
+                    if ($('#id_descuento_socios').val() == ''){
+                        $('#id_descuento_socios').val('0');
+                    }
+                    calcular_vuelto();
+                }
+            });
+
             $('#id_pago').keypress(function(e) {
                 if (e.keyCode == 13) {
                     calcular_vuelto();
