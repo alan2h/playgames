@@ -15,10 +15,18 @@
             /* --- hacer invisible los campos que solo son para descuento ---- */
             document.getElementById('id_div_descuento').style.display = 'none';  
             /* ---- hacer invisible los campos que solo son para los socios ---*/
-            //document.getElementById('id_div_puntos_socios').style.display = 'none';
+            document.getElementById('id_div_puntos_socios').style.display = 'none';
+
+            /* ----------- habilitar campos para canje de puntos en socio ---*/
+            habilitar_campos_canje = function(socio){
+                $('#id_puntos_socios').val(socio.puntos);
+                document.getElementById('id_div_puntos_socios').style.display = 'block';
+            }
+            /* --------------------------------------------------------------*/
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
+                
                 var precio_enviar = '';
                 if (cantidad != null && cantidad != '') {
                     switch (forma_pago){
@@ -46,8 +54,12 @@
             var guardar_compra = function(){
                 total_con_descuento = resultado;
                 var no_sumar = false;
+                var canje_socios = false;
+
                 $('#id_button_guardar_compra').prop( "disabled", true );
                 if ($('#id_no_sumar').is(':checked')){no_sumar = true;}
+                if ($('#id_canje_socios').is(':checked')){canje_socios = true;}
+
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
                     type: 'post',
@@ -60,6 +72,8 @@
                         precio_venta_total: total.toString(),
                         forma_pago: forma_pago,
                         no_sumar: no_sumar,
+                        puntos_socios: $('#id_puntos_socios').val(),
+                        canje_socios: canje_socios,
                         credito_porcentaje: credito_porcentaje,
                         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
                     },
@@ -233,6 +247,12 @@
                     $('#id_monto_descuento').val(' ');
                 }
             });
+            // descuento para socios
+            $('#id_descuento_socios').click( function(){
+                if ($('#id_descuento_socios').val() == '0'){
+                    $('#id_descuento_socios').val(' ');
+                }
+            });
     /* --- por cada evento calcular el vuelto --- */
             $('#id_pago').focusout(function() {
                 if ($('#id_pago').val() == ''){
@@ -244,6 +264,13 @@
                 if ($('#id_monto_descuento').val() == ''){
                     $('#id_monto_descuento').val('0');
                 }
+                calcular_vuelto();
+            });
+            $('#id_descuento_socios').focusout(function(){
+                if ($('#id_descuento_socios').val() == ''){
+                    $('#id_descuento_socios').val('0');
+                }
+                calcular_vuelto();
             });
             $('#id_pago').keypress(function(e) {
                 if (e.keyCode == 13) {
@@ -255,18 +282,31 @@
 
                 var pago = $('#id_pago').val();
                 var descuento = $('#id_monto_descuento').val();
-                if (descuento != '0') {
+                var descuento_socio = $('#id_descuento_socios').val();
+
+                var vuelto = parseFloat(pago) - parseFloat(total);
+
+                if (descuento_socio != '0') { // descuento para socios
+                    descuento_total = (parseFloat(total) * parseFloat(descuento_socio)) / 100;
+                    resultado = 0.0;
+                    resultado = parseFloat(total) - parseFloat(descuento_total);
+                    var vuelto =  parseFloat(pago) - parseFloat(resultado);
+                    var representar2 = resultado.toFixed(2);
+                    $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
+                }
+
+                if (descuento != '0') { // descuento extraordinario
                     descuento_total = (parseFloat(total) * parseFloat(descuento)) / 100;
                     resultado = 0.0;
                     resultado = parseFloat(total) - parseFloat(descuento_total);
                     var vuelto =  parseFloat(pago) - parseFloat(resultado);
                     var representar2 = resultado.toFixed(2);
                     $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
-                }else{
-                    var vuelto = parseFloat(pago) - parseFloat(total);
                 }
-                    var representar = vuelto.toFixed(2);
-                    $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
+
+
+                var representar = vuelto.toFixed(2);
+                $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
             };
     /* ---- Evento y metodos para vueltos si es efectivo ---- */
    

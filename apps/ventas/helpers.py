@@ -7,6 +7,7 @@ from apps.ventas.models import ArticuloVenta, Venta
 
 from apps.lib.cajas.gestion import CajaFunctions
 from apps.lib.articulos.gestion_stock import ArticuloStock
+from apps.lib.socios.gestion import SocioFunctions
 
 from apps.socios_puntos.models import PuntoConfiguracion
 from apps.clientes.models import Cliente
@@ -18,9 +19,12 @@ def ajax_guardar_venta(request):
     forma_pago = request.POST.get('forma_pago')
     credito_porcentaje = request.POST.get('credito_porcentaje')
     porcentaje_descuento = request.POST.get('porcentaje_descuento')
+    canje_socios = False
     
     caja_funciones = CajaFunctions()
     articulo_stock = ArticuloStock()
+    socio_funciones = SocioFunctions()
+
     sucursal = Sucursal.objects.get(pk=request.session['id_sucursal'])
 
     if request.is_ajax():
@@ -40,6 +44,14 @@ def ajax_guardar_venta(request):
                 resultado_venta_total = float(request.POST.get('precio_venta_total')) - float(con_descuento)
             else:
                 resultado_venta_total = request.POST.get('precio_venta_total')
+
+            # si la forma de pago fue con canje de puntos de socios
+            socio = None
+            canje_socios = (request.POST.get('canje_socios') == 'true')
+            if canje_socios:
+                forma_pago = 'Canje de Puntos'
+                resultado_venta_total = request.POST.get('total_con_descuento')
+                socio = socio_funciones.restar_puntos(request.POST.get('id_socio'), request.POST.get('puntos_socios'))
             
             # guarda la venta en un historial
             venta = Venta(
@@ -48,15 +60,26 @@ def ajax_guardar_venta(request):
                 venta_sin_ganancia=venta_sin_ganancia,
                 forma_pago=forma_pago,
                 porcentaje_aumento=credito_porcentaje,
+                socio = socio,
                 porcentaje_descuento=porcentaje_descuento,
                 sucursal=sucursal,
                 usuario=str(request.user.get_username())
             )
             venta.save()
 
+            # en caso de ser socio guarda el total en venta de socios
+            if forma_pago == 'Canje de Puntos':
+                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
+                    # en caso de que no sume a caja, ira a un campo especial que lo acumula
+                    caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'), 
+                                                      id_sucursal=request.session['id_sucursal'])
+                else:
+                     caja_funciones.sumar_ventas_socios(monto=request.POST.get('total_con_descuento'), 
+                                                       id_sucursal=request.session['id_sucursal'])
+
             # Guarda en la caja el precio total del efectivo
             if forma_pago == 'efectivo':
-                if (request.POST.get('no_sumar') == 'true'): # esta condicion verifica que se haya tildado que no sume a caja
+                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
                     # en caso de que no sume a caja, ira a un campo especial que lo acumula
                     caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'), 
                                                       id_sucursal=request.session['id_sucursal'])
@@ -65,7 +88,7 @@ def ajax_guardar_venta(request):
                                                         request.POST.get(
                                                             'precio_venta_total'), id_sucursal=request.session['id_sucursal'])
             if forma_pago == 'descuento':
-                if (request.POST.get('no_sumar') == 'true'): # esta condicion verifica que se haya tildado que no sume a caja
+                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
                     # en caso de que no sume a caja, ira a un campo especial que lo acumula
                     caja_funciones.sumar_sin_ganancia(monto=request.POST.get('total_con_descuento'), 
                                                       id_sucursal=request.session['id_sucursal'])
@@ -74,7 +97,7 @@ def ajax_guardar_venta(request):
                                                         request.POST.get(
                                                             'total_con_descuento'), id_sucursal=request.session['id_sucursal'])
             if forma_pago == 'debito':
-                if (request.POST.get('no_sumar') == 'true'): # esta condicion verifica que se haya tildado que no sume a caja
+                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
                     # en caso de que no sume a caja, ira a un campo especial que lo acumula
                     caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'), 
                                                       id_sucursal=request.session['id_sucursal'])
@@ -87,7 +110,7 @@ def ajax_guardar_venta(request):
                 precio_aumentado = \
                     float(request.POST.get('precio_venta_total')) + aumento
 
-                if (request.POST.get('no_sumar') == 'true'): # esta condicion verifica que se haya tildado que no sume a caja
+                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
                     # en caso de que no sume a caja, ira a un campo especial que lo acumula
                     caja_funciones.sumar_sin_ganancia(monto=precio_aumentado, 
                                                       id_sucursal=request.session['id_sucursal'])
@@ -193,7 +216,8 @@ def split_component_venta(the_dict, forma_pago, request, articulo_stock):
         if forma_pago == 'descuento':
             precio_guardar = articulo_vendidos.precio_venta  
         # --------- calculos de puntos si hay socio ----------
-        sumar_puntos_socios(request.POST.get('id_socio', None), precio_guardar)
+        if (request.POST.get('canje_socios') == 'true') is False:
+            sumar_puntos_socios(request.POST.get('id_socio', None), precio_guardar)
         # ----------------------------------------------------
         # --------- guardar la relacion entra articulo y venta
         articulo_venta = guardar_articulo_venta(articulo_vendidos, element, precio_guardar)

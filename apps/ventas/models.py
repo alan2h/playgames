@@ -3,6 +3,7 @@ from django.db import models
 
 from apps.articulos.models import Articulo
 from apps.sucursales.models import Sucursal
+from apps.clientes.models import Cliente
 
 class ArticuloVenta(models.Model):
 
@@ -39,6 +40,8 @@ class Venta(models.Model):
     sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
     # para controlar quien vende
     usuario = models.CharField(max_length=900, null=True, blank=True)
+    # si un socio canjeo puntos saber quien fue
+    socio = models.ForeignKey(Cliente, blank=True, null=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)

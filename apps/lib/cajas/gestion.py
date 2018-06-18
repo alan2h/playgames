@@ -213,6 +213,30 @@ class CajaFunctions(object):
         caja.save()
         self.saldo_caja(id_sucursal)
 
+    def sumar_ventas_socios(self, monto, id_sucursal=None):
+    
+        today = datetime.now().date()
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)
+        sucursal = Sucursal.objects.get(pk=id_sucursal)
+        if caja.exists() is False:
+            caja = Caja(fecha=today, caja_inicial=0, sucursal=sucursal)
+            caja.save()
+
+        caja = Caja.objects.filter(fecha=today, sucursal__id=id_sucursal)[0]
+        print('**********************')
+        print(caja.ventas_socios)
+        print('**********************')
+        if caja.ventas_socios is not None:
+            resultado = float(monto) + float(caja.ventas_socios)
+            caja.ventas_socios = resultado
+        else:
+            caja.ventas_socios = monto
+        caja.save()
+        print('**********************')
+        print(caja.ventas_socios)
+        print('**********************')
+        self.saldo_caja(id_sucursal)
+
     def restar_gasto(self, monto_gasto, id_sucursal=None):
 
         today = datetime.now().date()

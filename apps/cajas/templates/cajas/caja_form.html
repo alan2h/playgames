@@ -156,6 +156,25 @@
               </div>
             <!-- Input del formulario -->
 
+           <!-- Input del formulario -->
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-3">Ventas Socios</label>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  {{ form.ventas_socios }}
+                <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
+                  <!-- Mensaje de error del input -->
+                  {% if form.ventas_socios.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                         {{ form.ventas_socios.errors|striptags }}
+                      </div>
+                  {% endif %}
+                  <!-- Mensaje de error del input -->
+              </div>
+            </div>
+          <!-- Input del formulario -->
+
             <!-- Input del formulario -->
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">Otros Ingresos</label>

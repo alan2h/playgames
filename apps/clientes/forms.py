@@ -40,6 +40,13 @@ class ClienteForm(forms.ModelForm):
                                     }
                                 )))
 
+    puntos = forms.IntegerField(required=False,
+                               widget=forms.NumberInput(attrs=(
+                                   {
+                                        'class': 'form-control'
+                                   }
+                               )))
+
     fecha_nacimiento = forms.DateField(required=True,
                                    widget=forms.DateInput(attrs=(
                                        {'class': 'form-control'}
@@ -47,7 +54,8 @@ class ClienteForm(forms.ModelForm):
     numero_documento = forms.IntegerField(required=True, widget=forms.NumberInput(attrs=({'class': 'form-control'})))
 
     class Meta:
-        fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion', 'fecha_nacimiento', 'numero_documento']
+        fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion',
+                  'fecha_nacimiento', 'numero_documento', 'puntos']
         model = Cliente
 
 
