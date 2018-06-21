@@ -20,7 +20,7 @@
                 <input id="id_socio" hidden="hidden">
                 </div>
             </div>
-    
+
            <!-- Small modal Socios -->
            <div class="modal fade id_socios_form" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -29,7 +29,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                             </button>
                             <h4 class="modal-title" id="myModalLabel2">Buscar Socios</h4>
-    
+
                             <form method="get">
                             <div class="title_right">
                               <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -57,19 +57,19 @@
                                             <tr v-for="socio in socios">
                                                     <td @click="envioSocio(socio)">${ socio.id }
                                                     </td>
-                                                    
+
                                                     <td @click="envioSocio(socio)">${ socio.nombre }
                                                     </td>
-                                                   
+
                                                     <td @click="envioSocio(socio)">${ socio.apellido }</td>
                                                     <td @click="envioSocio(socio)">${ socio.numero_documento }
                                                     </td>
-    
+
                                                     <td @click="envioSocio(socio)">${ socio.puntos }
                                                         </td>
-                                                    
+
                                                   </tr>
-    
+
                                        </tbody>
                                      </table>
                                      <ul class="pager">
@@ -85,7 +85,7 @@
                 </div>
             </div>
         <!-- modals -->
-    
+
             <!-- Small modal Articulos -->
                <div class="modal fade id_articulos_form" tabindex="-1" role="dialog" aria-hidden="true">
                    <div class="modal-dialog modal-lg" id="app">
@@ -94,7 +94,7 @@
                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                                </button>
                                <h4 class="modal-title" id="myModalLabel2">${ titulo }</h4>
-    
+
                                <form method="get">
                                <div class="title_right">
                                  <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -123,7 +123,7 @@
                                                 <tr v-for="articulo in articulos">
                                                   <td v-on:click="envioDatos(articulo)">${ articulo.codigo_barra }
                                                   </td>
-                                                  
+
                                                   <td v-on:click="envioDatos(articulo)">${ articulo.nombre }
                                                   </td>
                                                   <template v-if="articulo.marca">
@@ -145,7 +145,7 @@
                                                   <td v-on:click="envioDatos(articulo)">${ articulo.stock }
                                                   </td>
                                                 </tr>
-    
+
                                           </tbody>
                                         </table>
                                             <ul class="pager">
@@ -168,12 +168,12 @@
    <!-- Tipos de Pagos -->
       <div class="col-md-12 col-sm-12 col-xs-12">
            <div class="x_panel">
-              
+
                    <div class="col-md-12 col-sm-12">
                       <div class="container">
                           <div class="paymentWrap">
                               <div title="Pagar con Crédito" class="btn-group paymentBtnGroup btn-group-justified" data-toggle="buttons">
-                                  
+
                                   <label class="btn paymentMethod" id="id_credito"  onclick="calcular_tipo_pago('credito')">
                                       <div class="method visa"></div>
                                       <input type="radio" name="options">
@@ -190,7 +190,7 @@
                                       <div class="method desc"></div>
                                       <input type="radio" name="options">
                                   </label>
-                                  
+
                               </div>
                           </div>
                       </div>
@@ -227,13 +227,13 @@
                                 </div>
                                 </div>
                             </div>
-                            
+
                             <!-- carga de socio -->
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Socio
                                 </label>
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <div class="form-inline"> 
+                                    <div class="form-inline">
                                     <button type="button" id="buscar_socio" data-toggle="modal" data-target=".id_socios_form" class="btn btn-default btn-sm">Click para buscar socio <i class="fa fa-search" aria-hidden="true"></i></button>
                                 </div>
                                 </div>
@@ -274,7 +274,7 @@
 
                             </div>
                             <!-- Cantidad de puntos de socios -->
-                           
+
                             <!-- No sumar a Caja -->
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">No sumar a caja
@@ -297,11 +297,11 @@
                                       <input type="number" id="id_monto_descuento" class="form-control" placeholder="Descuento de ..." value="0">
                                       <br>
                                     </div>
-                                  </div>    
+                                  </div>
                               </div>
-                          </div>  
-                        <!-- campo de descuento -->  
-                        
+                          </div>
+                        <!-- campo de descuento -->
+
                         <br>
                         <div class="clearfix"></div>
                         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-3">
@@ -437,23 +437,24 @@
                     });
                 },
                 envioSocio: function(socio){
-                    $('#id_socio').val(socio.id)
-                    var self = this;
-                    self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento 
-                    self.id_socio = socio.id
-                    swal({
-                        title: self.datos_socio,
-                        text: "El socio fue seleccionado, sus puntos serán cargados de esta venta",
-                        icon: "success",
-                        button: "Aceptar",
-                      });
-                    habilitar_campos_canje(socio);
+                        $('#id_socio').val(socio.id)
+                        var self = this;
+                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento
+                        self.id_socio = socio.id
+                        swal({
+                            title: self.datos_socio,
+                            text: "El socio fue seleccionado, sus puntos serán cargados de esta venta",
+                            icon: "success",
+                            button: "Aceptar",
+                          });
+                        habilitar_campos_canje(socio);
+                    
                 },
                 envioDatos: function(articulo){
                     var marca_descripcion = ''
                     var rubro_descripcion = ''
                     if (articulo.marca){
-                        marca_descripcion = articulo.marca.descripcion 
+                        marca_descripcion = articulo.marca.descripcion
                     }
                     if (articulo.rubro){
                         rubro_descripcion = articulo.rubro.descripcion
@@ -545,7 +546,7 @@
             },
             mounted: function(){
                 this.cargarDatos();
-                this.cargarSocios();    
+                this.cargarSocios();
             }
         });
     </script>

@@ -29,7 +29,7 @@
           <tr>
             <th>Fecha</th>
             <th>Forma de Pago</th>
-            <th>Porcentaje de Aumento</th>
+            <th>Puntos de Canje</th>
             <th>Descuento</th>
             <th>Árticulos vendidos</th>
             <th>Precio Venta </th>
@@ -43,7 +43,7 @@
               <tr>
                 <td>{{ venta.fecha }}</td>
                 <td>{{ venta.forma_pago|default_if_none:'--' }}</td>
-                <td>% {{ venta.porcentaje_aumento|default_if_none:'--' }}</td>
+                <td>{{ venta.puntos|default_if_none:'--' }}</td>
                 <td>% {{ venta.porcentaje_descuento|default_if_none:'--' }}</td>
                 <td>
                     {% for articulo_venta in venta.articulo_venta.all %}

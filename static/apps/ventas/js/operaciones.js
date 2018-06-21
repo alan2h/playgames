@@ -13,7 +13,7 @@
             document.getElementById('id_div_porcentaje').style.display = 'none';
             document.getElementById('id_div_credito_total').style.display = 'none';
             /* --- hacer invisible los campos que solo son para descuento ---- */
-            document.getElementById('id_div_descuento').style.display = 'none';  
+            document.getElementById('id_div_descuento').style.display = 'none';
             /* ---- hacer invisible los campos que solo son para los socios ---*/
             document.getElementById('id_div_puntos_socios').style.display = 'none';
             document.getElementById('id_form_canjear').style.display = 'none';
@@ -27,7 +27,7 @@
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
                 var cantidad = prompt("Ingrese la cantidad", "");
-                
+
                 var precio_enviar = '';
                 if (cantidad != null && cantidad != '') {
                     switch (forma_pago){
@@ -36,7 +36,7 @@
                             break;
                         case 'descuento':
                             precio_enviar = precio_venta;
-                            break;    
+                            break;
                         case 'credito':
                             precio_enviar = precio_credito;
                             break;
@@ -96,7 +96,7 @@
     /* ---- funcion para el lector de codigo de barras --- */
             $('#id_codigo_articulo_buscar').keypress(function(e){
                 if (e.which == 13){
-                    
+
                     $.ajax({
                         url: '/ventas/ajax/codigo/articulo/',
                         type: 'post',
@@ -131,7 +131,7 @@
                                         break;
                                     case 'descuento':
                                         precio_enviar = data.precio_venta;
-                                        break;    
+                                        break;
                                     case 'credito':
                                         precio_enviar = data.precio_credito;
                                         break;
@@ -196,7 +196,7 @@
                     document.getElementById('id_div_porcentaje').style.display = 'block';
                     document.getElementById('id_div_credito_total').style.display = 'block';
                 };
-                
+
                 // hago invisibles las imagenes de tipos de pagos
                 if (forma_pago != 'efectivo'){
                     $('#id_efectivo').hide();
@@ -210,7 +210,7 @@
                 if (forma_pago != 'descuento'){
                     $('#id_descuento').hide();
                 };
-               
+
             };
     /* ---- detectar que tipo de pago es ---- */
 
@@ -241,6 +241,8 @@
     $("#id_canje_socios").change(function() {
         if(this.checked) {
             document.getElementById('id_form_canjear').style.display = 'block';
+        }else{
+            document.getElementById('id_form_canjear').style.display = 'none';
         }
     });
     /*-------------------------------------------------------------------*/
@@ -328,7 +330,7 @@
                 $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
             };
     /* ---- Evento y metodos para vueltos si es efectivo ---- */
-   
+
     /* ---- Evento y metodos para aumento si es credito ---- */
             $('#id_porcentaje').click( function(){
                 if ($('#id_porcentaje').val() == '0'){

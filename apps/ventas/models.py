@@ -9,7 +9,7 @@ class ArticuloVenta(models.Model):
 
     cantidad = models.IntegerField(null=False, blank=False)
     articulo = models.ForeignKey(Articulo, null=False, blank=False)
-    # stock anterior: audtoria, para un mejor control. 
+    # stock anterior: audtoria, para un mejor control.
     stock_anterior = models.IntegerField(null=True, blank=True)
     stock_actual = models.IntegerField(default=0, null=True, blank=True)
     precio_venta = models.DecimalField(decimal_places=2, max_digits=12,
@@ -35,13 +35,15 @@ class Venta(models.Model):
     precio_venta_total = models.DecimalField(decimal_places=2, max_digits=12,
                                              null=False, blank=False)
     # este campo es para las ventas que que no ingresan a caja
-    venta_sin_ganancia = models.BooleanField(default=False) 
-    # sucursal para dividir las ventas 
+    venta_sin_ganancia = models.BooleanField(default=False)
+    # sucursal para dividir las ventas
     sucursal = models.ForeignKey(Sucursal, null=True, blank=True)
     # para controlar quien vende
     usuario = models.CharField(max_length=900, null=True, blank=True)
     # si un socio canjeo puntos saber quien fue
     socio = models.ForeignKey(Cliente, blank=True, null=True)
+    # si canjeo quiero saber cuantos puntos canjeo o cuanto en credito
+    puntos = models.IntegerField(blank=True, null=True)
     # Baja
     baja = models.BooleanField(default=False)
     fecha_baja = models.DateField(null=True, blank=True)
