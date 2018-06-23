@@ -8,7 +8,7 @@
 {% endblock %}
 {% block form_search %}
 <div class="x_content">
-                
+
     <div class="x_panel">
         <h2>Buscar árticulos</h2>
         <form id="form-buscar" method="get">
@@ -40,9 +40,12 @@
       <div class="x_title">
         <h2>Lista de Árticulos <small>Lista de árticulos cargados en el sistema</small></h2>
         <ul class="navbar-right">
-            {% if request.user.is_staff %}  
-                <a href="/articulos/alta/" class="btn btn-primary"> Nuevo Árticulo </a>
-            {% endif %}  
+            {% if request.user.is_staff %}
+              <div class="table-responsive">
+                  <a href="/articulos/alta/" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo Árticulo </a>
+                  <a href="#" class="btn btn-success"> <i class="fa fa-print"></i> Imprimir Stock </a>
+              </div>
+            {% endif %}
         </ul>
         <div class="clearfix"></div>
       </div>
@@ -51,7 +54,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                            <th>Imagen </th>  
+                            <th>Imagen </th>
 
                             <th>Nombre</th>
                             <th>Efectivo </th>
@@ -63,7 +66,7 @@
                             <th>Stock</th>
                             {% if request.user.is_staff %}
                                 <th>Acciones </th>
-                            {% endif %}    
+                            {% endif %}
                     </tr>
                     </thead>
                     <tbody>
@@ -74,17 +77,17 @@
                                     <img src="/media/{{ articulo.imagen }}" data-action="zoom" width="52" height="52" />
                                 {% else %}
                                     <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
-                                {% endif %}    
+                                {% endif %}
                             </td>
 
-                           
+
                             <td>
                                 {{ articulo.nombre }}
                             </td>
                             <td>
                                 $ {{ articulo.precio_venta }}
                             </td>
-                            
+
                             <td>
                                 $ {{ articulo.precio_credito }}
                             </td>
@@ -92,32 +95,32 @@
                             <!--<td>
                                 $ {{ articulo.precio_debito }}
                             </td>-->
-                            
+
                             <td>
                                 {{ articulo.marca|quitar_none }}
                             </td>
                             <td>
                                 {{ articulo.rubro.categoria|quitar_none }}
                             </td>
-                                                       
+
                             <td>
 
                                 {{ articulo.rubro.descripcion|quitar_none }}
                             </td>
-                            
+
                             <td>
                                 {{ articulo.stock }}
                             </td>
                             <td>
                                 {% if request.user.is_staff %}
-                                    <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>    
+                                    <a href="/articulos/detalle/{{ articulo.pk }}" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
                                     <a href="/articulos/editar/{{ articulo.pk }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
                                     <a href="/articulos/eliminar/{{ articulo.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> </a>
-                                {% endif %}    
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
-                    
+
                     </tbody>
                 </table>
           </div>
@@ -139,7 +142,7 @@
                     {% if page_obj.has_next %}
                         <li><a href="/articulos/listado?page={{ page_obj.next_page_number }}">Siguiente</a></li>
                     {% endif %}
-                  {% endif %}  
+                  {% endif %}
                   </ul>
                 </nav>
             {% endif %}
