@@ -70,58 +70,38 @@ def ajax_guardar_venta(request):
             )
             venta.save()
 
-            # en caso de ser socio guarda el total en venta de socios
-            # si la palabra canje de puntos se encuentra en la forma de pago
-            if len(forma_pago.split('-')) > 1:
-                if forma_pago.split('-')[1] == 'Canje de Puntos':
-                    if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
-                        # en caso de que no sume a caja, ira a un campo especial que lo acumula
-                        caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'),
-                                                          id_sucursal=request.session['id_sucursal'])
-                    else:
-                         caja_funciones.sumar_ventas_socios(monto=request.POST.get('total_con_descuento'),
+            if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
+                # en caso de que no sume a caja, ira a un campo especial que lo acumula
+                caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'),
+                                                  id_sucursal=request.session['id_sucursal'])
+            else:
+                # en caso de ser socio guarda el total en venta de socios
+                # si la palabra canje de puntos se encuentra en la forma de pago
+                if len(forma_pago.split('-')) > 1:
+                    if forma_pago.split('-')[1] == 'Canje de Puntos':
+                        caja_funciones.sumar_ventas_socios(monto=request.POST.get('total_con_descuento'),
                                                            id_sucursal=request.session['id_sucursal'])
-
-            # Guarda en la caja el precio total del efectivo
-            if forma_pago == 'efectivo':
-                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
-                    # en caso de que no sume a caja, ira a un campo especial que lo acumula
-                    caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'),
-                                                      id_sucursal=request.session['id_sucursal'])
-                else:
-                    caja_funciones.sumar_venta_efectivo(precio_efectivo=
-                                                        request.POST.get(
-                                                            'precio_venta_total'), id_sucursal=request.session['id_sucursal'])
-            if forma_pago == 'descuento':
-                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
-                    # en caso de que no sume a caja, ira a un campo especial que lo acumula
-                    caja_funciones.sumar_sin_ganancia(monto=request.POST.get('total_con_descuento'),
-                                                      id_sucursal=request.session['id_sucursal'])
-                else:
-                    caja_funciones.sumar_venta_descuento(precio_efectivo=
-                                                        request.POST.get(
-                                                            'total_con_descuento'), id_sucursal=request.session['id_sucursal'])
-            if forma_pago == 'debito':
-                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
-                    # en caso de que no sume a caja, ira a un campo especial que lo acumula
-                    caja_funciones.sumar_sin_ganancia(monto=request.POST.get('precio_venta_total'),
-                                                      id_sucursal=request.session['id_sucursal'])
-                else:
-                    caja_funciones.sumar_venta_debito(precio_debito=request.POST
-                                                  .get('precio_venta_total'), id_sucursal=request.session['id_sucursal'])
-            if forma_pago == 'credito':
-                aumento = (float(request.POST.get('precio_venta_total')) *
-                           float(credito_porcentaje)) / 100
-                precio_aumentado = \
-                    float(request.POST.get('precio_venta_total')) + aumento
-
-                if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja
-                    # en caso de que no sume a caja, ira a un campo especial que lo acumula
-                    caja_funciones.sumar_sin_ganancia(monto=precio_aumentado,
-                                                      id_sucursal=request.session['id_sucursal'])
-                else:
+                # Guarda en la caja el precio total del efectivo
+                if forma_pago == 'efectivo':
+                    caja_funciones.sumar_venta_efectivo(
+                                                        precio_efectivo=request.POST.get('precio_venta_total'), id_sucursal=request.session['id_sucursal']
+                                                        )
+                if forma_pago == 'descuento':
+                    caja_funciones.sumar_venta_descuento(
+                                                         precio_efectivo=request.POST.get('total_con_descuento'), id_sucursal=request.session['id_sucursal']
+                                                         )
+                if forma_pago == 'debito':
+                    caja_funciones.sumar_venta_debito(
+                                                      precio_debito=request.POST.get('precio_venta_total'), id_sucursal=request.session['id_sucursal']
+                                                      )
+                if forma_pago == 'credito':
+                    precio_aumentado = aumentar_precio_credito(
+                                                               request.POST.get('precio_venta_total'),
+                                                               credito_porcentaje
+                                                               )
                     caja_funciones.sumar_venta_credito(
-                        precio_credito=precio_aumentado, id_sucursal=request.session['id_sucursal'])
+                                                       precio_credito=precio_aumentado, id_sucursal=request.session['id_sucursal']
+                                                       )
 
             for a in articulo_venta_array:
                 venta.articulo_venta.add(a)
@@ -233,3 +213,9 @@ def split_component_venta(the_dict, forma_pago, request, articulo_stock):
         articulo_venta_array.append(articulo_venta)
 
     return articulo_venta_array
+
+
+def aumentar_precio_credito(precio_venta, porcentaje):
+    ''' aumenta el precio de venta para creditos '''
+    aumento = (float(precio_venta) * float(porcentaje)) / 100
+    return float(precio_venta) + aumento
