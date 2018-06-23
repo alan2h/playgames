@@ -4,7 +4,8 @@ from rest_framework import routers
 
 from .views import ArticuloCreateView, ArticuloListView, ArticuloUpdateView, \
     ArticuloDeleteView, ArticuloDetailView, ActualizarPrecioTemplateView, \
-    HistorialPreciosVentaListView, HistorialPreciosCompraListView
+    HistorialPreciosVentaListView, HistorialPreciosCompraListView, \
+    ArticuloListPrint
 from .viewset import ArticuloViewSet
 
 from . import helpers
@@ -20,6 +21,8 @@ urlpatterns = [
    # Urls comunes
    url(r'^alta/$', ArticuloCreateView.as_view(), name='articulos-alta'),
    url(r'^listado/$', ArticuloListView.as_view(), name='articulos-listado'),
+   url(r'^listado/print/$', ArticuloListPrint.as_view(),
+       name='articulos-listado-print'),
    url(r'^barcode/(?P<pk>(\d+))$', views.barcode, name='articulos-barcode'),
    url(r'^historial/venta/$', HistorialPreciosVentaListView.as_view(),
        name='historial-precios-venta'),
@@ -38,9 +41,9 @@ urlpatterns = [
    url(r'^ajax/categoria/alta/$', helpers.ajax_create_categoria,
        name='categoria-alta-ajax'),
    url(r'^ajax/categoria/subcategoria/$', helpers.ajax_query_rubro,
-       name='categoria-query-ajax'),   
+       name='categoria-query-ajax'),
    url(r'^actualizar/precios/$',
        ActualizarPrecioTemplateView.as_view(), name='actualizar-precios'),
    url(r'^ajax/cambiar/sucursal/$', helpers.ajax_cambiar_sucursal,
-       name='cambiar-sucursal-ajax')    
+       name='cambiar-sucursal-ajax')
 ]

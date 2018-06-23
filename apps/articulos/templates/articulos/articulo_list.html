@@ -40,12 +40,12 @@
       <div class="x_title">
         <h2>Lista de Árticulos <small>Lista de árticulos cargados en el sistema</small></h2>
         <ul class="navbar-right">
+          <div class="table-responsive">
             {% if request.user.is_staff %}
-              <div class="table-responsive">
-                  <a href="/articulos/alta/" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo Árticulo </a>
-                  <a href="#" class="btn btn-success"> <i class="fa fa-print"></i> Imprimir Stock </a>
-              </div>
+              <a href="/articulos/alta/" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo Árticulo </a>
             {% endif %}
+              <a href="/articulos/listado/print/" class="btn btn-success"> <i class="fa fa-print"></i> Imprimir Stock </a>
+          </div>
         </ul>
         <div class="clearfix"></div>
       </div>

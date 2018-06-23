@@ -8,29 +8,29 @@
                     <ul class="nav child_menu">
                         <li><a href="/articulos/listado/"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Árticulos</a></li>
                         <!--<li><a href="/articulos/actualizar/precios/">Actualizar Precios</a></li>-->
-                        <!--<li><a href="/articulos/historial/venta/">Historial Precios de venta</a></li>-->
-                        <!--<li><a href="/articulos/historial/compra/">Historial Precios de compra</a></li>-->
                         {% if request.user.is_staff %}
-                            <li><a href="/proveedores/alta/"><i class="fa fa-male" aria-hidden="true"></i>Proveedores</a></li>    
+                           <li><a href="/articulos/historial/venta/"><i class="fa fa-history" aria-hidden="true"></i>Historial Precios de ventas</a></li>
+                           <li><a href="/articulos/historial/compra/"><i class="fa fa-history" aria-hidden="true"></i>Historial Precios de compras</a></li>
+                            <li><a href="/proveedores/alta/"><i class="fa fa-male" aria-hidden="true"></i>Proveedores</a></li>
                             <li><a href="/compras/listado/"><i class="fa fa-money" aria-hidden="true"></i>Compra</a></li>
                         {% endif %}
                     </ul>
                 </li>
                 <li><a><i class="fa fa-shopping-basket"></i> Salida de Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li><a href="/ventas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Ventas</a></li>    
+                        <li><a href="/ventas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Ventas</a></li>
                         <li><a href="/clientes/listado/"><i class="fa fa-male" aria-hidden="true"></i>Socios</a></li>
                     </ul>
                 </li>
                     <li><a><i class="fa fa-key" aria-hidden="true"></i> Gastos e Ingresos <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            
+
                                 <li><a href="/gastos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Gastos diarios</a></li>
                                 <li><a href="/gastos/mes/alta/"><i class="fa fa-key" aria-hidden="true"></i>Gastos mensuales</a></li>
                                 <li><a href="/ingresos/alta/"><i class="fa fa-key" aria-hidden="true"></i>Otros Ingresos</a></li>
-                            
+
                         </ul>
-                    </li>   
+                    </li>
                 <li><a><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Informes por día <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="/cajas/alta/"><i class="fa fa-money" aria-hidden="true"></i>Caja del día</a></li>
@@ -63,7 +63,7 @@
                             <li><a href="/perfiles/alta/sucursal"><i class="fa fa-user" aria-hidden="true"></i>Crear Perfil</a></li>
                         </ul>
                     </li>
-                {% endif %}    
+                {% endif %}
             </ul>
         </div>
     </div>

@@ -38,8 +38,8 @@ class ArticuloCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         if form.data['codigo_barra'] != '':
             if Articulo.objects.filter(
-                codigo_barra=form.data['codigo_barra'], 
-                sucursal__id=form.data['sucursal'], 
+                codigo_barra=form.data['codigo_barra'],
+                sucursal__id=form.data['sucursal'],
                 baja=False):
                 form.add_error('codigo_barra', '''Este código de barras ya existe en esa sucursal, '''
                                     '''por favor busque el árticulo, '''
@@ -168,7 +168,7 @@ class ArticuloListView(ListView):
                                 qs = helpers.buscar_nombre_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
                             if qs.exists() is False:
                                 qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'),  sucursal=sucursal_unico)
-                    
+
                     if qs.exists() is False:
                         qs = helpers.buscar_all_campos(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
@@ -237,7 +237,7 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
             precio_debito = float(form.data['precio_venta']) + float(incremento)
             form.instance.precio_credito = precio_credito
             form.instance.precio_debito = precio_debito
-            
+
             marca = None
             rubro = None
             marca_descripcion = ''
@@ -246,40 +246,40 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
                 marca = Marca.objects.get(pk=form.data['marca']) # obtengo la marca
                 if articulo.marca:
                     marca_descripcion = articulo.marca.descripcion
-            
+
             if not form.data['rubro'] is '':
                 rubro = Rubro.objects.get(pk=form.data['rubro']) # obtengo el rubro
                 if articulo.rubro:
                     rubro_descripcion = articulo.rubro.descripcion
-            
+
             # para actualizar los articulos en todas las sucursales aplico un filtro
             # por el codigo de barras, aqui abajo el codigo
-            # se filtra por el articulo y luego se actualiza todo 
+            # se filtra por el articulo y luego se actualiza todo
 
-            articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
-                                                          nombre=articulo.nombre, 
+            articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra,
+                                                          nombre=articulo.nombre,
                                                           descripcion=articulo.descripcion)
 
             if articulo.rubro  and  articulo.marca: # Filtro si existe rubro y marca
 
                articulo_actualizar = Articulo.objects.filter(
-                                        codigo_barra=articulo.codigo_barra, 
-                                        nombre=articulo.nombre, descripcion=articulo.descripcion, 
-                                        marca__descripcion=marca_descripcion, 
+                                        codigo_barra=articulo.codigo_barra,
+                                        nombre=articulo.nombre, descripcion=articulo.descripcion,
+                                        marca__descripcion=marca_descripcion,
                                         rubro__descripcion=rubro_descripcion)
-            
+
             elif articulo.rubro is None and articulo.marca: # Filtro si existe marca pero no rubro
 
-                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
-                                        nombre=articulo.nombre, 
-                                        descripcion=articulo.descripcion, 
+                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra,
+                                        nombre=articulo.nombre,
+                                        descripcion=articulo.descripcion,
                                         marca__descripcion=marca_descripcion)
 
             elif articulo.marca is None and articulo.rubro: # Filtro si existe rubro pero no la marca
 
-                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra, 
+                articulo_actualizar = Articulo.objects.filter(codigo_barra=articulo.codigo_barra,
                                         nombre=articulo.nombre,
-                                        descripcion=articulo.descripcion, 
+                                        descripcion=articulo.descripcion,
                                         rubro__descripcion=rubro_descripcion)
 
         # aca se actualizan los campos, independientemente de la sucursal
@@ -290,15 +290,15 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
         print('-------------------------------------------------')
         articulo_actualizar.update(
                     codigo_barra=form.data['codigo_barra'],
-                    nombre=form.data['nombre'], 
+                    nombre=form.data['nombre'],
                     descripcion=form.data['descripcion'],
-                    marca=marca, 
+                    marca=marca,
                     rubro=rubro,
                     precio_venta=form.data['precio_venta'],
-                    precio_debito=precio_debito,   # campos calculados 
+                    precio_debito=precio_debito,   # campos calculados
                     precio_credito=precio_credito, # campos calculados
                     precio_compra=form.data['precio_compra'],
-                    stock_minimo=form.data['stock_minimo'],                 
+                    stock_minimo=form.data['stock_minimo'],
                     impuesto_interno=form.data['impuesto_interno'],
                     alicuota_iva=form.data['alicuota_iva'],
                     no_suma_caja=(form.data.get('no_suma_caja') is 'on')) # si el check viene on, quedara verdadero
@@ -463,13 +463,19 @@ class ActualizarPrecioTemplateView(TemplateView):
 
 class HistorialPreciosVentaListView(ListView):
 
-    model = HistorialPreciosVenta
+    queryset = HistorialPreciosVenta.objects.all().order_by('-fecha_modificacion')
     template_name = 'articulos/historial_precio_venta.html'
     paginate_by = 20
 
 
 class HistorialPreciosCompraListView(ListView):
 
-    model = HistorialPreciosCompra
+    queryset = HistorialPreciosCompra.objects.all().order_by('-fecha_modificacion')
     template_name = 'articulos/historial_precio_compra.html'
     paginate_by = 20
+
+
+class ArticuloListPrint(ListView):
+
+    queryset = Articulo.objects.filter(baja=False).order_by('-cantidad_vendida')
+    template_name = 'articulos/articulo_list_print.html'
