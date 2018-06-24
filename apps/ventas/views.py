@@ -13,6 +13,7 @@ from .forms import VentaForm
 from .models import Venta, ArticuloVenta
 
 from apps.lib.cajas.gestion import CajaCreateIfNoExist, CajaFunctions
+from apps.lib.socios.gestion import SocioFunctions
 from apps.lib.articulos.gestion_stock import ArticuloStock
 
 
@@ -55,7 +56,7 @@ class VentaListView(ListView):
     def get_queryset(self):
         queryset = super(VentaListView, self).get_queryset()
         queryset = Venta.objects.filter(
-            baja=False, 
+            baja=False,
             fecha_no_time=datetime.datetime.now(),
             sucursal=self.request.session.get('id_sucursal')).order_by('-id')
         return queryset
@@ -71,12 +72,18 @@ class VentaDeleteView(DeleteView):
 
         caja_funciones = CajaFunctions()
         articulos_stock = ArticuloStock()
+        socio_funciones = SocioFunctions()
         # se busca la venta por id
         venta = Venta.objects.get(pk=self.kwargs['pk'])
         if venta.venta_sin_ganancia: # en caso de ser verdadero solo se resta sin ganancia
             caja_funciones.restar_sin_ganancia(venta.precio_venta_total, self.request.session.get('id_sucursal'))
         else: # en caso de ser falso, se verifica la forma de pago
             # de acuerdo a la forma de pago se resta en la caja el monto
+            if len(venta.forma_pago.split('-')) > 1:
+                if venta.forma_pago.split('-')[1] == 'Canje de Puntos':
+                    caja_funciones.restar_ventas_socios(venta.precio_venta_total,
+                                                        self.request.session['id_sucursal']) # resta en la caja el ingreso
+                    socio_funciones.sumar_puntos(venta.socio.id, venta.puntos) # suma de nuevo los puntos a los socios
             if venta.forma_pago == 'efectivo':
                 caja_funciones.restar_venta_efectivo(venta.precio_venta_total, self.request.session['id_sucursal'])
             if venta.forma_pago == 'descuento':
@@ -87,7 +94,7 @@ class VentaDeleteView(DeleteView):
                 caja_funciones.restar_venta_credito(precio_enviar, self.request.session['id_sucursal'])
             if venta.forma_pago == 'debito':
                 caja_funciones.restar_venta_debito(venta.precio_venta_total, self.request.session['id_sucursal'])
-            
+
         for articulo_venta in venta.articulo_venta.all():
             articulos_stock.sumar_stock(articulo_venta.articulo.id,
                                         articulo_venta.cantidad)
@@ -109,7 +116,7 @@ class VentaReportListView(ListView):
 
     def get_queryset(self):
         if 'texto_buscar' in self.request.GET:
-            # en caso de filtrar por fechas, tambien se agrega la sucursal 
+            # en caso de filtrar por fechas, tambien se agrega la sucursal
             # si el admin desea ver otra sucursal, debe acceder
             fecha_desde = self.request.GET.get('texto_buscar').split(' - ')[0]
             fecha_hasta = self.request.GET.get('texto_buscar').split(' - ')[1]
@@ -125,14 +132,14 @@ class VentaReportListView(ListView):
                 # si las fechas son iguales no las compara, solo buscar esa fecha
                 # y tambien lo hace por sucursal
                 queryset = Venta.objects.filter(
-                    fecha_no_time=fecha_desde.split('/')[2] + '-' + 
-                    fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0], 
+                    fecha_no_time=fecha_desde.split('/')[2] + '-' +
+                    fecha_desde.split('/')[1] + '-' + fecha_desde.split('/')[0],
                     baja=False, sucursal__id=self.request.session.get('id_sucursal')).order_by('-fecha')
         else:
             # se filtra por mes actual y la sucursal , al mismo tiempo
             # se ordena por fecha de forma descendente
             queryset = Venta.objects.filter(
-                fecha_no_time__month=datetime.datetime.now().month, 
+                fecha_no_time__month=datetime.datetime.now().month,
                 sucursal__id=self.request.session.get('id_sucursal'), baja=False).order_by('-fecha')
         return queryset
 
