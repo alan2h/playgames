@@ -398,6 +398,8 @@ class CajaFunctions(object):
             saldo += float(caja.ventas_efectivo)
         if caja.otros_ingresos is not None:
             saldo += float(caja.otros_ingresos)
+        if caja.ventas_socios is not None:
+            saldo += float(caja.ventas_socios)
         if caja.otros_gastos is not None:
             if float(caja.otros_gastos) > 0:
                 saldo -= float(caja.otros_gastos)
