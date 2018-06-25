@@ -50,5 +50,6 @@ class ArticuloSerializer(serializers.ModelSerializer):
             'fecha_modificacion',
             'baja',
             'fecha_baja',
-            'causa_baja'
+            'causa_baja',
+            'no_suma_caja'
         )

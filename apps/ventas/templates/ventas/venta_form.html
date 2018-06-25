@@ -448,7 +448,7 @@
                             button: "Aceptar",
                           });
                         habilitar_campos_canje(socio);
-                    
+
                 },
                 envioDatos: function(articulo){
                     var marca_descripcion = ''
@@ -468,7 +468,8 @@
                             articulo.precio_debito,
                             articulo.precio_compra,
                             articulo.stock,
-                            '0'
+                            '0',
+                            articulo.no_suma_caja
                     );
                 },
                 previo: function(){

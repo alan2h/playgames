@@ -146,6 +146,7 @@ def ajax_get_articulo_unico(request):
                     'precio_credito': articulo[0].precio_credito,
                     'stock': articulo[0].stock,
                     'stock_minimo': articulo[0].stock_minimo,
+                    'no_suma_caja': articulo[0].no_suma_caja,
                     'cantidad': '1'
                 }
             else:

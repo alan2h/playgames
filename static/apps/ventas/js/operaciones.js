@@ -25,9 +25,9 @@
             }
             /* --------------------------------------------------------------*/
 
-            var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor){
+            var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor, no_suma_caja){
                 var cantidad = prompt("Ingrese la cantidad", "");
-
+                
                 var precio_enviar = '';
                 if (cantidad != null && cantidad != '') {
                     switch (forma_pago){
@@ -44,6 +44,21 @@
                             precio_enviar = precio_debito;
                             break;
                     };
+                    if (no_suma_caja){
+                      if (!($('#id_no_sumar').is(':checked'))){
+                        swal({
+                            title: "El árticulo esta tildado para no sumarse a caja. Pero no se tildo en el formulario de ventas",
+                            text: "Desea que el sistema tilde el check por usted ? ",
+                            icon: "info",
+                            buttons: ['No, porque quiero sumarlo a caja', 'Si, porque no lo voy a sumar a caja'],
+                            dangerMode: false,
+                          }).then((willDelete) => {
+                            if (willDelete) {
+                              $('#id_no_sumar').prop( "checked", true );
+                            }
+                          });
+                      }
+                    }
                     calcular_total(cantidad, id, precio_enviar);
                     contador_tabla +=1;
                     $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' + cantidad + '</td>' + '<td>' + descripcion + '</td>' + '<td> $' + precio_enviar
@@ -141,6 +156,21 @@
                                 };
                                 contador_tabla +=1;
                                 calcular_total('1', data.id, precio_enviar);
+                                if (data.no_suma_caja){
+                                  if (!($('#id_no_sumar').is(':checked'))){
+                                    swal({
+                                        title: "El árticulo esta tildado para no sumarse a caja. Pero no se tildo en el formulario de ventas",
+                                        text: "Desea que el sistema tilde el check por usted ? ",
+                                        icon: "info",
+                                        buttons: ['No, porque quiero sumarlo a caja', 'Si, porque no lo voy a sumar a caja'],
+                                        dangerMode: false,
+                                      }).then((willDelete) => {
+                                        if (willDelete) {
+                                          $('#id_no_sumar').prop( "checked", true );
+                                        }
+                                      });
+                                  }
+                                }
                                 $('#id_tabla_articulos tr:last').after('<tr id="tr_' + contador_tabla.toString() + '"><td>' +
                                         data.cantidad + '</td>' + '<td>' + data.nombre + '</td>' + '<td> $' + precio_enviar
                                 + '</td>' + '<td><a onclick="agregar_cantidad(' + contador_tabla.toString() + ',' + data.id + ',' + precio_enviar + ')" ' + 'class="btn btn-info btn-xs"><i class="fa fa-plus"></i> </a><a onclick="eliminar_articulo(' + contador_tabla.toString() + ',' + data.cantidad + ',' + precio_enviar + ')" ' +
@@ -193,7 +223,7 @@
                 };
                 if (forma_pago == 'credito'){
                     // si es credito habilito sus respectivos aumentos
-                    document.getElementById('id_div_porcentaje').style.display = 'block';
+                    //document.getElementById('id_div_porcentaje').style.display = 'block';
                     document.getElementById('id_div_credito_total').style.display = 'block';
                 };
 

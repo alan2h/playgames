@@ -24,8 +24,6 @@
 	<code>
 </pre>
 
-![Alt text](http://static.minutouno.com/adjuntos/150/imagenes/007/449/0007449295.png "Title")
-
 <pre>
 
 	<code>
