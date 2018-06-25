@@ -1,0 +1,88 @@
+{% extends 'form_base.html' %}
+{% load staticfiles %}
+{% load calculos_tags %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <!-- form input mask -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Detalle del socio </h2>
+
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-sm-4">
+                <div class="ibox ">
+
+                    <div class="ibox-content">
+                        <div class="tab-content">
+                            <div id="contact-1" class="tab-pane active">
+                                <div class="row m-b-lg">
+                                    <div class="col-lg-4 text-center">
+                                        <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+
+                                        <div class="m-b-sm">
+                                            <img alt="image" class="img-circle" src="/media/logos_sistema/socios.png"
+                                                 style="width: 62px">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <strong>
+                                            Acerca de mi
+                                        </strong>
+                                        <p>
+                                            Correo: {{ cliente.email }}
+                                        </p>
+                                        <p>
+                                            Puntos: {{ cliente.puntos }}
+                                        </p>
+                                        <button type="button" class="btn btn-primary btn-sm btn-block"><i
+                                                class="fa fa-envelope"></i> Enviar Mensaje
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Compras realizadas por el socio</strong>
+
+                                    <ul class="list-group clear-list">
+                                      {% for venta in ventas %}
+                                        <li class="list-group-item fist-item">
+                                            <span class="pull-right">$ {{venta.precio_venta_total}} </span>
+                                            {{venta.forma_pago}}-->{{ venta.puntos }}
+
+                                              {% for articulo_venta in venta.articulo_venta.all %}
+                                                  {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.rubro }}  --> {{ articulo_venta.cantidad }} <br>
+                                              {% endfor %}
+                                              <span class="pull-right">
+                                          </span>
+                                        </li>
+                                      {% endfor %}
+
+                                    </ul>
+
+                                    <hr/>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

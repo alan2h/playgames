@@ -5,8 +5,8 @@ from rest_framework import routers
 
 from .viewset import ClienteViewSet, ClienteListViewSet
 from .views import (ClienteTemplateView, ClienteCreateView, ContactoCreateView,
-                    ContactoUpdateView, ClienteUpdateView, ClienteDeleteView, 
-                    ContactoDeleteView)
+                    ContactoUpdateView, ClienteUpdateView, ClienteDeleteView,
+                    ContactoDeleteView, ClienteDetailView)
 
 router = routers.DefaultRouter()
 router.register(r'clientes', ClienteViewSet)
@@ -22,6 +22,7 @@ urlpatterns = [
         name='clientes-edit'),
     url(r'^eliminar/(?P<pk>(\d+))$', ClienteDeleteView.as_view(),
        name='clientes-delete'),
+    url(r'^detail/(?P<pk>(\d+))$', ClienteDetailView.as_view(), name='cliente-detalle'),
     # Contactos
     url(r'^contactos/editar/(?P<pk>(\d+))/(?P<p>(\d+))$',
         ContactoUpdateView.as_view(), name='contactos-edit'),

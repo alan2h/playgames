@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
@@ -8,6 +8,7 @@ from .models import Cliente, Contacto
 from .forms import ClienteForm, ContactoForm
 
 from apps.sucursales.models import Sucursal
+from apps.ventas.models import Venta
 
 
 class ClienteTemplateView(ListView):
@@ -149,18 +150,33 @@ class ClienteDeleteView(DeleteView):
     success_url = '/clientes/listado/'
 
     def delete(self, request, *args, **kwargs):
-        
+
         messages.error(request, 'El cliente se elimino correctamente')
         return super(ClienteDeleteView, self).delete(request, *args, **kwargs)
-    
+
 
 class ContactoDeleteView(DeleteView):
-    
+
     model = Contacto
     template_name = 'clientes/contacto_confirm_delete.html'
     success_url = '/clientes/listado/'
 
     def delete(self, request, *args, **kwargs):
-        
+
         messages.error(request, 'El contacto se elimino correctamente')
         return super(ContactoDeleteView, self).delete(request, *args, **kwargs)
+
+
+class ClienteDetailView(TemplateView):
+
+    template_name = 'clientes/historial_cliente_venta.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ClienteDetailView, self).get_context_data(**kwargs)
+        cliente = Cliente.objects.get(pk=self.kwargs['pk'])
+        context['cliente'] = cliente
+
+        venta = Venta.objects.filter(socio__id=self.kwargs['pk'],
+                                            baja=False)
+        context['ventas'] = venta
+        return context
