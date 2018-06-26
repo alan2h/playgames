@@ -27,7 +27,7 @@
 
             var seleccion_articulo = function(id, descripcion, marca, rubro, precio_venta, precio_credito, precio_debito, precio_compra, stock, proveedor, no_suma_caja){
                 var cantidad = prompt("Ingrese la cantidad", "");
-                
+
                 var precio_enviar = '';
                 if (cantidad != null && cantidad != '') {
                     switch (forma_pago){
@@ -336,7 +336,7 @@
                 var descuento_socio = $('#id_descuento_socios').val();
 
                 var vuelto = parseFloat(pago) - parseFloat(total);
-
+                console.log(descuento_socio)
                 if (descuento_socio != '0') { // descuento para socios
                     descuento_total = (parseFloat(total) * parseFloat(descuento_socio)) / 100;
                     resultado = 0.0;
@@ -345,7 +345,7 @@
                     var representar2 = resultado.toFixed(2);
                     $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
                 }
-
+                console.log(descuento)
                 if (descuento != '0') { // descuento extraordinario
                     descuento_total = (parseFloat(total) * parseFloat(descuento)) / 100;
                     resultado = 0.0;
@@ -354,9 +354,10 @@
                     var representar2 = resultado.toFixed(2);
                     $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
                 }
-
-
+                console.log(vuelto)
+                console.log(vuelto.toFixed(2))
                 var representar = vuelto.toFixed(2);
+
                 $('#id_vuelto').html('$ ' + representar.toString().replace('.', ','));
             };
     /* ---- Evento y metodos para vueltos si es efectivo ---- */
