@@ -31,6 +31,7 @@
                   <th>Apellido</th>
                   <th>Email</th>
                   <th>Puntos</th>
+                  <th>Crédito</th>
                   <th>Datos</th>
                   <th>Acciones</th>
                 </tr>
@@ -45,6 +46,11 @@
                   <td>{{ cliente.email|quitar_none }}</td>
                   {% if cliente.puntos %}
                     <td>{{ cliente.puntos }}</td>
+                  {% else %}
+                    <td>--</td>
+                  {% endif %}
+                  {% if cliente.credito %}
+                    <td>$ {{ cliente.credito }}</td>
                   {% else %}
                     <td>--</td>
                   {% endif %}

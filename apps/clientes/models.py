@@ -16,6 +16,8 @@ class Cliente(models.Model):
     fecha_nacimiento = models.DateField(blank=True, null=True)
     fecha_alta = models.DateField(default=django.utils.timezone.now, blank=True, null=True)
     puntos = models.IntegerField(blank=True, null=True)
+    credito = models.DecimalField(max_digits=12, decimal_places=2,
+                                   null=True, blank=True)
     # cada cliente tiene una sucursal
     sucursal = models.ForeignKey(Sucursal, blank=True, null=True)
     # Baja

@@ -5,15 +5,15 @@ from .models import Cliente, Contacto
 
 
 class ClienteForm(forms.ModelForm):
-    
-    codigo_barras = forms.CharField(max_length=3000, required=False, 
+
+    codigo_barras = forms.CharField(max_length=3000, required=False,
                                     widget=(forms.TextInput(attrs=(
                                         {
                                             'class': 'form-control'
                                         }
                                     ))))
 
-    email = forms.EmailField(max_length=3000, required=True, 
+    email = forms.EmailField(max_length=3000, required=True,
                             widget=(forms.TextInput(attrs=(
                                 {
                                     'class': 'form-control',
@@ -46,6 +46,12 @@ class ClienteForm(forms.ModelForm):
                                         'class': 'form-control'
                                    }
                                )))
+    credito = forms.DecimalField(required=False,
+                                 widget=forms.NumberInput(attrs=(
+                                    {
+                                        'class': 'form-control'
+                                    }
+                                )))
 
     fecha_nacimiento = forms.DateField(required=True,
                                    widget=forms.DateInput(attrs=(
@@ -55,7 +61,7 @@ class ClienteForm(forms.ModelForm):
 
     class Meta:
         fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion',
-                  'fecha_nacimiento', 'numero_documento', 'puntos']
+                  'fecha_nacimiento', 'numero_documento', 'puntos', 'credito']
         model = Cliente
 
 
