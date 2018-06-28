@@ -1,5 +1,6 @@
 
 import datetime
+import time
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import (CreateView, ListView, UpdateView, View,
@@ -479,3 +480,27 @@ class ArticuloListPrint(ListView):
 
     queryset = Articulo.objects.filter(baja=False).order_by('-cantidad_vendida')
     template_name = 'articulos/articulo_list_print.html'
+
+
+class ActualizarPrecioCreditoView(TemplateView):
+
+    template_name = 'articulos/articulo_actualizar_credito.html'
+
+    def precio_credito_debito_nuevo(self, porcentaje, precio_efectivo):
+        incremento = (float(precio_efectivo) * float(porcentaje))/100
+        return float(precio_efectivo) + float(incremento)
+
+    def post(self, request, *args, **kwargs):
+
+        articulos_actualizar = Articulo.objects.filter(baja=False)
+        for articulo in articulos_actualizar:
+            precio_nuevo = self.precio_credito_debito_nuevo(
+                request.POST.get('porcentaje_nuevo'), articulo.precio_venta
+            )
+            Articulo.objects.filter(pk=articulo.id).update(
+                alicuota_iva=request.POST.get('porcentaje_nuevo'),
+                precio_credito=precio_nuevo,
+                precio_debito=precio_nuevo
+            )
+
+        return HttpResponseRedirect('/articulos/listado/')

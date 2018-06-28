@@ -9,6 +9,7 @@
                         <li><a href="/articulos/listado/"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Árticulos</a></li>
                         <!--<li><a href="/articulos/actualizar/precios/">Actualizar Precios</a></li>-->
                         {% if request.user.is_staff %}
+                           <li><a href="/articulos/actualizar/creditos"><i class="fa fa-credit-card" aria-hidden="true"></i>Actualizar Precios</a></li>
                            <li><a href="/articulos/historial/venta/"><i class="fa fa-history" aria-hidden="true"></i>Historial Precios de ventas</a></li>
                            <li><a href="/articulos/historial/compra/"><i class="fa fa-history" aria-hidden="true"></i>Historial Precios de compras</a></li>
                             <li><a href="/proveedores/alta/"><i class="fa fa-male" aria-hidden="true"></i>Proveedores</a></li>

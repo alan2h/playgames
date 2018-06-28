@@ -5,7 +5,8 @@ from rest_framework import routers
 from .views import ArticuloCreateView, ArticuloListView, ArticuloUpdateView, \
     ArticuloDeleteView, ArticuloDetailView, ActualizarPrecioTemplateView, \
     HistorialPreciosVentaListView, HistorialPreciosCompraListView, \
-    ArticuloListPrint
+    ArticuloListPrint, ActualizarPrecioCreditoView
+
 from .viewset import ArticuloViewSet
 
 from . import helpers
@@ -44,6 +45,8 @@ urlpatterns = [
        name='categoria-query-ajax'),
    url(r'^actualizar/precios/$',
        ActualizarPrecioTemplateView.as_view(), name='actualizar-precios'),
+   url(r'^actualizar/creditos/$',
+       ActualizarPrecioCreditoView.as_view(), name='actualizar-creditos'),
    url(r'^ajax/cambiar/sucursal/$', helpers.ajax_cambiar_sucursal,
        name='cambiar-sucursal-ajax')
 ]
