@@ -17,6 +17,7 @@
             /* ---- hacer invisible los campos que solo son para los socios ---*/
             document.getElementById('id_div_puntos_socios').style.display = 'none';
             document.getElementById('id_form_canjear').style.display = 'none';
+            document.getElementById('id_form_efectivo').style.display = 'none';
 
             /* ----------- habilitar campos para canje de puntos en socio ---*/
             habilitar_campos_canje = function(socio){
@@ -270,9 +271,20 @@
     /*------ cuando selecciona el canje se agrega las cajas de texto ----*/
     $("#id_canje_socios").change(function() {
         if(this.checked) {
+            $('#id_canje_credito').prop( "checked", false );
             document.getElementById('id_form_canjear').style.display = 'block';
+            document.getElementById('id_form_efectivo').style.display = 'none';
         }else{
             document.getElementById('id_form_canjear').style.display = 'none';
+        }
+    });
+    $("#id_canje_credito").change(function() {
+        if(this.checked) {
+            $('#id_canje_socios').prop( "checked", false );
+            document.getElementById('id_form_efectivo').style.display = 'block';
+            document.getElementById('id_form_canjear').style.display = 'none';
+        }else{
+            document.getElementById('id_form_efectivo').style.display = 'none';
         }
     });
     /*-------------------------------------------------------------------*/
