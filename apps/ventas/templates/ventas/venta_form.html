@@ -438,7 +438,7 @@
                 envioSocio: function(socio){
                         $('#id_socio').val(socio.id)
                         var self = this;
-                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos
+                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos + ' - crédito: ' + socio.credito
                         self.id_socio = socio.id
                         swal({
                             title: self.datos_socio,

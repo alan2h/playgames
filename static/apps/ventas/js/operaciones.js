@@ -337,13 +337,15 @@
 
                 var vuelto = parseFloat(pago) - parseFloat(total);
                 console.log(descuento_socio)
-                if (descuento_socio != '0') { // descuento para socios
-                    descuento_total = (parseFloat(total) * parseFloat(descuento_socio)) / 100;
-                    resultado = 0.0;
-                    resultado = parseFloat(total) - parseFloat(descuento_total);
-                    var vuelto =  parseFloat(pago) - parseFloat(resultado);
-                    var representar2 = resultado.toFixed(2);
-                    $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
+                if ($('#id_canje_socios').is(':checked')){
+                  if (descuento_socio != '0') { // descuento para socios
+                      descuento_total = (parseFloat(total) * parseFloat(descuento_socio)) / 100;
+                      resultado = 0.0;
+                      resultado = parseFloat(total) - parseFloat(descuento_total);
+                      var vuelto =  parseFloat(pago) - parseFloat(resultado);
+                      var representar2 = resultado.toFixed(2);
+                      $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
+                  }
                 }
                 console.log(descuento)
                 if (descuento != '0') { // descuento extraordinario
