@@ -55,21 +55,20 @@
                                        </thead>
                                        <tbody>
                                             <tr v-for="socio in socios">
-                                                    <td @click="envioSocio(socio)">${ socio.id }
-                                                    </td>
+                                              <td @click="envioSocio(socio)">${ socio.id }
+                                              </td>
 
-                                                    <td @click="envioSocio(socio)">${ socio.nombre }
-                                                    </td>
+                                              <td @click="envioSocio(socio)">${ socio.nombre }
+                                              </td>
 
-                                                    <td @click="envioSocio(socio)">${ socio.apellido }</td>
-                                                    <td @click="envioSocio(socio)">${ socio.numero_documento }
-                                                    </td>
+                                              <td @click="envioSocio(socio)">${ socio.apellido }</td>
+                                              <td @click="envioSocio(socio)">${ socio.numero_documento }
+                                              </td>
 
-                                                    <td @click="envioSocio(socio)">${ socio.puntos }
-                                                        </td>
+                                              <td @click="envioSocio(socio)">${ socio.puntos }
+                                              </td>
 
-                                                  </tr>
-
+                                            </tr>
                                        </tbody>
                                      </table>
                                      <ul class="pager">
@@ -266,7 +265,7 @@
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-inline">
-                                                <input class="form-control" value="0" type="number" name="descuento_socios" id="id_descuento_socios">
+                                                <input class="form-control" value="100" type="number" name="descuento_socios" id="id_descuento_socios">
                                             </div>
                                         </div>
                                     </div>
@@ -439,7 +438,7 @@
                 envioSocio: function(socio){
                         $('#id_socio').val(socio.id)
                         var self = this;
-                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento
+                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos
                         self.id_socio = socio.id
                         swal({
                             title: self.datos_socio,
