@@ -48,6 +48,7 @@ def ajax_guardar_venta(request):
             # si la forma de pago fue con canje de puntos de socios
             socio = None
             puntos = None
+            creditos = None
             canje_socios = (request.POST.get('canje_socios') == 'true')
             if canje_socios:
                 forma_pago += '-Canje de Puntos'
@@ -55,6 +56,15 @@ def ajax_guardar_venta(request):
                 puntos = request.POST.get('puntos_socios')
                 socio = socio_funciones.restar_puntos(request.POST.get('id_socio'), request.POST.get('puntos_socios'))
 
+            canje_credito = (request.POST.get('canje_credito') == 'true')
+            if canje_credito:
+                forma_pago += '-Canje de Credito'
+                resultado_venta_total = request.POST.get('total_con_descuento')
+                creditos = request.POST.get('creditos_socios')
+                socio = socio_funciones.restar_credito(
+                                                       request.POST.get('id_socio'),
+                                                       request.POST.get('creditos_socios')
+                                                       )
             # guarda la venta en un historial
             venta = Venta(
                 fecha=request.POST.get('fecha'),
@@ -79,6 +89,9 @@ def ajax_guardar_venta(request):
                 # si la palabra canje de puntos se encuentra en la forma de pago
                 if len(forma_pago.split('-')) > 1:
                     if forma_pago.split('-')[1] == 'Canje de Puntos':
+                        caja_funciones.sumar_ventas_socios(monto=request.POST.get('total_con_descuento'),
+                                                           id_sucursal=request.session['id_sucursal'])
+                    elif forma_pago.split('-')[1] == 'Canje de Credito':
                         caja_funciones.sumar_ventas_socios(monto=request.POST.get('total_con_descuento'),
                                                            id_sucursal=request.session['id_sucursal'])
                 # Guarda en la caja el precio total del efectivo

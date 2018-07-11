@@ -72,10 +72,12 @@
                 total_con_descuento = resultado;
                 var no_sumar = false;
                 var canje_socios = false;
+                var canje_credito = false;
 
                 $('#id_button_guardar_compra').prop( "disabled", true );
                 if ($('#id_no_sumar').is(':checked')){no_sumar = true;}
                 if ($('#id_canje_socios').is(':checked')){canje_socios = true;}
+                if ($('#id_canje_credito').is(':checked')){canje_credito = true;}
 
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
@@ -91,6 +93,8 @@
                         no_sumar: no_sumar,
                         puntos_socios: $('#id_puntos_socios').val(),
                         canje_socios: canje_socios,
+                        creditos_socios: $('#id_credito_socio').val(),
+                        canje_credito: canje_credito,
                         credito_porcentaje: credito_porcentaje,
                         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
                     },
@@ -325,6 +329,12 @@
                 }
                 calcular_vuelto();
             });
+            $('#id_credito_socio').focusout(function(){
+              if ($('#id_credito_socio').val() == ''){
+                  $('#id_credito_socio').val('0');
+              }
+              calcular_vuelto();
+            });
 
             $('#id_descuento_socios').keypress(function(e){
                 if (e.keyCode == 13) {
@@ -335,17 +345,28 @@
                 }
             });
 
+            $('#id_credito_socio').keypress(function(e){
+                if (e.keyCode == 13) {
+                    if ($('#id_credito_socio').val() == ''){
+                        $('#id_credito_socio').val('0');
+                    }
+                    calcular_vuelto();
+                }
+            });
+
             $('#id_pago').keypress(function(e) {
                 if (e.keyCode == 13) {
                     calcular_vuelto();
                 }
             });
+
             var calcular_vuelto = function(){
                 /* ----- calcula si es efectivo el vuelto ----- */
 
                 var pago = $('#id_pago').val();
                 var descuento = $('#id_monto_descuento').val();
                 var descuento_socio = $('#id_descuento_socios').val();
+                var credito_socio = $('#id_credito_socio').val();
 
                 var vuelto = parseFloat(pago) - parseFloat(total);
                 console.log(descuento_socio)
@@ -354,6 +375,15 @@
                       descuento_total = (parseFloat(total) * parseFloat(descuento_socio)) / 100;
                       resultado = 0.0;
                       resultado = parseFloat(total) - parseFloat(descuento_total);
+                      var vuelto =  parseFloat(pago) - parseFloat(resultado);
+                      var representar2 = resultado.toFixed(2);
+                      $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
+                  }
+                }
+                if ($('#id_canje_credito').is(':checked')){
+                  if (credito_socio != '0') { // credito para socios
+                      resultado = 0.0;
+                      resultado = parseFloat(total) - parseFloat(credito_socio);
                       var vuelto =  parseFloat(pago) - parseFloat(resultado);
                       var representar2 = resultado.toFixed(2);
                       $('#id_total').html('$ ' + representar2.toString().replace('.', ','));

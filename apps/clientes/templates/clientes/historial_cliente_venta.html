@@ -54,7 +54,7 @@
                                       {% for venta in ventas %}
                                         <li class="list-group-item fist-item">
                                             <span class="pull-right">$ {{venta.precio_venta_total}} </span>
-                                            {{venta.forma_pago}}-->{{ venta.puntos }}
+                                            {{venta.forma_pago}}-->{% if venta.puntos %}{{ venta.puntos }}{% else %} {{venta.credito}} {% endif %}
 
                                               {% for articulo_venta in venta.articulo_venta.all %}
                                                   {{ articulo_venta.articulo.nombre }}, {{ articulo_venta.articulo.rubro }}  --> {{ articulo_venta.cantidad }} <br>
