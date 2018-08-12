@@ -1,8 +1,8 @@
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Articulo
-from .serializer import ArticuloSerializer
+from .models import Articulo, Rubro, Categoria
+from .serializer import ArticuloSerializer, RubroSerializer, CategoriaSerializer
 
 from apps.perfiles.models import Perfil
 
@@ -58,3 +58,17 @@ class ArticuloViewSet(ModelViewSet):
                                 stock__gte=1
                             )
         return queryset
+
+
+# -------- api para la pagina web ------- #
+
+class RubroViewSet(ModelViewSet):
+
+    queryset = Rubro.objects.all()
+    serializer_class = RubroSerializer
+
+
+class CategoriaViewSet(ModelViewSet):
+
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer

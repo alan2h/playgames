@@ -1,5 +1,5 @@
 
-from .models import Articulo, Marca, Rubro
+from .models import Articulo, Marca, Rubro, Categoria
 
 from rest_framework import serializers
 
@@ -12,6 +12,17 @@ class MarcaSerializer(serializers.ModelSerializer):
             'id',
             'descripcion'
         )
+
+
+class CategoriaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Categoria
+        fields = (
+            'id',
+            'descripcion'
+        )
+
 
 class RubroSerializer(serializers.ModelSerializer):
 

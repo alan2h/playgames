@@ -7,13 +7,15 @@ from .views import ArticuloCreateView, ArticuloListView, ArticuloUpdateView, \
     HistorialPreciosVentaListView, HistorialPreciosCompraListView, \
     ArticuloListPrint, ActualizarPrecioCreditoView
 
-from .viewset import ArticuloViewSet
+from .viewset import ArticuloViewSet, RubroViewSet, CategoriaViewSet
 
 from . import helpers
 from . import views
 
 router = routers.DefaultRouter()
 router.register(r'articulos', ArticuloViewSet)
+router.register(r'rubros', RubroViewSet)
+router.register(r'categorias', CategoriaViewSet)
 
 
 urlpatterns = [
