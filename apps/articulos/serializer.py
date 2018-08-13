@@ -20,7 +20,8 @@ class CategoriaSerializer(serializers.ModelSerializer):
         model = Categoria
         fields = (
             'id',
-            'descripcion'
+            'descripcion',
+            'imagen'
         )
 
 

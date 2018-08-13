@@ -18,6 +18,7 @@ class Marca(models.Model):
 class Categoria(models.Model):
 
     descripcion = models.CharField(max_length=600, blank=True, null=True)
+    imagen = models.ImageField(upload_to='categorias_web', blank=True, null=True)
 
     def __str__(self):
         return self.descripcion
