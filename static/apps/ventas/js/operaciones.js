@@ -23,6 +23,7 @@
             habilitar_campos_canje = function(socio){
                 $('#id_puntos_socios').val(socio.puntos);
                 document.getElementById('id_div_puntos_socios').style.display = 'block';
+                $('#id_descuento_de_socio').prop( "checked", true );
             }
             /* --------------------------------------------------------------*/
 
