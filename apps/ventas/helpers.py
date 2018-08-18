@@ -65,6 +65,13 @@ def ajax_guardar_venta(request):
                                                        request.POST.get('id_socio'),
                                                        request.POST.get('creditos_socios')
                                                        )
+            # verifica que sea un socio, en caso de que lo sea tiene descuento
+            print(request.POST.get('id_descuento_de_socio'))
+            if (request.POST.get('id_descuento_de_socio') == 'true'):
+                porcentaje_descuento_socio = (float(resultado_venta_total) * 5) / 100
+                resultado_venta_total = float(resultado_venta_total) - float(porcentaje_descuento_socio)
+                request.POST._mutable = True # modifico el post para cargarle el descuento de socio
+                request.POST['precio_venta_total'] = resultado_venta_total # guardo el total con el descuento para el socio
             # guarda la venta en un historial
             venta = Venta(
                 fecha=request.POST.get('fecha'),
@@ -78,6 +85,9 @@ def ajax_guardar_venta(request):
                 sucursal=sucursal,
                 usuario=str(request.user.get_username())
             )
+            # porcentaje_descuento en caso de ser socio
+            if (request.POST.get('id_descuento_de_socio') == 'true'):
+                venta.porcentaje_descuento = 5 # en el historial guardo que se haya realizado el descuento
             venta.save()
 
             if venta_sin_ganancia: # esta condicion verifica que se haya tildado que no sume a caja

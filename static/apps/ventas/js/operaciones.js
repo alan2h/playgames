@@ -74,11 +74,13 @@
                 var no_sumar = false;
                 var canje_socios = false;
                 var canje_credito = false;
+                var id_descuento_de_socio = false;
 
                 $('#id_button_guardar_compra').prop( "disabled", true );
                 if ($('#id_no_sumar').is(':checked')){no_sumar = true;}
                 if ($('#id_canje_socios').is(':checked')){canje_socios = true;}
                 if ($('#id_canje_credito').is(':checked')){canje_credito = true;}
+                if ($('#id_descuento_de_socio').is(':checked')){id_descuento_de_socio = true;}
 
                 $.ajax({
                     url: '/ventas/ajax/ventas/alta/',
@@ -97,6 +99,7 @@
                         creditos_socios: $('#id_credito_socio').val(),
                         canje_credito: canje_credito,
                         credito_porcentaje: credito_porcentaje,
+                        id_descuento_de_socio: id_descuento_de_socio,
                         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
                     },
                     success: function(data){
@@ -389,6 +392,14 @@
                       var representar2 = resultado.toFixed(2);
                       $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
                   }
+                }
+                if ($('#id_descuento_de_socio').is(':checked')){
+                  resultado = 0.0;
+                  var descuento_socio = (parseFloat(total) * 5) / 100;
+                  resultado = parseFloat(total) - parseFloat(descuento_socio);
+                  var vuelto =  parseFloat(pago) - parseFloat(resultado);
+                  var representar2 = resultado.toFixed(2);
+                  $('#id_total').html('$ ' + representar2.toString().replace('.', ','));
                 }
                 console.log(descuento)
                 if (descuento != '0') { // descuento extraordinario
