@@ -4,8 +4,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, T
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
-from .models import Cliente, Contacto
-from .forms import ClienteForm, ContactoForm
+from .models import Cliente, Contacto, Cuota
+from .forms import ClienteForm, ContactoForm, CuotaForm
 
 from apps.sucursales.models import Sucursal
 from apps.ventas.models import Venta
@@ -180,3 +180,15 @@ class ClienteDetailView(TemplateView):
                                             baja=False)
         context['ventas'] = venta
         return context
+
+
+class CuotaCreate(SuccessMessageMixin, CreateView):
+
+    form_class = CuotaForm
+    template_name = 'clientes/cuota_form.html'
+    model = Cuota
+    success_message = 'La cuota se registro con éxito'
+
+    def form_valid(self, form):
+
+        return super(CuotaCreate, self).form_valid(form)

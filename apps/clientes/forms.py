@@ -1,7 +1,7 @@
 
 from django import forms
 
-from .models import Cliente, Contacto
+from .models import Cliente, Contacto, Cuota
 
 
 class ClienteForm(forms.ModelForm):
@@ -100,3 +100,34 @@ class ContactoForm(forms.ModelForm):
     class Meta:
         fields = ['cliente', 'tipo', 'descripcion']
         model = Contacto
+
+
+class CuotaForm(forms.ModelForm):
+
+    choices = (
+        ('Enero', 'Enero'),
+        ('Febrero', 'Febrero'),
+        ('Marzo', 'Marzo'),
+        ('Abril', 'Abril'),
+        ('Mayo', 'Mayo'),
+        ('Junio', 'Junio'),
+        ('Julio', 'Julio'),
+        ('Agosto', 'Agosto'),
+        ('Septiembre', 'Septiembre'),
+        ('Octubre', 'Octubre'),
+        ('Noviembre', 'Noviembre'),
+        ('Diciembre', 'Diciembre')
+    )
+
+    precio = forms.DecimalField(max_digits=12, decimal_places=2,
+                                required=True, widget=forms.Select(attr={
+                                    'class': 'form-control'
+                                }))
+    mes = forms.CharField(max_length=3000, required=True, choices=choices,
+                          widget=forms.DateInput(attr={
+                              'class': 'form-control'
+                          }))
+
+    class Meta:
+        model = Cuota
+        fields = '__all__'

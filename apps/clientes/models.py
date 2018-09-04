@@ -59,3 +59,37 @@ class Contacto(models.Model):
     class Meta:
         verbose_name = 'Contacto'
         verbose_name_plural = 'Contactos'
+
+
+class Cuota(models.Model):
+
+    choices = (
+        ('Enero', 'Enero'),
+        ('Febrero', 'Febrero'),
+        ('Marzo', 'Marzo'),
+        ('Abril', 'Abril'),
+        ('Mayo', 'Mayo'),
+        ('Junio', 'Junio'),
+        ('Julio', 'Julio'),
+        ('Agosto', 'Agosto'),
+        ('Septiembre', 'Septiembre'),
+        ('Octubre', 'Octubre'),
+        ('Noviembre', 'Noviembre'),
+        ('Diciembre', 'Diciembre')
+    )
+
+    precio = models.DecimalField(max_digits=12, decimal_places=2,
+                          blank=False, null=False)
+    mes = models.CharField(max_length=3000, choices=choices,
+                    blank=False, null=False)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s - %s' % str(self.precio, self.mes)
+
+    class Meta:
+        verbose_name = 'Cuota'
+        verbose_name_plural = 'Cuotas'
+
+
+class
