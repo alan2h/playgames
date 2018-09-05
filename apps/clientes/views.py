@@ -1,3 +1,6 @@
+
+import logging
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
@@ -9,6 +12,10 @@ from .forms import ClienteForm, ContactoForm, CuotaForm
 
 from apps.sucursales.models import Sucursal
 from apps.ventas.models import Venta
+
+# instancia de logger
+
+logger = logging.getLogger(__name__)
 
 
 class ClienteTemplateView(ListView):
@@ -193,15 +200,21 @@ class CuotaCreateView(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
 
         context = super(CuotaCreateView, self).get_context_data(**kwargs)
-        initial = {'cliente': self.kwargs}
-        form = self.form_class(initial=initial)
+        form = CuotaForm
         context['form'] = form
+
+        context['cuotas'] = Cuota.objects.filter(cliente__id=self.kwargs['pk']).order_by('-id')
+        logger.critical('El diccionario de la lista es el siguiente: ')
+        logger.critical(context['cuotas'])
         return context
 
     def post(self, request, *args, **kwargs):
 
+        request.POST._mutable = True
+        request.POST['cliente'] = self.kwargs.get('pk')
+
         return super(CuotaCreateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
-
+        logger.info('El form que se va a guardar es :' + str(form))
         return super(CuotaCreateView, self).form_valid(form)

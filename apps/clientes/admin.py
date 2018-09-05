@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Cliente, Contacto
+from .models import Cliente, Contacto, Cuota
 
 
 class ClienteAdmin(admin.ModelAdmin):
@@ -41,5 +41,20 @@ class ContactoAdmin(admin.ModelAdmin):
         'descripcion'
     ]
 
+
+class CuotaAdmin(admin.ModelAdmin):
+
+    list_display =[
+        'precio',
+        'mes'
+    ]
+
+    list_filter = [
+        'precio',
+        'mes'
+    ]
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Contacto, ContactoAdmin)
+admin.site.register(Cuota, CuotaAdmin)
