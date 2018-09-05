@@ -67,7 +67,7 @@
                        <a href="/clientes/eliminar/{{ cliente.pk }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Eliminar </a>
                   </td>
                   <td><a href="/clientes/detail/{{ cliente.pk }}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> Detalle </a></td>
-                  <td><a href="#" class="btn btn-warning btn-xs"><i class="fa fa-calendar-o"></i> Cuotas </a></td>
+                  <td><a href="/clientes/cuotas/alta/{{ cliente.pk }}" class="btn btn-warning btn-xs"><i class="fa fa-calendar-o"></i> Cuotas </a></td>
                 </tr>
               {% endfor %}
               </tbody>

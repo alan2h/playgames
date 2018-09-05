@@ -25,16 +25,16 @@
 
             <!-- Input del formulario -->
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-3">Caja Inicial</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Monto</label>
                 <div class="col-md-9 col-sm-9 col-xs-9">
-                    {{ form.caja_inicial }}
+                    {{ form.precio }}
                   <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
                     <!-- Mensaje de error del input -->
-                    {% if form.caja_inicial.errors %}
+                    {% if form.precio.errors %}
                         <div class="alert alert-danger" role="alert">
                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                           <span class="sr-only">Error:</span>
-                           {{ form.caja_inicial.errors|striptags }}
+                           {{ form.precio.errors|striptags }}
                         </div>
                     {% endif %}
                     <!-- Mensaje de error del input -->
@@ -42,7 +42,24 @@
               </div>
             <!-- Input del formulario -->
 
-
+            <!-- Input del formulario -->
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-3">Mes</label>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    {{ form.mes }}
+                  <span class="fa fa-barcode form-control-feedback right" aria-hidden="true"></span>
+                    <!-- Mensaje de error del input -->
+                    {% if form.mes.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                          <span class="sr-only">Error:</span>
+                           {{ form.mes.errors|striptags }}
+                        </div>
+                    {% endif %}
+                    <!-- Mensaje de error del input -->
+                </div>
+              </div>
+            <!-- Input del formulario -->
 
               <div class="ln_solid"></div>
 
@@ -53,6 +70,25 @@
               </div>
 
             </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Lista de pagos realizados </h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
           </div>
         </div>
       </div>

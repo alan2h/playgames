@@ -182,13 +182,26 @@ class ClienteDetailView(TemplateView):
         return context
 
 
-class CuotaCreate(SuccessMessageMixin, CreateView):
+class CuotaCreateView(SuccessMessageMixin, CreateView):
 
     form_class = CuotaForm
     template_name = 'clientes/cuota_form.html'
     model = Cuota
     success_message = 'La cuota se registro con éxito'
+    success_url = '/clientes/listado'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(CuotaCreateView, self).get_context_data(**kwargs)
+        initial = {'cliente': self.kwargs}
+        form = self.form_class(initial=initial)
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        return super(CuotaCreateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
 
-        return super(CuotaCreate, self).form_valid(form)
+        return super(CuotaCreateView, self).form_valid(form)

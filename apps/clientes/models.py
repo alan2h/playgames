@@ -78,6 +78,8 @@ class Cuota(models.Model):
         ('Diciembre', 'Diciembre')
     )
 
+    cliente = models.ForeignKey(Cliente, blank=True, null=True)
+
     precio = models.DecimalField(max_digits=12, decimal_places=2,
                           blank=False, null=False)
     mes = models.CharField(max_length=3000, choices=choices,
@@ -90,6 +92,3 @@ class Cuota(models.Model):
     class Meta:
         verbose_name = 'Cuota'
         verbose_name_plural = 'Cuotas'
-
-
-class

@@ -119,15 +119,18 @@ class CuotaForm(forms.ModelForm):
         ('Diciembre', 'Diciembre')
     )
 
+    cliente = forms.ModelChoiceField(queryset=Cliente.objects.all(),
+                                     required=True)
+
     precio = forms.DecimalField(max_digits=12, decimal_places=2,
-                                required=True, widget=forms.Select(attr={
+                                required=True, widget=forms.NumberInput(attrs={
                                     'class': 'form-control'
                                 }))
-    mes = forms.CharField(max_length=3000, required=True, choices=choices,
-                          widget=forms.DateInput(attr={
+    mes = forms.ChoiceField(choices=choices, required=True,
+                          widget=forms.Select(attrs={
                               'class': 'form-control'
                           }))
 
     class Meta:
+        fields = ['precio', 'mes', 'cliente']
         model = Cuota
-        fields = '__all__'
