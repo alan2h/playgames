@@ -72,3 +72,16 @@ class CategoriaViewSet(ModelViewSet):
 
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+
+
+class ArticuloMasVendidoWebPagination(PageNumberPagination):
+    page_size = 6
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
+class ArticuloMasVendidoWebViewSet(ModelViewSet):
+
+    queryset = Articulo.objects.filter(baja=False).order_by('-cantidad_vendida')
+    serializer_class = ArticuloSerializer
+    pagination_class = ArticuloMasVendidoWebPagination
