@@ -82,6 +82,12 @@ class ArticuloMasVendidoWebPagination(PageNumberPagination):
 
 class ArticuloMasVendidoWebViewSet(ModelViewSet):
 
-    queryset = Articulo.objects.filter(baja=False).order_by('-cantidad_vendida')
+    queryset = Articulo.objects.filter(baja=False, rubro__categoria__descripcion='VIDEOJUEGOS', sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
     serializer_class = ArticuloSerializer
     pagination_class = ArticuloMasVendidoWebPagination
+
+    def get_queryset(self):
+
+        subcategoria = self.request.query_params.get('subcategoria', None)
+        queryset = Articulo.objects.filter(baja=False, rubro__categoria__descripcion=subcategoria, sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
+        return queryset
