@@ -81,6 +81,11 @@ class ArticuloMasVendidoWebPagination(PageNumberPagination):
 
 
 class ArticuloMasVendidoWebViewSet(ModelViewSet):
+    '''
+    Descripcion: Esta api solo trae los articulos vendidos en la central
+    advertencia: No se debe verificar stock con esta api. Solo devuelve una sucursal
+    params: subcategoria
+    '''
 
     queryset = Articulo.objects.filter(baja=False, rubro__categoria__descripcion='VIDEOJUEGOS', sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
     serializer_class = ArticuloSerializer
@@ -91,3 +96,22 @@ class ArticuloMasVendidoWebViewSet(ModelViewSet):
         subcategoria = self.request.query_params.get('subcategoria', None)
         queryset = Articulo.objects.filter(baja=False, rubro__categoria__descripcion=subcategoria, sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
         return queryset
+
+
+class ArticuloWebListPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
+class ArticuloWebList(ModelViewSet):
+
+    '''
+    Descripcion: Para gestionar las consultas de los articulos en las listas y los detalles
+    Advertencia: ...
+    params: realiza una busqueda por cualquier parametro
+    '''
+
+    queryset = Articulo.objects.filter(baja=False)
+    serializer_class = ArticuloSerializer
+    pagination_class = ArticuloWebListPagination
