@@ -119,6 +119,9 @@ class ArticuloWebList(ModelViewSet):
     def get_queryset(self):
         queryset = Articulo.objects.filter(baja=False, sucursal__descripcion='FORMOSA').order_by('cantidad_vendida')
         texto_busqueda = self.request.query_params.get('search', None)
+        category_busqueda = self.request.query_params.get('category', None)
+        if category_busqueda:
+            queryset = Articulo.objects.filter(baja=False, rubro__categoria__descripcion__icontains=category_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
         if texto_busqueda:
             queryset = Articulo.objects.filter(baja=False, nombre__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
             if len(queryset) == 0:
