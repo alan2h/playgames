@@ -112,6 +112,14 @@ class ArticuloWebList(ModelViewSet):
     params: realiza una busqueda por cualquier parametro
     '''
 
-    queryset = Articulo.objects.filter(baja=False)
+    queryset = Articulo.objects.filter(baja=False, sucursal__descripcion='FORMOSA')
     serializer_class = ArticuloSerializer
     pagination_class = ArticuloWebListPagination
+
+    def get_queryset(self):
+        queryset = Articulo.objects.filter(baja=False, sucursal__descripcion='FORMOSA').order_by('cantidad_vendida')
+        texto_busqueda = self.request.query_params.get('search', None)
+        if texto_busqueda:
+            queryset = Articulo.objects.filter(baja=False, nombre__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('cantidad_vendida')
+            
+        return queryset
