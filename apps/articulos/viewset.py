@@ -120,6 +120,12 @@ class ArticuloWebList(ModelViewSet):
         queryset = Articulo.objects.filter(baja=False, sucursal__descripcion='FORMOSA').order_by('cantidad_vendida')
         texto_busqueda = self.request.query_params.get('search', None)
         if texto_busqueda:
-            queryset = Articulo.objects.filter(baja=False, nombre__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('cantidad_vendida')
-            
+            queryset = Articulo.objects.filter(baja=False, nombre__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
+            if len(queryset) == 0:
+                queryset = Articulo.objects.filter(baja=False, descripcion__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
+                if len(queryset) == 0:
+                    queryset = Articulo.objects.filter(baja=False, marca__descripcion__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
+                    if len(queryset) == 0:
+                        queryset = Articulo.objects.filter(baja=False, rubro__descripcion__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
+
         return queryset
