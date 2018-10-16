@@ -22,3 +22,4 @@ class SlidesDeleteView(DeleteView):
 
     model = Slides
     template_name = 'paginas_webs/slide_confirm_delete.html'
+    success_url = '/slides/alta'

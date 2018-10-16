@@ -56,7 +56,7 @@
                     <th scope="row">{{ slide.id }}</th>
                     <td><img src="/media/{{ slide.imagen }}" alt="Smiley face" height="42" width="42">
 </td>
-                    <td><i class="fa fa-trash"></i></td>
+                    <td><a href="/slides/eliminar/{{ slide.pk }}"><i class="fa fa-trash"></i></a></td>
                   </tr>
               {% endfor %}
             </tbody>
