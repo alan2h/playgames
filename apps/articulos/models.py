@@ -54,7 +54,9 @@ class Articulo(models.Model):
     precio_credito = models.DecimalField(decimal_places=2, max_digits=12,
                                          null=True, blank=True)
     precio_debito = models.DecimalField(decimal_places=2, max_digits=12,
-                                         null=True, blank=True)
+                                        null=True, blank=True)
+    precio_web = models.DecimalField(decimal_places=2, max_digits=12,
+                                     null=True, blank=True)
     # Tipos de Precios -- solo se tiene en cuenta de credito y debito
     precio_compra = models.DecimalField(default=0, decimal_places=2,
                                         max_digits=12, null=True, blank=True)

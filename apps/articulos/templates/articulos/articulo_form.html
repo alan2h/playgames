@@ -7,7 +7,7 @@
     <link href="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <!-- jasny bootstrap css -->
     <link href="{% static 'jasny-bootstrap/css/jasny-bootstrap.min.css' %}" rel="stylesheet">
- 
+
 {% endblock %}
 
 {% block content %}
@@ -171,6 +171,25 @@
             </div>
          <!-- Input del formulario -->
 
+         <!-- Input del formulario -->
+           <div class="form-group">
+             <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio en página web</label>
+             <div class="col-md-9 col-sm-9 col-xs-9">
+                 {{ form.precio_web }}
+               <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                 <!-- Mensaje de error del input -->
+                 {% if form.precio_web.errors %}
+                     <div class="alert alert-danger" role="alert">
+                       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                        {{ form.precio_web.errors|striptags }}
+                     </div>
+                 {% endif %}
+                 <!-- Mensaje de error del input -->
+             </div>
+           </div>
+         <!-- Input del formulario -->
+
           <!-- Input del formulario -->
             <div class="form-group">
               <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio de Compra</label>
@@ -310,7 +329,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-3">No se suma a caja</label>
                 <div class="col-md-9 col-sm-9 col-xs-9">
                     {{ form.no_suma_caja }}
-                    
+
                     <!-- Mensaje de error del input -->
                     {% if form.no_suma_caja.errors %}
                         <div class="alert alert-danger" role="alert">
@@ -415,15 +434,15 @@
     {% if  categoria_modificar %}
         <script>
             $('#id_categoria_seleccion').val('{{ categoria_modificar }}')
-        </script>    
+        </script>
     {% endif %}
-    
+
     <script>
 
         $.validator.messages.required = 'Este campo es requerido';
             $("#form").validate({
                 rules: {
-                    
+
                 }
             });
 
@@ -476,14 +495,14 @@
                 data: {
                     id: data.id,
                     csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
-                    
+
                 },
                 success: function(data){
                     console.log(data);
                 }
             });
         });
-        
+
         //*------------------------------*//
 
         // tabulador

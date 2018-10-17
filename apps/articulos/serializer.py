@@ -53,6 +53,7 @@ class ArticuloSerializer(serializers.ModelSerializer):
             'precio_credito',
             'precio_debito',
             'precio_compra',
+            'precio_web',
             'stock',
             'stock_minimo',
             'imagen',

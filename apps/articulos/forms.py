@@ -45,6 +45,13 @@ class ArticuloForm(forms.ModelForm):
                                                 'class': 'form-control'
                                             }
                                         )))
+    precio_web = forms.DecimalField(required=False, decimal_places=2,
+                                        max_digits=12,
+                                        widget=forms.NumberInput(attrs=(
+                                            {
+                                                'class': 'form-control'
+                                            }
+                                        )))
     precio_compra = forms.DecimalField(required=True, decimal_places=2,
                                        max_digits=12,
                                        widget=forms.NumberInput(attrs=(
@@ -76,7 +83,7 @@ class ArticuloForm(forms.ModelForm):
                                        {'class': 'form-control'}
                                    )))
 
-    sucursal = forms.ModelChoiceField(queryset=Sucursal.objects.all(), required=True, 
+    sucursal = forms.ModelChoiceField(queryset=Sucursal.objects.all(), required=True,
     widget=forms.Select(
         {'class': 'form-control'}))
 
@@ -91,7 +98,7 @@ class ArticuloForm(forms.ModelForm):
             'codigo_barra', 'descripcion', 'precio_compra', 'precio_venta',
             'precio_credito', 'precio_debito', 'stock', 'stock_minimo',
             'rubro', 'marca', 'impuesto_interno', 'alicuota_iva', 'fecha_compra',
-            'imagen', 'nombre', 'sucursal', 'no_suma_caja'
+            'imagen', 'nombre', 'sucursal', 'no_suma_caja', 'precio_web'
         ]
 
         model = Articulo
@@ -119,7 +126,7 @@ class CategoriaForm(forms.ModelForm):
         'id': 'id_descripcion_categoria'
     })))
 
-    class Meta: 
+    class Meta:
         fields = ['descripcion']
         model = Categoria
 
