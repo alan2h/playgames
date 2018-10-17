@@ -8,7 +8,8 @@ from .views import ArticuloCreateView, ArticuloListView, ArticuloUpdateView, \
     ArticuloListPrint, ActualizarPrecioCreditoView
 
 from .viewset import (ArticuloViewSet, RubroViewSet, CategoriaViewSet,
-                      ArticuloMasVendidoWebViewSet, ArticuloWebList)
+                      ArticuloMasVendidoWebViewSet, ArticuloWebList,
+                      ArticuloStockWeb)
 
 from . import helpers
 from . import views
@@ -19,6 +20,7 @@ router.register(r'rubros', RubroViewSet)
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'articulos-vendidos-web', ArticuloMasVendidoWebViewSet)
 router.register(r'articulosweblist', ArticuloWebList)
+router.register(r'articulostockweb', ArticuloStockWeb)
 
 
 urlpatterns = [

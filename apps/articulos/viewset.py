@@ -132,3 +132,21 @@ class ArticuloWebList(ModelViewSet):
                         queryset = Articulo.objects.filter(baja=False, rubro__descripcion__icontains=texto_busqueda,  sucursal__descripcion='FORMOSA').order_by('-cantidad_vendida')
 
         return queryset
+
+
+class ArticuloStockWeb(ModelViewSet):
+
+    '''
+    Descripcion: api para calcular el stock
+    params: se le envia el id y este calcula el stock
+    '''
+
+    queryset = Articulo.objects.filter(baja=False)
+    serializer_class = ArticuloSerializer
+
+    def get_queryset(self):
+        queryset = Articulo.objects.filter(baja=False).order_by('cantidad_vendida')
+        codigo_barra = self.request.query_params.get('codigo', None)
+        if codigo_barra:
+            queryset = Articulo.objects.filter(codigo_barra=codigo_barra).order_by('-cantidad_vendida')
+        return queryset
