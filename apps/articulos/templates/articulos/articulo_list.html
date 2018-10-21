@@ -88,8 +88,10 @@
                                 $ {{ articulo.precio_venta }}
                             </td>
 
-                            <td>
+                            <td onclick="cambiarPrecio('{{ articulo.precio_credito }}', '{{ articulo.id }}')">
+                              <a >
                                 $ {{ articulo.precio_credito }}
+                              </a>
                             </td>
 
                             <!--<td>
@@ -148,6 +150,27 @@
             {% endif %}
             <!-- paginacion -->
       </div>
+      <!-- Small modal cambio de precio credito -->
+      <div class="modal fade id_precio_credito_form" id="cambiarPrecioModal" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Cambiar precio crédito</h4>
+                          <!--<div class="alert alert-danger" id="" role="alert"></div>-->
+                          <form>
+                            <input type="number" class="form-control" id="precio_credito_cambiar_form" />
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                          <button type="button" class="btn btn-primary" onclick="">Guardar</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       <!-- /modals -->
     </div>
 </div>
 {% endblock %}
@@ -158,6 +181,12 @@
 
  <!-- funciones especiales -->
  <script>
+    // --------------- se abre el modal para cambiar precios -----//
+    function cambiarPrecio(precio_credito, id){
+      $('#cambiarPrecioModal').modal('show');
+      let precio_formato = precio_credito.replace(',', '.')
+      $('#precio_credito_cambiar_form').val(precio_formato)
+    }
     // --------- para filtrar las categorias --------------
     // ----------------------------------------------------
     $('#id_campo_categoria').change(function(){

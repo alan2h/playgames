@@ -171,25 +171,6 @@
             </div>
          <!-- Input del formulario -->
 
-         <!-- Input del formulario -->
-           <div class="form-group">
-             <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio en página web</label>
-             <div class="col-md-9 col-sm-9 col-xs-9">
-                 {{ form.precio_web }}
-               <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
-                 <!-- Mensaje de error del input -->
-                 {% if form.precio_web.errors %}
-                     <div class="alert alert-danger" role="alert">
-                       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                      <span class="sr-only">Error:</span>
-                        {{ form.precio_web.errors|striptags }}
-                     </div>
-                 {% endif %}
-                 <!-- Mensaje de error del input -->
-             </div>
-           </div>
-         <!-- Input del formulario -->
-
           <!-- Input del formulario -->
             <div class="form-group">
               <label class="control-label col-md-3 col-sm-3 col-xs-3">Precio de Compra</label>
