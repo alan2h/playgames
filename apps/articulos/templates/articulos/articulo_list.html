@@ -88,10 +88,17 @@
                                 $ {{ articulo.precio_venta }}
                             </td>
 
-                            <td onclick="cambiarPrecio('{{ articulo.precio_credito }}', '{{ articulo.id }}')">
+                            {% if request.user.is_staff %}
+                              <td onclick="cambiarPrecio('{{ articulo.precio_credito }}', '{{ articulo.id }}')">
+                            {% else %}
+                                <td>
+                            {% endif %}
                               <a >
                                 $ {{ articulo.precio_credito }}
-                              <i class="fa fa-pencil"></i>
+                              {% if request.user.is_staff %}
+                                <i class="fa fa-pencil"></i>
+                              {% endif %}
+
                               </a>
                             </td>
 
