@@ -117,9 +117,15 @@
 
                                 {{ articulo.rubro.descripcion|quitar_none }}
                             </td>
-
-                            <td>
+                            {% if request.user.is_staff %}
+                              <td onclick="cambiarStock('{{ articulo.stock }}', '{{ articulo.id }}')">
+                            {% else %}
+                              <td>
+                            {% endif %}
                                 {{ articulo.stock }}
+                                {% if request.user.is_staff %}
+                                  <i class="fa fa-pencil"></i>
+                                {% endif %}
                             </td>
                             <td>
                                 {% if request.user.is_staff %}
@@ -180,6 +186,28 @@
               </div>
           </div>
        <!-- /modals -->
+       <!-- Small cambiar stock desde la ventana modal -->
+       <div class="modal fade id_stock_form" id="cambiarStockArticulo" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal-dialog modal-sm">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                           </button>
+                           <h4 class="modal-title" id="myModalLabel2">Cambiar Stock</h4>
+                           <!--<div class="alert alert-danger" id="" role="alert"></div>-->
+                           <form>
+                             <input type="number" class="form-control" id="stock_cambiar_form" />
+                             <input type="hidden" class="form-control" id="id_articulo_stock_modificar" />
+                           </form>
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                           <button type="button" class="btn btn-primary" onclick="guardarStock()">Guardar</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        <!-- /modals -->
     </div>
 </div>
 {% endblock %}
@@ -190,6 +218,42 @@
 
  <!-- funciones especiales -->
  <script>
+  // --------------- se abre el modal para cambiar stock -----//
+   function cambiarStock(stock, id){
+     $('#cambiarStockArticulo').modal('show');
+     $('#stock_cambiar_form').val(stock);
+     $('#id_articulo_stock_modificar').val(id);
+   }
+   //----- metodo para guardar el nuevo precio ------ //
+   function guardarStock(){
+     if ($('#stock_cambiar_form').val()){
+       $.ajax({
+           url: '/articulos/ajax/stock/actualizar/',
+           type: 'post',
+           data: {
+               id: $('#id_articulo_stock_modificar').val(),
+               stock: $('#stock_cambiar_form').val(),
+               csrfmiddlewaretoken: '{{ csrf_token }}'
+           },
+           success: function(data){
+             new PNotify({
+                  title: 'Sistema',
+                  text: 'El stock se modifico con éxito',
+                  type: 'success'
+              });
+              setInterval(function(){
+                location.reload();
+              }, 1500);
+           }
+       });
+     }else{
+       new PNotify({
+            title: 'Sistema',
+            text: 'No puede dejar el stock vacio',
+            type: 'danger'
+        });
+     }
+   }
     // --------------- se abre el modal para cambiar precios -----//
     function cambiarPrecio(precio_credito, id){
       $('#cambiarPrecioModal').modal('show');

@@ -50,8 +50,13 @@ urlpatterns = [
        name='categoria-alta-ajax'),
    url(r'^ajax/categoria/subcategoria/$', helpers.ajax_query_rubro,
        name='categoria-query-ajax'),
+
+   # ajax para modificar desde la lista
    url(r'^ajax/precio/credito/actualizar/$', helpers.ajax_precio_credito_update,
        name='precio-credito-actualizar-ajax'),
+   url(r'^ajax/stock/actualizar/$', helpers.ajax_stock_update,
+       name='stock-actualizar-ajax'),
+
    url(r'^actualizar/precios/$',
        ActualizarPrecioTemplateView.as_view(), name='actualizar-precios'),
    url(r'^actualizar/creditos/$',

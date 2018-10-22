@@ -543,3 +543,19 @@ def ajax_precio_credito_update(request):
         }
 
     return JsonResponse(data)
+
+
+''' ---------------------------------- '''
+''' Ajax para cambiar el stock de un articulo '''
+''' ---------------------------------- '''
+
+def ajax_stock_update(request):
+
+    if request.is_ajax():
+        Articulo.objects.filter(id=request.POST['id'])\
+        .update(stock=request.POST['stock'])
+        data = {
+            'message': 'El árticulo se actualizo con éxito'
+        }
+
+    return JsonResponse(data)
