@@ -56,6 +56,8 @@ urlpatterns = [
        name='precio-credito-actualizar-ajax'),
    url(r'^ajax/stock/actualizar/$', helpers.ajax_stock_update,
        name='stock-actualizar-ajax'),
+   url(r'^ajax/stock/web/actualizar/$', helpers.ajax_stock_web_update,
+       name='stock-web-actualizar-ajax'),
 
    url(r'^actualizar/precios/$',
        ActualizarPrecioTemplateView.as_view(), name='actualizar-precios'),
