@@ -35,7 +35,7 @@ def ajax_query_rubro(request):
             rubro = []
             qs_json = serializers.serialize('json', rubro)
             return HttpResponse(qs_json, content_type='application/json')
-        
+
 
 ''' ---------------------------------- '''
 ''' Ajax para creacion de complementos '''
@@ -80,7 +80,7 @@ def ajax_create_rubro(request):
 
 
 def ajax_create_categoria(request):
-    
+
     if request.is_ajax():
         categoria_form = CategoriaForm(data=request.POST)
         if categoria_form.is_valid():
@@ -113,7 +113,7 @@ class DibujarBarcode(Drawing):
 
 
 def buscar_all_campos(qs, texto, sucursal=None):
-    
+
     # esta función debe buscar y concatenar
     # todos los resultados obtenidos
     parametro1 = Articulo.objects.filter(baja=False, nombre__icontains=texto, sucursal=sucursal)
@@ -479,7 +479,7 @@ def buscar_descripcion_categoria(qs, descripcion, categoria, sucursal=None):
 def ajax_cambiar_sucursal(request):
 
     if request.is_ajax():
-        
+
         articulo = Articulo.objects.get(pk=request.POST.get('id_articulo'))
         sucursal = Sucursal.objects.get(pk=request.POST.get('id_nombre_sucursal'))
         # verifico si el articulo ya existe, filtro por todos los datos posibles
@@ -488,7 +488,7 @@ def ajax_cambiar_sucursal(request):
                                                             descripcion=articulo.descripcion,
                                                             marca__descripcion=articulo.marca.descripcion,
                                                             rubro__descripcion=articulo.rubro.descripcion,
-                                                            sucursal__id=request.POST.get('id_nombre_sucursal'), 
+                                                            sucursal__id=request.POST.get('id_nombre_sucursal'),
                                                             baja=False)
         # si el articulo ya existe en la otra sucursal, solo modifico su stock
         if articulo_en_otra_sucursal.exists():
@@ -498,32 +498,48 @@ def ajax_cambiar_sucursal(request):
                     # si es mayor que 0 le suma al stock
                     articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                     articulo_sucursal_object.stock = int(articulo_en_otra_sucursal[0].stock) + int(request.POST.get('id_cantidad_articulo'))
-                    
+
                     articulo_sucursal_object.save()
                 else:
                     # en caso que sea 0 le agrega el stock
                     articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                     articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
-                    
+
                     articulo_sucursal_object.save()
             else:
                 # en caso que sea 0 le agrega el stock
                 articulo_sucursal_object =  Articulo.objects.get(id=articulo_en_otra_sucursal[0].id)
                 articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
-                
+
                 articulo_sucursal_object.save()
         else:
             articulo_copia = deepcopy(articulo)
             articulo_copia.id = None
             articulo_copia.stock = int(request.POST.get('id_cantidad_articulo'))
             articulo_copia.sucursal = sucursal
-            
+
             articulo_copia.save()
 
         articulo.stock = int(articulo.stock) - int(request.POST.get('id_cantidad_articulo'))
         articulo.save()
-    
+
         data = {
             'message': 'Se guardo correctamente'
         }
         return JsonResponse(data)
+
+
+''' ---------------------------------- '''
+''' Ajax para cambiar el precio de credito de un articulo '''
+''' ---------------------------------- '''
+
+def ajax_precio_credito_update(request):
+
+    if request.is_ajax():
+        Articulo.objects.filter(id=request.POST['id'])\
+        .update(precio_credito=request.POST['precio_credito'])
+        data = {
+            'message': 'El árticulo se actualizo con éxito'
+        }
+
+    return JsonResponse(data)

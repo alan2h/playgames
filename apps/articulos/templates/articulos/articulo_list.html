@@ -162,11 +162,12 @@
                           <!--<div class="alert alert-danger" id="" role="alert"></div>-->
                           <form>
                             <input type="number" class="form-control" id="precio_credito_cambiar_form" />
+                            <input type="hidden" class="form-control" id="id_articulo_modificar" />
                           </form>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
-                          <button type="button" class="btn btn-primary" onclick="">Guardar</button>
+                          <button type="button" class="btn btn-primary" onclick="guardarPrecio()">Guardar</button>
                       </div>
                   </div>
               </div>
@@ -186,7 +187,38 @@
     function cambiarPrecio(precio_credito, id){
       $('#cambiarPrecioModal').modal('show');
       let precio_formato = precio_credito.replace(',', '.')
-      $('#precio_credito_cambiar_form').val(precio_formato)
+      $('#precio_credito_cambiar_form').val(precio_formato);
+      $('#id_articulo_modificar').val(id);
+    }
+    //----- metodo para guardar el nuevo precio ------ //
+    function guardarPrecio(){
+      if ($('#precio_credito_cambiar_form').val()){
+        $.ajax({
+            url: '/articulos/ajax/precio/credito/actualizar/',
+            type: 'post',
+            data: {
+                id: $('#id_articulo_modificar').val(),
+                precio_credito: $('#precio_credito_cambiar_form').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data){
+              new PNotify({
+                   title: 'Sistema',
+                   text: 'El precio se modifico con éxito',
+                   type: 'success'
+               });
+               setInterval(function(){
+                 location.reload();
+               }, 1500);
+            }
+        });
+      }else{
+        new PNotify({
+             title: 'Sistema',
+             text: 'No puede dejar el precio vacio',
+             type: 'danger'
+         });
+      }
     }
     // --------- para filtrar las categorias --------------
     // ----------------------------------------------------
