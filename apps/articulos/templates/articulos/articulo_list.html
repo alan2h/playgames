@@ -137,23 +137,23 @@
            <!-- paginacion -->
             {% if is_paginated %}
                 <nav>
-                  <ul class="pager">
-                  {% if 'campo_categoria' in request.get_full_path or 'texto_buscar' in request.get_full_path %}
-                        {% if page_obj.has_previous %}
-                            <li><a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">Atrás</a></li>
-                        {% endif %}
-                        {% if page_obj.has_next %}
-                            <li><a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">Siguiente</a></li>
-                        {% endif %}
-                  {% else %}
-                    {% if page_obj.has_previous %}
-                        <li><a href="/articulos/listado?page={{ page_obj.previous_page_number }}">Atrás</a></li>
-                    {% endif %}
-                    {% if page_obj.has_next %}
-                        <li><a href="/articulos/listado?page={{ page_obj.next_page_number }}">Siguiente</a></li>
-                    {% endif %}
-                  {% endif %}
-                  </ul>
+                  <div class="alert alert-info">
+                    Cantidad de registros : <strong> {{ page_obj.paginator.count }}</strong>
+                  </div>
+
+                  {% for num in page_obj.paginator.page_range %}
+                      <ul class="pagination">
+                          {% if page_obj.number == num %}
+                          <li class="active"><a href="#">{{ num }}</a></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                {% if 'campo_categoria' in request.get_full_path or 'texto_buscar' in request.get_full_path %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                              {% endif %}
+                            {% endif %}
+                        </ul>
+                    {% endfor %}
                 </nav>
             {% endif %}
             <!-- paginacion 1155-->
