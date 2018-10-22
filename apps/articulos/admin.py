@@ -61,6 +61,7 @@ class ArticuloAdmin(admin.ModelAdmin):
         'precio_debito',
         'stock',
         'stock_minimo',
+        'stock_web',
         'imagen',
         'impuesto_interno',
         'alicuota_iva',

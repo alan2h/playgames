@@ -64,6 +64,7 @@
                             <th>Categoría</th>
                             <th>SubCategoría </th>
                             <th>Stock</th>
+                            <th>Stock web</th>
                             {% if request.user.is_staff %}
                                 <th>Acciones </th>
                             {% endif %}
@@ -123,6 +124,17 @@
                               <td>
                             {% endif %}
                                 {{ articulo.stock }}
+                                {% if request.user.is_staff %}
+                                  <i class="fa fa-pencil"></i>
+                                {% endif %}
+                            </td>
+
+                            {% if request.user.is_staff %}
+                              <td onclick="cambiarStockWeb('{{ articulo.stock_web }}', '{{ articulo.id }}')">
+                            {% else %}
+                              <td>
+                            {% endif %}
+                                {{ articulo.stock_web }}
                                 {% if request.user.is_staff %}
                                   <i class="fa fa-pencil"></i>
                                 {% endif %}

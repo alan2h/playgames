@@ -62,6 +62,8 @@ class Articulo(models.Model):
                                         max_digits=12, null=True, blank=True)
     stock = models.IntegerField(null=False, blank=False)
     stock_minimo = models.IntegerField(null=True, blank=True)
+    stock_web = models.IntegerField(default=0, null=True, blank=True)
+
     imagen = models.ImageField(upload_to='articulos', null=True, blank=True)
     impuesto_interno = models.IntegerField(default=0, blank=True, null=True)
     alicuota_iva = models.IntegerField(default=21, null=True, blank=True)
