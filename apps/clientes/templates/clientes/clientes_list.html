@@ -31,6 +31,7 @@
                   <th>Apellido</th>
                   <th>Email</th>
                   <th>Puntos</th>
+                  <th>Puntos Premium</th>
                   <th>Crédito</th>
                   <th>Datos</th>
                   <th>Acciones</th>
@@ -48,6 +49,11 @@
                   <td>{{ cliente.email|quitar_none }}</td>
                   {% if cliente.puntos %}
                     <td>{{ cliente.puntos }}</td>
+                  {% else %}
+                    <td>--</td>
+                  {% endif %}
+                  {% if cliente.puntos_premium %}
+                    <td>{{ cliente.puntos_premium }}</td>
                   {% else %}
                     <td>--</td>
                   {% endif %}

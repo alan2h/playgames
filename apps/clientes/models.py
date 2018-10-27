@@ -5,9 +5,24 @@ import django
 from apps.sucursales.models import Sucursal
 
 
+class TipoCliente(models.Model):
+
+    descripcion = models.CharField(max_length=3000, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.descripcion)
+
+    class Meta:
+        verbose_name = 'Tipo de Cliente'
+        verbose_name_plural = 'Tipos de Clientes'
+
+
 class Cliente(models.Model):
 
     codigo_barras = models.CharField(max_length=3000, blank=True, null=True)
+
+    tipo_cliente = models.ForeignKey(TipoCliente, blank=True, null=True)
+    
     email = models.EmailField(unique=True, blank=True, null=True)
     nombre = models.CharField(max_length=600, null=False, blank=False)
     apellido = models.TextField(max_length=800, null=True, blank=True)
@@ -15,7 +30,10 @@ class Cliente(models.Model):
     direccion = models.TextField(max_length=800, null=True, blank=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
     fecha_alta = models.DateField(default=django.utils.timezone.now, blank=True, null=True)
+
     puntos = models.IntegerField(blank=True, null=True)
+    puntos_premium = models.IntegerField(blank=True, null=True)
+
     credito = models.DecimalField(max_digits=12, decimal_places=2,
                                    null=True, blank=True)
     # cada cliente tiene una sucursal

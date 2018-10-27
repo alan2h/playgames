@@ -8,6 +8,8 @@ class ClienteAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
         'apellido',
+        'puntos',
+        'puntos_premium',
         'direccion'
     ]
 
