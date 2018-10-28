@@ -1,7 +1,7 @@
 
 from django import forms
 
-from .models import Cliente, Contacto, Cuota
+from .models import Cliente, Contacto, Cuota, TipoCliente
 
 
 class ClienteForm(forms.ModelForm):
@@ -12,6 +12,12 @@ class ClienteForm(forms.ModelForm):
                                             'class': 'form-control'
                                         }
                                     ))))
+
+    tipo_cliente = forms.ModelChoiceField(required=True,
+                                   queryset=TipoCliente.objects.all(),
+                                   widget=forms.Select(attrs=(
+                                       {'class': 'form-control'}
+                                   )))
 
     email = forms.EmailField(max_length=3000, required=True,
                             widget=(forms.TextInput(attrs=(
@@ -61,7 +67,8 @@ class ClienteForm(forms.ModelForm):
 
     class Meta:
         fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion',
-                  'fecha_nacimiento', 'numero_documento', 'puntos', 'credito']
+                  'fecha_nacimiento', 'numero_documento', 'puntos', 'credito',
+                  'tipo_cliente']
         model = Cliente
 
 

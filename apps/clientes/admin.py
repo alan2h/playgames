@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Cliente, Contacto, Cuota
+from .models import Cliente, Contacto, Cuota, TipoCliente
 
 
 class ClienteAdmin(admin.ModelAdmin):
@@ -57,6 +57,22 @@ class CuotaAdmin(admin.ModelAdmin):
     ]
 
 
+class TipoClienteAdmin(admin.ModelAdmin):
+
+    list_display = [
+        'descripcion'
+    ]
+
+    search_fields = [
+        'descripcion'
+    ]
+
+    list_filter = [
+        'descripcion'
+    ]
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Contacto, ContactoAdmin)
 admin.site.register(Cuota, CuotaAdmin)
+admin.site.register(TipoCliente, TipoClienteAdmin)
