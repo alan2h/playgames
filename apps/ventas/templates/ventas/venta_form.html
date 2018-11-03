@@ -49,6 +49,7 @@
                                            <th>Código</th>
                                            <th>Nombre</th>
                                            <th>Apellido</th>
+                                           <th>Tipo</th>
                                            <th>Documento</th>
                                            <th>Puntos</th>
                                          </tr>
@@ -62,6 +63,7 @@
                                               </td>
 
                                               <td @click="envioSocio(socio)">${ socio.apellido }</td>
+                                              <td @click="envioSocio(socio)">${ socio.tipo_cliente.descripcion }</td>
                                               <td @click="envioSocio(socio)">${ socio.numero_documento }
                                               </td>
 
@@ -470,10 +472,16 @@
                           console.log(error);
                     });
                 },
+
                 envioSocio: function(socio){
                         $('#id_socio').val(socio.id)
                         var self = this;
-                        self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos + ' - crédito: $' + socio.credito
+                        console.log(self.socio)
+                        if (socio.tipo_cliente.descripcion == 'Socio Normal'){
+                          self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos + ' - crédito: $' + socio.credito
+                        }else{
+                          self.datos_socio = 'Premium ' + socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos_premium + ' - crédito: $' + socio.credito
+                        }
                         self.id_socio = socio.id
                         swal({
                             title: self.datos_socio,

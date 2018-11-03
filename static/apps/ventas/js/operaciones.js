@@ -21,7 +21,12 @@
 
             /* ----------- habilitar campos para canje de puntos en socio ---*/
             habilitar_campos_canje = function(socio){
-                $('#id_puntos_socios').val(socio.puntos);
+                console.log(socio)
+                if (socio.tipo_cliente.descripcion == 'Socio Normal'){
+                  $('#id_puntos_socios').val(socio.puntos);
+                }else{
+                  $('#id_puntos_socios').val(socio.puntos_premium);
+                }
                 document.getElementById('id_div_puntos_socios').style.display = 'block';
                 $('#id_descuento_de_socio').prop( "checked", true );
             }
