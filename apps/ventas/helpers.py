@@ -1,5 +1,7 @@
 
 import json
+import logging
+
 from django.http import JsonResponse
 
 from apps.articulos.models import Articulo
@@ -20,18 +22,18 @@ def ajax_guardar_venta(request):
     credito_porcentaje = request.POST.get('credito_porcentaje')
     porcentaje_descuento = request.POST.get('porcentaje_descuento')
     canje_socios = False
-
+    logging.info('Datos recibidos ...' + ' ' + str(request.POST))
     caja_funciones = CajaFunctions()
     articulo_stock = ArticuloStock()
     socio_funciones = SocioFunctions()
-
+    logging.info('Instancia de clases para funciones Caja-Stock-Socios')
     sucursal = Sucursal.objects.get(pk=request.session['id_sucursal'])
 
     if request.is_ajax():
         if 'ventas' in request.POST:
             ventas = request.POST.get('ventas')
             the_dict = json.loads(ventas)
-
+            logging.info('Obtendiendo los datos por ajax ')
             # -------- desarma el diccionario y procesa stock y demas resultados ----
             articulo_venta_array = split_component_venta(the_dict, forma_pago, request, articulo_stock) # esta variable se guardara en el modelo venta
             # -----------------------------------------------------------------------

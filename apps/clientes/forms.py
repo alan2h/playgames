@@ -52,6 +52,15 @@ class ClienteForm(forms.ModelForm):
                                         'class': 'form-control'
                                    }
                                )))
+
+    puntos_premium = forms.IntegerField(required=False,
+                               widget=forms.NumberInput(attrs=(
+                                   {
+                                        'class': 'form-control'
+                                   }
+                               )))
+
+
     credito = forms.DecimalField(required=False,
                                  widget=forms.NumberInput(attrs=(
                                     {
@@ -68,7 +77,7 @@ class ClienteForm(forms.ModelForm):
     class Meta:
         fields = ['codigo_barras', 'nombre', 'apellido', 'email', 'direccion',
                   'fecha_nacimiento', 'numero_documento', 'puntos', 'credito',
-                  'tipo_cliente']
+                  'tipo_cliente', 'puntos_premium']
         model = Cliente
 
 

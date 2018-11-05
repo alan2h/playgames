@@ -6,7 +6,11 @@ class SocioFunctions(object):
 
     def restar_puntos(self, id, puntos):
         cliente = Cliente.objects.get(pk=id)
-        cliente.puntos = int(cliente.puntos) - int(puntos)
+        if cliente.tipo_cliente.descripcion == 'Socio Premium':
+            print(cliente.tipo_cliente == 'Socio Premium')
+            cliente.puntos_premium = int(cliente.puntos_premium) - int(puntos)
+        else:
+            cliente.puntos = int(cliente.puntos) - int(puntos)
         cliente.save()
         return cliente
 

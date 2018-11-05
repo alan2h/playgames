@@ -479,8 +479,10 @@
                         console.log(self.socio)
                         if (socio.tipo_cliente.descripcion == 'Socio Normal'){
                           self.datos_socio = socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos + ' - crédito: $' + socio.credito
+                          $('#id_puntos_socios').val(socio.puntos);
                         }else{
                           self.datos_socio = 'Premium ' + socio.nombre + ' ' + socio.apellido + ' - ' + socio.numero_documento + ' - puntos: ' + socio.puntos_premium + ' - crédito: $' + socio.credito
+                          $('#id_puntos_socios').val(socio.puntos_premium);
                         }
                         self.id_socio = socio.id
                         swal({
@@ -489,6 +491,7 @@
                             icon: "success",
                             button: "Aceptar",
                           });
+
                         habilitar_campos_canje(socio);
 
                 },
