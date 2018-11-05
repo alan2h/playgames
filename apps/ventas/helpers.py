@@ -193,7 +193,7 @@ def sumar_puntos_socios(id, precio_guardar):
         if (cliente.puntos_premium):
             cliente.puntos_premium = (int(cliente.puntos_premium) + int(cantidad_puntos)) * 2
         else:
-            cliente.puntos_premium = int(cantidad_puntos)
+            cliente.puntos_premium = int(cantidad_puntos) * 2
         return cliente.save()
     else:
         return 0

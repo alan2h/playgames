@@ -16,7 +16,10 @@ class SocioFunctions(object):
 
     def sumar_puntos(self, id, puntos):
         cliente = Cliente.objects.get(pk=id)
-        cliente.puntos = int(cliente.puntos) + int(puntos)
+        if cliente.tipo_cliente.descripcion == 'Socio Premium':
+            cliente.puntos_premium = (int(cliente.puntos_premium) + int(puntos)) * 2
+        else:
+            cliente.puntos = int(cliente.puntos) + int(puntos)
         cliente.save()
         return cliente
 
