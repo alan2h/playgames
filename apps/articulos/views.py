@@ -136,6 +136,32 @@ class ArticuloListView(ListView):
                         qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
                         qs = helpers.buscar_categoria(qs, texto_buscar, sucursal=sucursal_unico)
+                    # desde aqui va a ir buscando coincidencias en caso de que la busqueda sea negativa y no consiga resultados
+                    # es un intento de evitar el error de tipeo del usuario
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:9], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:8], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:7], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:6], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:5], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:4], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[:3], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[7:], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[6:], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[5:], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[4:], sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_all_campos(qs, texto_buscar[3:], sucursal=sucursal_unico)
             return qs
         else:
             ''' en caso de que no sea staff va a venir a crear la lista aca donde se seleeciona la sucursal '''
