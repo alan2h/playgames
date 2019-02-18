@@ -1,0 +1,148 @@
+{% extends 'list_base.html' %}
+{% load staticfiles %}
+{% load calculos_tags %}
+
+{% block css %}
+   <!-- zoom css -->
+   <link href="{% static 'zoom.js-master/css/zoom.css' %}" rel="stylesheet">
+{% endblock %}
+{% block form_search %}
+<div class="x_content">
+
+    <div class="x_panel">
+        <h2>Buscar árticulos</h2>
+        <form id="form-buscar" method="get">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        <div class="input-group">
+                         <select class="form-control" id="id_campo_categoria" name="campo_categoria">
+                             <option value="">-------</option>
+                             {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.descripcion }}</option>
+                             {% endfor %}
+                         </select>
+                        </div>
+                    </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                    <div class="input-group">
+                    <input type="text" name="texto_buscar" class="form-control" placeholder="Buscar por...">
+                    <span class="input-group-btn">
+                        <input class="btn btn-default" value="Aceptar" type="submit">
+                    </span>
+                    </div>
+                </div>
+        </form>
+    </div>
+  </div>
+{% endblock %}
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Lista de Árticulos <small>Lista de árticulos cargados en el sistema</small></h2>
+        <ul class="navbar-right">
+          <div class="table-responsive">
+
+          </div>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+          <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                            <th>Imagen </th>
+
+                            <th>Nombre</th>
+                            <th>Movimiento </th>
+                            <!--<th>Débito</th>-->
+                            <th>Stock</th>
+                            <th>Sucursal</th>
+                            <th>Fecha de modificación</th>
+                            <th>Usuario</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for historial in object_list %}
+                        <tr class="{% if articulo.stock <= 0 %}danger {% endif %}" >
+                            <td data-toggle="tooltip" title="Este árticulo se encuentra en {{ articulo.sucursal }}">
+                                {% if historial.articulo.imagen %}
+                                    <img src="/media/{{ historial.articulo.imagen }}" data-action="zoom" width="52" height="52" />
+                                {% else %}
+                                    <img src="/media/logos_sistema/no-imagen.jpg" data-action="zoom" width="42" height="42" />
+                                {% endif %}
+                            </td>
+
+
+                            <td>
+                                {{ historial.articulo.nombre }}
+                            </td>
+                            <td>
+                                {{ historial.movimiento }}
+                            </td>
+                              <td>
+                                {{ historial.articulo.stock }}
+                            </td>
+                            <td>
+                              {{ historial.articulo.sucursal }}
+                          </td>
+                              <td>
+                                {{ historial.fecha }}
+                            </td>
+                            <td>
+                              {{ historial.usuario }}
+                          </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+          </div>
+           <!-- paginacion -->
+            {% if is_paginated %}
+                <nav>
+                  <div class="alert alert-info">
+                    Cantidad de registros : <strong> {{ page_obj.paginator.count }}</strong>
+                  </div>
+
+                  {% for num in page_obj.paginator.page_range %}
+                      <ul class="pagination">
+                          {% if page_obj.number == num %}
+                          <li class="active"><a href="#">{{ num }}</a></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                {% if 'campo_categoria' in request.get_full_path or 'texto_buscar' in request.get_full_path %}
+                                    <li><a href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                              {% endif %}
+                            {% endif %}
+                        </ul>
+                    {% endfor %}
+                </nav>
+            {% endif %}
+            <!-- paginacion 1155-->
+      </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+ <!-- zoom js -->
+ <script src="{% static 'zoom.js-master/js/zoom.js' %}"></script>
+
+ <!-- funciones especiales -->
+ <script>
+
+    // --------- para filtrar las categorias --------------
+    // ----------------------------------------------------
+    $('#id_campo_categoria').change(function(){
+        $('#form-buscar').submit();
+    });
+    // --------- Mantiene el filtro en caso de que exista --------------
+    {% if  request.GET.campo_categoria %}
+        $('#id_campo_categoria').val('{{request.GET.campo_categoria}}')
+    {% endif %}
+ </script>
+{% endblock %}

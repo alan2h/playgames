@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from apps.sucursales.models import Sucursal
+from django.conf import settings
 
 
 class Marca(models.Model):
@@ -124,3 +126,23 @@ class HistorialPreciosCompra(models.Model):
 
         verbose_name = 'Historial de Precios de Compra'
         verbose_name_plural = 'Historiales de Precios de Compras'
+
+
+class HistorialMovimientoStock(models.Model):
+
+    ''' guarda el historial de movimientos de articulos
+        de stock, desde ventas a movimientos de sucursales
+    '''
+
+    fecha = models.DateField(auto_now_add=True)
+    articulo = models.ForeignKey(Articulo, null=True, blank=True)
+    movimiento = models.CharField(max_length=3000, null=True, blank=True)
+    usuario = models.ForeignKey(User, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Historial de movimiento de stock'
+        verbose_name_plural = 'Historial de movimientos de stock'
+
+    def __str__(self):
+
+        return str(self.articulo.nombre)

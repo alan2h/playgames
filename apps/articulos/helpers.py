@@ -12,7 +12,7 @@ from reportlab.graphics.shapes import Drawing
 
 
 from .forms import MarcaForm, RubroForm, CategoriaForm
-from .models import Articulo, Categoria, Rubro
+from .models import Articulo, Categoria, Rubro, HistorialMovimientoStock
 
 from apps.sucursales.models import Sucursal
 
@@ -512,6 +512,17 @@ def ajax_cambiar_sucursal(request):
                 articulo_sucursal_object.stock = int(request.POST.get('id_cantidad_articulo'))
 
                 articulo_sucursal_object.save()
+            print('------- articulos que se van a actualizar -------')
+            print('articulo: ', articulo_sucursal_object.nombre)
+            print('sucursal: ', articulo_sucursal_object.sucursal.descripcion)
+            print('guardar articulos modificados en el historial', articulo_sucursal_object.nombre)
+            historial_mov_stock = HistorialMovimientoStock(
+                articulo=articulo_sucursal_object,
+                movimiento='se envia a la sucursal -> ' + str(sucursal.descripcion) + ' esta cantidad -> ' + str(articulo_sucursal_object.stock),
+                usuario=request.user
+            )
+            historial_mov_stock.save()
+            print('-------------------------------------------------')
         else:
             articulo_copia = deepcopy(articulo)
             articulo_copia.id = None
@@ -519,6 +530,17 @@ def ajax_cambiar_sucursal(request):
             articulo_copia.sucursal = sucursal
 
             articulo_copia.save()
+            print('------- articulos que se van a actualizar -------')
+            print('articulo: ', articulo_copia.nombre)
+            print('sucursal: ', articulo_copia.sucursal.descripcion)
+            print('guardar articulos modificados en el historial', articulo_copia.nombre)
+            historial_mov_stock = HistorialMovimientoStock(
+                articulo=articulo_copia,
+                movimiento='se envia a la sucursal -> ' + str(sucursal.descripcion) + ' esta cantidad -> ' + str(articulo_copia.stock),
+                usuario=request.user
+            )
+            historial_mov_stock.save()
+            print('-------------------------------------------------')
 
         articulo.stock = int(articulo.stock) - int(request.POST.get('id_cantidad_articulo'))
         articulo.save()
@@ -557,7 +579,18 @@ def ajax_stock_update(request):
         data = {
             'message': 'El árticulo se actualizo con éxito'
         }
-
+        articulo = Articulo.objects.get(pk=request.POST['id'])
+        print('------- articulos que se van a actualizar -------')
+        print('articulo: ', articulo.nombre)
+        print('sucursal: ', articulo.sucursal.descripcion)
+        print('guardar articulos modificados en el historial', articulo.nombre)
+        historial_mov_stock = HistorialMovimientoStock(
+            articulo=articulo,
+            movimiento='se actualizo desde la tabla -> esta cantidad -> ' + str(articulo.stock),
+            usuario=request.user
+        )
+        historial_mov_stock.save()
+        print('-------------------------------------------------')
     return JsonResponse(data)
 
 

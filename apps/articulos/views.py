@@ -10,7 +10,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import render
 
-from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro, Marca
+from .models import Articulo, HistorialPreciosCompra, HistorialPreciosVenta, Categoria, Rubro, Marca, \
+    HistorialMovimientoStock
 from .forms import ArticuloForm, ArticuloDeleteForm, MarcaForm, RubroForm, \
     ActualizacionPrecioForm, CategoriaForm
 
@@ -314,6 +315,13 @@ class ArticuloUpdateView(SuccessMessageMixin, UpdateView):
         for a in articulo_actualizar:
             print('articulo: ', a.nombre)
             print('sucursal: ', a.sucursal.descripcion)
+            print('guardar articulos modificados en el historial', a.nombre)
+            historial_mov_stock = HistorialMovimientoStock(
+                articulo=a,
+                movimiento='Se actualizo el articulo desde el formulario stock:' + str(a.stock),
+                usuario=self.request.user
+            )
+            historial_mov_stock.save()
         print('-------------------------------------------------')
         articulo_actualizar.update(
                     codigo_barra=form.data['codigo_barra'],
@@ -348,6 +356,17 @@ class ArticuloDeleteView(View):
         articulo = Articulo.objects.get(pk=self.kwargs['pk'])
         articulo_delete_form = ArticuloDeleteForm(instance=articulo,
                                                   data=self.request.POST)
+        print('------- articulos que se van a actualizar -------')
+        print('articulo: ', articulo.nombre)
+        print('sucursal: ', articulo.sucursal.descripcion)
+        print('guardar articulos modificados en el historial', articulo.nombre)
+        historial_mov_stock = HistorialMovimientoStock(
+            articulo=articulo,
+            movimiento='se elimino el articulo ->' + str(articulo.nombre),
+            usuario=self.request.user
+        )
+        historial_mov_stock.save()
+        print('-------------------------------------------------')
         if articulo_delete_form.is_valid():
             articulo_delete_form.instance.fecha_baja = \
                 datetime.datetime.now().date()
@@ -530,3 +549,15 @@ class ActualizarPrecioCreditoView(TemplateView):
             )
 
         return HttpResponseRedirect('/articulos/listado/')
+
+
+class HistorialMovimientoStockListView(ListView):
+
+    queryset = HistorialMovimientoStock.objects.all().order_by('-id')
+    template_name = 'articulos/movimientos_articulos_historial.html'
+    paginate_by = 6
+
+    def get_context_data(self, **kwargs):
+        context = super(HistorialMovimientoStockListView, self).get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        return context

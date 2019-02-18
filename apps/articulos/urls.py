@@ -5,7 +5,7 @@ from rest_framework import routers
 from .views import ArticuloCreateView, ArticuloListView, ArticuloUpdateView, \
     ArticuloDeleteView, ArticuloDetailView, ActualizarPrecioTemplateView, \
     HistorialPreciosVentaListView, HistorialPreciosCompraListView, \
-    ArticuloListPrint, ActualizarPrecioCreditoView
+    ArticuloListPrint, ActualizarPrecioCreditoView, HistorialMovimientoStockListView
 
 from .viewset import (ArticuloViewSet, RubroViewSet, CategoriaViewSet,
                       ArticuloMasVendidoWebViewSet, ArticuloWebList,
@@ -29,6 +29,8 @@ urlpatterns = [
    # Urls comunes
    url(r'^alta/$', ArticuloCreateView.as_view(), name='articulos-alta'),
    url(r'^listado/$', ArticuloListView.as_view(), name='articulos-listado'),
+   url(r'^historial/stock/$', HistorialMovimientoStockListView.as_view(),
+       name='articulos-listado-historial-stock'),
    url(r'^listado/print/$', ArticuloListPrint.as_view(),
        name='articulos-listado-print'),
    url(r'^barcode/(?P<pk>(\d+))$', views.barcode, name='articulos-barcode'),
