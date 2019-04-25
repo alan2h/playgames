@@ -1,4 +1,5 @@
 from copy import deepcopy
+import re
 
 from reportlab.lib.units import mm
 
@@ -173,6 +174,24 @@ def buscar_nombre(qs, nombre, sucursal=None):
             ).order_by('-stock')
     return qs
 
+
+# busqueda por nombre del articulo
+def buscar_nombre_primera_letra(qs, nombre, sucursal=None):
+    text = re.escape(nombre) # make sure there are not regex specials
+    if (sucursal):
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__iregex=r"(^|\s)%s" % text,
+                sucursal=sucursal
+            ).order_by('-stock')
+    else:
+        if qs.exists() is False:
+            qs = Articulo.objects.filter(
+                baja=False,
+                nombre__iregex=r"(^|\s)%s" % text,
+            ).order_by('-stock')
+    return qs
 
 # Buscar por nombre y descripcion
 def buscar_nombre_descripcion(qs, nombre, descripcion, sucursal=None):

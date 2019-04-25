@@ -98,6 +98,7 @@ class ArticuloListView(ListView):
                         if self.request.GET.get('campo_categoria') is not '':
 
                             if qs.exists() is False:
+
                                 qs = helpers.buscar_marca_categoria(qs, texto_buscar,
                                                                     self.request.GET.get('campo_categoria'),
                                                                     sucursal=sucursal_unico)
@@ -113,8 +114,15 @@ class ArticuloListView(ListView):
                                 qs = helpers.buscar_descripcion_categoria(qs, texto_buscar,
                                                                           self.request.GET.get('campo_categoria'),
                                                                           sucursal=sucursal_unico)
+
+                    if qs.exists() is False:
+                        qs = helpers.buscar_nombre_primera_letra(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs.exists() is False:
+                        qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
+
                     if qs.exists() is False:
                         qs = helpers.buscar_all_campos(qs, texto_buscar, sucursal=sucursal_unico)
+
                     if qs.exists() is False:
                         qs = helpers.buscar_nombre_descripcion(qs, texto_buscar, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
@@ -172,7 +180,7 @@ class ArticuloListView(ListView):
                         qs = helpers.buscar_all_campos(qs, texto_buscar[2:], sucursal=sucursal_unico)
                     if qs.exists() is False:
                         qs = helpers.buscar_all_campos(qs, texto_buscar[1:], sucursal=sucursal_unico)
-                        
+
             return qs
         else:
             ''' en caso de que no sea staff va a venir a crear la lista aca donde se seleeciona la sucursal '''
@@ -197,7 +205,7 @@ class ArticuloListView(ListView):
 
                     if 'campo_categoria' in self.request.GET:
                         if self.request.GET.get('campo_categoria') is not '':
-
+                        
                             if qs.exists() is False:
                                 qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
                             if qs.exists() is False:
@@ -207,6 +215,11 @@ class ArticuloListView(ListView):
                             if qs.exists() is False:
                                 qs = helpers.buscar_descripcion_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'),  sucursal=sucursal_unico)
 
+                    if qs.exists() is False:
+                        qs = helpers.buscar_nombre_primera_letra(qs, texto_buscar, sucursal=sucursal_unico)
+
+                    if qs.exists() is False:
+                        qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
                         qs = helpers.buscar_all_campos(qs, texto_buscar, sucursal=sucursal_unico)
                     if qs.exists() is False:
