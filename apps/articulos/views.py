@@ -205,7 +205,7 @@ class ArticuloListView(ListView):
 
                     if 'campo_categoria' in self.request.GET:
                         if self.request.GET.get('campo_categoria') is not '':
-                        
+
                             if qs.exists() is False:
                                 qs = helpers.buscar_marca_categoria(qs, texto_buscar, self.request.GET.get('campo_categoria'), sucursal=sucursal_unico)
                             if qs.exists() is False:
@@ -217,33 +217,45 @@ class ArticuloListView(ListView):
 
                     if qs.exists() is False:
                         qs = helpers.buscar_nombre_primera_letra(qs, texto_buscar, sucursal=sucursal_unico)
-
-                    if qs.exists() is False:
-                        qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_all_campos(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_nombre_descripcion(qs, texto_buscar, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_descripcion(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_marca(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_rubro(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_precio_venta(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_precio_compra(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_stock(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_stock_minimo(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_fecha_compra(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
-                    if qs.exists() is False:
-                        qs = helpers.buscar_categoria(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_all_campos(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_nombre_descripcion(qs, texto_buscar, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_descripcion(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_marca(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_rubro(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_precio_venta(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_precio_compra(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_stock(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_stock_minimo(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_fecha_compra(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_nombre(qs, texto_buscar, sucursal=sucursal_unico)
+                    if qs:
+                        if qs.exists() is False:
+                            qs = helpers.buscar_categoria(qs, texto_buscar, sucursal=sucursal_unico)
             return qs
 
 
