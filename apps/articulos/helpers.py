@@ -317,11 +317,11 @@ def buscar_precio_compra(qs, precio_compra, sucursal=None):
                     baja=False,
                     precio_compra=precio_compra
                 ).order_by('-stock')
-
+    return qs
 
 def buscar_stock(qs, stock, sucursal=None):
     if (sucursal):
-        if qs.exists() is False:
+        if qs.exists() is False or qs is None:
             if stock.isnumeric():
                 qs = Articulo.objects.filter(
                     baja=False,
@@ -578,6 +578,23 @@ def ajax_precio_credito_update(request):
     if request.is_ajax():
         Articulo.objects.filter(id=request.POST['id'])\
         .update(precio_credito=request.POST['precio_credito'])
+        data = {
+            'message': 'El árticulo se actualizo con éxito'
+        }
+
+    return JsonResponse(data)
+
+
+''' ---------------------------------- '''
+''' Ajax para cambiar el precio en efectivo de un articulo '''
+''' ---------------------------------- '''
+
+def ajax_precio_efectivo_update(request):
+
+    if request.is_ajax():
+        print(request.POST['precio_venta'])
+        Articulo.objects.filter(id=request.POST['id'])\
+        .update(precio_venta=request.POST['precio_venta'])
         data = {
             'message': 'El árticulo se actualizo con éxito'
         }

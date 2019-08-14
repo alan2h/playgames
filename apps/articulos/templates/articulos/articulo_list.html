@@ -85,9 +85,19 @@
                             <td>
                                 {{ articulo.nombre }}
                             </td>
-                            <td>
+
+                            {% if request.user.is_staff %}
+                              <td onclick="cambiarPrecioEfectivo('{{ articulo.precio_venta }}', '{{ articulo.id }}')">
+                            {% else %}
+                                <td>
+                            {% endif %}
+                                <a >
                                 $ {{ articulo.precio_venta }}
-                            </td>
+                            {% if request.user.is_staff %}
+                              <i class="fa fa-pencil"></i>
+                            {% endif %}
+                              </a>
+                          </td>
 
                             {% if request.user.is_staff %}
                               <td onclick="cambiarPrecio('{{ articulo.precio_credito }}', '{{ articulo.id }}')">
@@ -176,6 +186,28 @@
             {% endif %}
             <!-- paginacion 1155-->
       </div>
+      <!-- Small modal cambio de precio efectivo -->
+      <div class="modal fade id_precio_efectivo_form" id="cambiarPrecioEfectivoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Cambiar precio efectivo</h4>
+                    <!--<div class="alert alert-danger" id="" role="alert"></div>-->
+                    <form>
+                      <input type="number" class="form-control" id="precio_efectivo_cambiar_form" />
+                      <input type="hidden" class="form-control" id="id_articulo_precio_modificar" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarPrecioEfectivo()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- /modals -->
       <!-- Small modal cambio de precio credito -->
       <div class="modal fade id_precio_credito_form" id="cambiarPrecioModal" tabindex="-1" role="dialog" aria-hidden="true">
               <div class="modal-dialog modal-sm">
@@ -288,6 +320,13 @@
         });
      }
    }
+   // --------------- se abre el modal para cambiar precios en efectivo -----//
+   function cambiarPrecioEfectivo(precio_efectivo, id){
+      $('#cambiarPrecioEfectivoModal').modal('show');
+      let precio_formato = precio_efectivo.replace(',', '.')
+      $('#precio_efectivo_cambiar_form').val(precio_formato);
+      $('#id_articulo_precio_modificar').val(id);
+    }
     // --------------- se abre el modal para cambiar precios -----//
     function cambiarPrecio(precio_credito, id){
       $('#cambiarPrecioModal').modal('show');
@@ -304,6 +343,36 @@
             data: {
                 id: $('#id_articulo_modificar').val(),
                 precio_credito: $('#precio_credito_cambiar_form').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data){
+              new PNotify({
+                   title: 'Sistema',
+                   text: 'El precio se modifico con éxito',
+                   type: 'success'
+               });
+               setInterval(function(){
+                 location.reload();
+               }, 1500);
+            }
+        });
+      }else{
+        new PNotify({
+             title: 'Sistema',
+             text: 'No puede dejar el precio vacio',
+             type: 'danger'
+         });
+      }
+    }
+    //----- metodo para guardar el nuevo precio ------ //
+    function guardarPrecioEfectivo(){
+      if ($('#precio_efectivo_cambiar_form').val()){
+        $.ajax({
+            url: '/articulos/ajax/precio/efectivo/actualizar/',
+            type: 'post',
+            data: {
+                id: $('#id_articulo_precio_modificar').val(),
+                precio_venta: $('#precio_efectivo_cambiar_form').val(),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function(data){

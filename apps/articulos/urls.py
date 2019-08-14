@@ -56,6 +56,8 @@ urlpatterns = [
    # ajax para modificar desde la lista
    url(r'^ajax/precio/credito/actualizar/$', helpers.ajax_precio_credito_update,
        name='precio-credito-actualizar-ajax'),
+   url(r'^ajax/precio/efectivo/actualizar/$', helpers.ajax_precio_efectivo_update,
+       name='precio-efectivo-actualizar-ajax'),
    url(r'^ajax/stock/actualizar/$', helpers.ajax_stock_update,
        name='stock-actualizar-ajax'),
    url(r'^ajax/stock/web/actualizar/$', helpers.ajax_stock_web_update,
